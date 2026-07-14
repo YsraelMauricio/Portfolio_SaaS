@@ -1,0 +1,91 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "provider": {
+    "groq": {},
+    "deepseek": {},
+    "zai": {},
+    "nvidia": {},
+    "openrouter": {},
+    "cerebras": {}
+  },
+
+  "instructions": [
+    "docs/CONSTRAINTS.md",
+    "docs/PLAN.md",
+    "docs/TASKS.md"
+  ],
+
+  "default_agent": "orchestrator",
+
+  "agent": {
+    "orchestrator": {
+      "mode": "primary",
+      "description": "Breaks PLAN.md phases into TASKS.md items, assigns each to the right specialist, sequences dependencies, merges once the reviewer approves. This is the agent you talk to directly.",
+      "prompt": "{file:./agent-prompts/orchestrator.txt}",
+      "permission": {
+        "edit": "ask",
+        "bash": { "*": "ask", "git status*": "allow", "git log*": "allow", "git diff*": "allow" },
+        "task": {
+          "*": "deny",
+          "backend": "allow",
+          "frontend": "allow",
+          "database": "allow",
+          "reviewer": "allow",
+          "security": "allow",
+          "docs-tests": "allow",
+          "devops": "allow"
+        }
+      }
+    },
+
+    "backend": {
+      "mode": "subagent",
+      "description": "Everything in backend/ — migrations, models, services, controllers, jobs. Invoke for any Laravel-side implementation task.",
+      "prompt": "{file:./agent-prompts/backend.txt}",
+      "permission": { "edit": "allow", "bash": "allow" }
+    },
+
+    "frontend": {
+      "mode": "subagent",
+      "description": "Everything in frontend/ — components, pages, i18n wiring. Invoke for any Next.js-side implementation task.",
+      "prompt": "{file:./agent-prompts/frontend.txt}",
+      "permission": { "edit": "allow", "bash": "allow" }
+    },
+
+    "database": {
+      "mode": "subagent",
+      "description": "Migration correctness, indexes, and query performance review. Invoke before merging any migration-touching PR.",
+      "prompt": "{file:./agent-prompts/database.txt}",
+      "permission": { "edit": "allow", "bash": "allow" }
+    },
+
+    "reviewer": {
+      "mode": "subagent",
+      "description": "Approves or rejects every PR against TESTS.md's Definition of Done before it merges. Invoke on every completed task, no exceptions.",
+      "prompt": "{file:./agent-prompts/reviewer.txt}",
+      "permission": { "edit": "deny", "bash": { "*": "ask", "git diff*": "allow", "git log*": "allow" } }
+    },
+
+    "security": {
+      "mode": "subagent",
+      "description": "Stricter secondary review for anything touching payments, auth, or webhooks specifically, against SECURITY.md. Invoke in addition to reviewer for Phase 3 and any auth-related task.",
+      "prompt": "{file:./agent-prompts/security.txt}",
+      "permission": { "edit": "deny", "bash": { "*": "ask", "grep*": "allow" } }
+    },
+
+    "docs-tests": {
+      "mode": "subagent",
+      "description": "Writes the tests specified in TESTS.md's priority list, keeps DATA_MODEL.md/API_SPEC.md in sync if an approved PR legitimately needed to deviate from them. Invoke alongside backend/frontend work.",
+      "prompt": "{file:./agent-prompts/docs-tests.txt}",
+      "permission": { "edit": "allow", "bash": "allow" }
+    },
+
+    "devops": {
+      "mode": "subagent",
+      "description": "infra/, CI workflows, environment configuration. Invoke for Phase 0 setup and any docker-compose/CI change.",
+      "prompt": "{file:./agent-prompts/devops.txt}",
+      "permission": { "edit": "allow", "bash": "allow" }
+    }
+  }
+}
