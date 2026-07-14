@@ -195,10 +195,197 @@ services:
       - frontend
       - backend
 
+  # ─── Support Services ────────────────────────────────────────────────────
+
+  # -- Umami (Analytics) --
+  umami:
+    image: ghcr.io/umami-software/umami:latest
+    container_name: portfolio_umami
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD:-umami}@umami-db:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET:-change-me-umami-secret}
+      TRACKER_SCRIPT_NAME: ${UMAMI_TRACKER_SCRIPT:-tracker}
+      COLLECT_API_ENDPOINT: ${UMAMI_COLLECT_ENDPOINT:-api/send}
+    depends_on:
+      umami-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/heartbeat || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  umami-db:
+    image: postgres:16
+    container_name: portfolio_umami_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${UMAMI_DB_PASSWORD:-umami}
+      POSTGRES_DB: umami
+    volumes:
+      - umami_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # -- Listmonk (Newsletter / Mailing) --
+  listmonk:
+    image: listmonk/listmonk:latest
+    container_name: portfolio_listmonk
+    restart: unless-stopped
+    ports:
+      - "3002:9000"
+    environment:
+      LISTMONK_app__address: 0.0.0.0:9000
+      LISTMONK_db__host: listmonk-db
+      LISTMONK_db__port: 5432
+      LISTMONK_db__user: listmonk
+      LISTMONK_db__password: ${LISTMONK_DB_PASSWORD:-listmonk}
+      LISTMONK_db__database: listmonk
+      LISTMONK_db__ssl_mode: disable
+      LISTMONK_db__max_open: 25
+      LISTMONK_db__max_idle: 25
+      LISTMONK_db__max_lifetime: 300s
+      LISTMONK_ADMIN_USER: ${LISTMONK_ADMIN_USER:-admin}
+      LISTMONK_ADMIN_PASSWORD: ${LISTMONK_ADMIN_PASSWORD:-listmonk}
+      TZ: Etc/UTC
+    depends_on:
+      listmonk-db:
+        condition: service_healthy
+    command: >
+      sh -c "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config ''"
+
+  listmonk-db:
+    image: postgres:16
+    container_name: portfolio_listmonk_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: listmonk
+      POSTGRES_PASSWORD: ${LISTMONK_DB_PASSWORD:-listmonk}
+      POSTGRES_DB: listmonk
+    volumes:
+      - listmonk_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U listmonk -d listmonk"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # -- GlitchTip (Error Tracking) --
+  glitchtip:
+    image: glitchtip/glitchtip:latest
+    container_name: portfolio_glitchtip
+    restart: unless-stopped
+    ports:
+      - "3003:8000"
+    environment:
+      DATABASE_URL: postgres://glitchtip:${GLITCHTIP_DB_PASSWORD:-glitchtip}@glitchtip-db:5432/glitchtip
+      SECRET_KEY: ${GLITCHTIP_SECRET_KEY:-change-me-glitchtip-secret}
+      PORT: 8000
+      EMAIL_URL: consolemail://
+      GLITCHTIP_DOMAIN: ${GLITCHTIP_DOMAIN:-http://localhost:3003}
+      DEFAULT_FROM_EMAIL: ${GLITCHTIP_FROM_EMAIL:-glitchtip@localhost}
+      CELERY_WORKER_CONCURRENCY: 2
+      ENABLE_USER_REGISTRATION: "true"
+    depends_on:
+      glitchtip-db:
+        condition: service_healthy
+
+  glitchtip-db:
+    image: postgres:16
+    container_name: portfolio_glitchtip_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: glitchtip
+      POSTGRES_PASSWORD: ${GLITCHTIP_DB_PASSWORD:-glitchtip}
+      POSTGRES_DB: glitchtip
+    volumes:
+      - glitchtip_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glitchtip -d glitchtip"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # -- Documenso (Document Signing) --
+  documenso:
+    image: documenso/documenso:latest
+    container_name: portfolio_documenso
+    restart: unless-stopped
+    ports:
+      - "3004:3000"
+    environment:
+      NEXTAUTH_SECRET: ${DOCUMENSO_NEXTAUTH_SECRET:-change-me-nextauth-secret}
+      NEXT_PRIVATE_ENCRYPTION_KEY: ${DOCUMENSO_ENCRYPTION_KEY:-change-me-encryption-key-min-32-chars!!}
+      NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY: ${DOCUMENSO_ENCRYPTION_SECONDARY_KEY:-change-me-secondary-key-min-32-chars}
+      NEXT_PUBLIC_WEBAPP_URL: ${DOCUMENSO_WEBAPP_URL:-http://localhost:3004}
+      NEXT_PRIVATE_INTERNAL_WEBAPP_URL: http://documenso:3000
+      NEXT_PRIVATE_DATABASE_URL: postgresql://documenso:${DOCUMENSO_DB_PASSWORD:-documenso}@documenso-db:5432/documenso
+      NEXT_PRIVATE_DIRECT_DATABASE_URL: postgresql://documenso:${DOCUMENSO_DB_PASSWORD:-documenso}@documenso-db:5432/documenso
+      NEXT_PRIVATE_SMTP_TRANSPORT: ${DOCUMENSO_SMTP_TRANSPORT:-smtp-auth}
+      NEXT_PRIVATE_SMTP_HOST: ${DOCUMENSO_SMTP_HOST:-mailpit}
+      NEXT_PRIVATE_SMTP_PORT: ${DOCUMENSO_SMTP_PORT:-1025}
+      NEXT_PRIVATE_SMTP_USERNAME: ${DOCUMENSO_SMTP_USERNAME:-}
+      NEXT_PRIVATE_SMTP_PASSWORD: ${DOCUMENSO_SMTP_PASSWORD:-}
+      NEXT_PRIVATE_SMTP_FROM_NAME: ${DOCUMENSO_FROM_NAME:-Documenso}
+      NEXT_PRIVATE_SMTP_FROM_ADDRESS: ${DOCUMENSO_FROM_ADDRESS:-noreply@localhost}
+      NEXT_PUBLIC_DISABLE_SIGNUP: "false"
+    depends_on:
+      documenso-db:
+        condition: service_healthy
+
+  documenso-db:
+    image: postgres:16
+    container_name: portfolio_documenso_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: documenso
+      POSTGRES_PASSWORD: ${DOCUMENSO_DB_PASSWORD:-documenso}
+      POSTGRES_DB: documenso
+    volumes:
+      - documenso_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U documenso -d documenso"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # -- Mailpit (Email Testing / SMTP Catch-All) --
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: portfolio_mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: ${MAILPIT_MAX_MESSAGES:-5000}
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: ${MAILPIT_SMTP_AUTH_ACCEPT_ANY:-true}
+      MP_SMTP_AUTH_ALLOW_INSECURE: ${MAILPIT_SMTP_AUTH_ALLOW_INSECURE:-true}
+    volumes:
+      - mailpit_data:/data
+
 volumes:
   postgres_data:
     driver: local
   redis_data:
     driver: local
   backend_storage:
+    driver: local
+  umami_db_data:
+    driver: local
+  listmonk_db_data:
+    driver: local
+  glitchtip_db_data:
+    driver: local
+  documenso_db_data:
+    driver: local
+  mailpit_data:
     driver: local
