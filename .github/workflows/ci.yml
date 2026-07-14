@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: cd backend && composer install --prefer-dist --no-interaction
 
+      - name: Prepare environment
+        run: cd backend && cp .env.example .env && php artisan key:generate
+
       - name: Run linter (Pint)
         run: cd backend && ./vendor/bin/pint --test
 
