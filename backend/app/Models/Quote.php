@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Quote extends Model
 {
@@ -27,6 +28,8 @@ class Quote extends Model
     {
         return [
             'is_test' => 'boolean',
+            'estimated_price_min' => 'decimal:2',
+            'estimated_price_max' => 'decimal:2',
         ];
     }
 
@@ -36,5 +39,21 @@ class Quote extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the product type associated with this quote.
+     */
+    public function productType(): BelongsTo
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+
+    /**
+     * The modifiers selected for this quote.
+     */
+    public function modifiers(): BelongsToMany
+    {
+        return $this->belongsToMany(Modifier::class, 'quote_modifiers');
     }
 }
