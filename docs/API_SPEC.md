@@ -150,7 +150,7 @@ Authentication via **Laravel Sanctum** (Bearer token). Endpoints marked 🔒 req
 
 ## 11. Cross-cutting rules (apply to every endpoint above)
 
-- **Rate limiting:** `POST /quotes/calculate` — 60 requests/minute per IP+session (legitimate frequent use during wizard interaction, still bounded); `POST /auth/login` — 5 attempts/minute per IP (brute-force protection, section 17). Exact figures, not impressions — implemented via Laravel's throttle middleware with these two named limiters.
+- **Rate limiting:** `POST /quotes/calculate` — 30 requests/minute per IP+session (legitimate frequent use during wizard interaction, still bounded); `POST /auth/login` — 5 attempts/minute per IP (brute-force protection, section 17). Exact figures, not impressions — implemented via Laravel's throttle middleware with these two named limiters.
 - **CORS:** only the frontend's own domain is allow-listed.
 - **`is_test`:** every write endpoint under `/admin/*` that creates a `quote`, `project`, `payment`, or `contract` must accept an optional `is_test` flag in the body — defaults to `false`.
 - **Payment webhooks:** all three (`/webhooks/payments/*`) follow the same mandatory pattern: verify signature (if valid, save `payments.webhook_signature_verified = true`; if not, reject and stop) → check `provider_transaction_id` doesn't already exist → process → respond 200. Never the other way around.
