@@ -130,9 +130,9 @@ class QuoteCalculatorTest extends TestCase
         $this->assertEquals(1200.00, $result['estimated_price_min']);
         // 1200 * 1.15 = 1380
         $this->assertEquals(1380.00, $result['estimated_price_max']);
-        // round(5 * 1.10) = 6, round(5 * 1.10) = 6
-        $this->assertEquals(6, $result['estimated_days_min']);
-        $this->assertEquals(6, $result['estimated_days_max']);
+        // round(10 * 1.10) = 11, round(15 * 1.10) = 17
+        $this->assertEquals(11, $result['estimated_days_min']);
+        $this->assertEquals(17, $result['estimated_days_max']);
     }
 
     // ─── is_floor_not_ceiling ────────────────────────────────────────────────
@@ -294,8 +294,8 @@ class QuoteCalculatorTest extends TestCase
         $this->assertEquals(1320.00, $result['estimated_price_min']);
         // 1320 * 1.15 = 1518
         $this->assertEquals(1518.00, $result['estimated_price_max']);
-        // (10 + 2) * 1.0 = 12, (10 + 2) * 1.0 = 12
+        // (10 + 2) = 12, (15 + 2) = 17
         $this->assertEquals(12, $result['estimated_days_min']);
-        $this->assertEquals(12, $result['estimated_days_max']);
+        $this->assertEquals(17, $result['estimated_days_max']);
     }
 }

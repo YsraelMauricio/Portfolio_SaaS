@@ -184,7 +184,14 @@ class QuoteController extends Controller
         /** @var \App\Models\User $user */
         $user = $request->user();
 
-        $quote = $user->quotes()->findOrFail($id);
+        $quote = Quote::findOrFail($id);
+
+        // Ensure the quote belongs to the authenticated user
+        if ($quote->user_id !== $user->id) {
+            return response()->json([
+                'errors' => ['quote' => ['Quote not found.']],
+            ], 404);
+        }
 
         if ($quote->status === 'sent_as_lead') {
             return response()->json([

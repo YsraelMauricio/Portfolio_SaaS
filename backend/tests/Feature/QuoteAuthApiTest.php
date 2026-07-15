@@ -186,24 +186,19 @@ class QuoteAuthApiTest extends TestCase
     {
         $productType = ProductType::where('slug', 'landing-page')->first();
 
-        // Register a second user
-        $otherResponse = $this->postJson('/api/v1/auth/register', [
-            'name' => 'Other User',
-            'email' => 'other@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
-        $otherToken = $otherResponse->json('data.token');
+        // Create a second user via the model factory
+        $otherUser = User::factory()->create();
+        $otherUser->assignRole('client');
 
-        // Save a quote as the other user
-        $saveResponse = $this->withToken($otherToken)
+        // Save a quote as the other user (actingAs ensures correct user)
+        $saveResponse = $this->actingAs($otherUser)
             ->postJson('/api/v1/quotes/save', [
                 'product_type_id' => $productType->id,
             ]);
         $otherQuoteId = $saveResponse->json('data.id');
 
         // Try to send as lead as the first user — should get 404
-        $response = $this->withToken($this->token)
+        $response = $this->actingAs($this->user)
             ->postJson("/api/v1/quotes/{$otherQuoteId}/send-as-lead");
 
         $response->assertStatus(404);

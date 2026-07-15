@@ -199,7 +199,7 @@ class QuoteAdminApiTest extends TestCase
         $this->assertEquals(999.99, (float) $response->json('data.price_impact_usd'));
 
         // Assert a price_change_history row was created
-        $this->assertDatabaseHas('price_change_histories', [
+        $this->assertDatabaseHas('price_change_history', [
             'changeable_type' => \App\Models\Modifier::class,
             'changeable_id' => $modifier->id,
             'new_value' => 999.99,
@@ -220,7 +220,7 @@ class QuoteAdminApiTest extends TestCase
         $this->assertEquals('Renamed Modifier', $response->json('data.name'));
 
         // No price_change_history should be created
-        $this->assertDatabaseMissing('price_change_histories', [
+        $this->assertDatabaseMissing('price_change_history', [
             'changeable_id' => $modifier->id,
         ]);
     }
