@@ -25,7 +25,8 @@ class AnonymizeAccounts implements ShouldQueue
     {
         $retentionDays = (int) Setting::get('account_retention_days', '60');
 
-        $expired = User::whereNotNull('deleted_at')
+        $expired = User::withTrashed()
+            ->whereNotNull('deleted_at')
             ->whereNull('anonymized_at')
             ->where('deleted_at', '<', now()->subDays($retentionDays))
             ->cursor();

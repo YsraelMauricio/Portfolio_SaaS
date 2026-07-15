@@ -391,12 +391,14 @@ SVG;
         file_put_contents($tempPath, $svg);
 
         $media = $user->addMedia($tempPath)
+            ->preservingOriginal()
             ->usingName('avatar')
             ->toMediaCollection('avatar');
 
         $user->avatar_media_id = $media->id;
         $user->save();
 
+        // Clean up the temporary file
         unlink($tempPath);
     }
 
