@@ -44,10 +44,21 @@
 - [x] Full admin CRUD for categories/product-types/modifier-groups/modifiers (`feat/phase-2-quote-engine` → PR #11 merged)
 
 ## Phase 3 — Contracts & payments
-*(High-level only)*
-- [ ] `PaymentProvider` interface + four implementations, each with signature verification and idempotency from first commit
-- [ ] Documenso integration, fixed draft→approve→sign→pay order
-- [ ] Partial payment support
+
+- [ ] P3-1: Create `Payment` Eloquent model with fillable fields, casts, and relationships (project, contract)
+- [ ] P3-2: Create `Services/Payments/PaymentProvider.php` interface per `ARCHITECTURE.md` §6
+- [ ] P3-3: Implement `OpenBcbProvider` — QR generation with BOB conversion, webhook verification
+- [ ] P3-4: Implement `BinancePayProvider` — checkout link, webhook with signature verification + idempotency
+- [ ] P3-5: Implement `PaypalProvider` — checkout link, webhook with signature verification + idempotency
+- [ ] P3-6: Implement `BankTransferProvider` — manual confirmation, verifyWebhookSignature always true
+- [ ] P3-7: Create `ContractController` — `POST /admin/contracts`, `POST /admin/contracts/{id}/approve-send`, `PATCH /admin/contracts/{id}/cancel`, `GET /contracts/{id}`
+- [ ] P3-8: Create `ProjectController` — `GET /projects`, `GET /projects/{id}`, `PATCH /admin/projects/{id}`, `POST /admin/projects/{id}/milestones`, `PATCH /admin/projects/{id}/pause-clock`
+- [ ] P3-9: Create `PaymentController` — `POST /payments/initiate`, `POST /payments/{id}/proof`, `PATCH /admin/payments/{id}/confirm`
+- [ ] P3-10: Create webhook handlers — `POST /webhooks/payments/paypal`, `POST /webhooks/payments/binance`, `POST /webhooks/payments/openbcb`, `POST /webhooks/documenso`
+- [ ] P3-11: Add all Phase 3 routes to `api.php`
+- [ ] P3-12: Write tests for contracts (create, approve-send flow, cancel, view)
+- [ ] P3-13: Write tests for payments (initiate, webhook signature verification + idempotency, proof upload, confirm)
+- [ ] Exit test: full contract-to-paid-deposit cycle works in sandbox mode
 
 ## Phase 4 — Client dashboard & admin panel
 *(High-level only)*
