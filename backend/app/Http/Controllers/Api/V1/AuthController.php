@@ -13,6 +13,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use PragmaRX\Google2FA\Google2FA;
 
@@ -60,7 +62,7 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        if (!Auth::attempt([
+        if (! Auth::attempt([
             'email' => $validated['email'],
             'password' => $validated['password'],
         ])) {
@@ -116,7 +118,15 @@ class AuthController extends Controller
     {
         $this->validateProvider($provider);
 
-        $redirectUrl = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+        // Generate and store state parameter for CSRF protection
+        $state = Str::random(40);
+        session(['oauth_state_'.$provider => $state]);
+
+        $redirectUrl = Socialite::driver($provider)
+            ->stateless()
+            ->with(['state' => $state])
+            ->redirect()
+            ->getTargetUrl();
 
         return response()->json([
             'data' => [
@@ -132,12 +142,22 @@ class AuthController extends Controller
     {
         $this->validateProvider($provider);
 
+        // Verify OAuth state parameter to prevent CSRF attacks
+        $storedState = session()->pull('oauth_state_'.$provider);
+        $receivedState = request()->query('state');
+
+        if (! $storedState || ! $receivedState || ! hash_equals($storedState, $receivedState)) {
+            return response()->json([
+                'errors' => ['provider' => ['Invalid state parameter. Possible CSRF attack.']],
+            ], 400);
+        }
+
         try {
             $socialiteUser = Socialite::driver($provider)->stateless()->user();
         } catch (\Exception $e) {
             return response()->json([
                 'errors' => [
-                    'provider' => ['Failed to authenticate with ' . $provider . '. Please try again.'],
+                    'provider' => ['Failed to authenticate with '.$provider.'. Please try again.'],
                 ],
             ], 422);
         }
@@ -169,7 +189,7 @@ class AuthController extends Controller
             // Create a new user
             $user = User::create([
                 'name' => $name,
-                'email' => $email ?? ('oauth-' . $provider . '-' . $providerId . '@anonymous'),
+                'email' => $email ?? ('oauth-'.$provider.'-'.$providerId.'@anonymous'),
                 'password' => null,
             ]);
 
@@ -209,7 +229,13 @@ class AuthController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $google2fa = new Google2FA();
+        if ($user->two_factor_enabled) {
+            return response()->json([
+                'errors' => ['2fa' => ['Two-factor authentication is already enabled.']],
+            ], 422);
+        }
+
+        $google2fa = new Google2FA;
         $secret = $google2fa->generateSecretKey();
 
         // Store the encrypted secret (pending verification)
@@ -248,10 +274,10 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
         $valid = $google2fa->verifyKey($user->two_factor_secret, $request->validated()['code']);
 
-        if (!$valid) {
+        if (! $valid) {
             return response()->json([
                 'errors' => [
                     'code' => ['The provided code is invalid.'],
@@ -283,7 +309,7 @@ class AuthController extends Controller
             'exit_survey_reason' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        if (!empty($validated['exit_survey_reason'])) {
+        if (! empty($validated['exit_survey_reason'])) {
             $user->exit_survey_reason = $validated['exit_survey_reason'];
             $user->save();
         }
@@ -342,7 +368,7 @@ class AuthController extends Controller
         $initials = '';
 
         foreach ($words as $word) {
-            if (!empty($word)) {
+            if (! empty($word)) {
                 $initials .= strtoupper($word[0]);
             }
         }
@@ -361,7 +387,7 @@ class AuthController extends Controller
 SVG;
 
         // Save as temporary file and add to media library
-        $tempPath = tempnam(sys_get_temp_dir(), 'avatar_') . '.svg';
+        $tempPath = tempnam(sys_get_temp_dir(), 'avatar_').'.svg';
         file_put_contents($tempPath, $svg);
 
         $media = $user->addMedia($tempPath)
@@ -379,16 +405,60 @@ SVG;
      */
     private function importAvatarFromUrl(User $user, string $avatarUrl): void
     {
+        // Validate URL to prevent SSRF attacks
+        $url = filter_var($avatarUrl, FILTER_VALIDATE_URL);
+
+        if (! $url) {
+            Log::warning('Invalid avatar URL format for user {id}', ['id' => $user->id]);
+
+            return;
+        }
+
+        $host = parse_url($url, PHP_URL_HOST);
+
+        if (! $host) {
+            Log::warning('Avatar URL has no host for user {id}', ['id' => $user->id]);
+
+            return;
+        }
+
+        // Only allow known OAuth provider avatar hosts
+        $allowedHosts = [
+            'avatars.githubusercontent.com',
+            'lh3.googleusercontent.com',
+            'graph.facebook.com',
+            'platform-lookaside.fbsbx.com',
+        ];
+
+        $hostAllowed = false;
+
+        foreach ($allowedHosts as $allowed) {
+            if (str_ends_with($host, $allowed)) {
+                $hostAllowed = true;
+
+                break;
+            }
+        }
+
+        if (! $hostAllowed) {
+            Log::warning('Avatar URL host not allowed for user {id}: {host}', [
+                'id' => $user->id,
+                'host' => $host,
+            ]);
+
+            return;
+        }
+
         try {
-            $media = $user->addMediaFromUrl($avatarUrl)
+            $media = $user->addMediaFromUrl($url)
                 ->usingName('avatar')
                 ->toMediaCollection('avatar');
 
             $user->avatar_media_id = $media->id;
             $user->save();
         } catch (\Exception $e) {
-            // Silently fail — a missing avatar shouldn't break the auth flow
-            logger()->warning('Failed to import avatar for user {id}: {message}', [
+            // Fall back to initials avatar — a missing avatar shouldn't break the auth flow
+            Log::warning('Failed to import avatar for user {id}: {message}', [
                 'id' => $user->id,
                 'message' => $e->getMessage(),
             ]);
