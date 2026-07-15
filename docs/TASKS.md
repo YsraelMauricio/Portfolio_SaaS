@@ -36,12 +36,12 @@
 - [x] Exit check: 28 tests covering register, login (with rate limit), logout, 2FA, account deletion, anonymization (`feat/phase-1-data-layer-auth` → PR #9 merged)
 
 ## Phase 2 — Quote engine
-*(High-level only — breaks down into this level of detail when Phase 1 is done)*
-- [ ] Seed all five categories with real product types and modifiers (Web incl. WordPress, Mobile, Desktop, Maintenance & modifications, Technical Support)
-- [ ] `Services/Quotes/` calculation engine + `POST /quotes/calculate`
-- [ ] Quote wizard UI, real-time price/time display
-- [ ] Save/compare, next-available-date display
-- [ ] Full admin CRUD for categories/product-types/modifier-groups/modifiers
+
+- [x] Seed all five categories with real product types and modifiers (Web incl. WordPress, Mobile, Desktop, Maintenance & modifications, Technical Support)
+- [x] `Services/Quotes/` calculation engine + `POST /quotes/calculate`
+- [x] Quote wizard UI, real-time price/time display
+- [x] Save/compare, next-available-date display
+- [x] Full admin CRUD for categories/product-types/modifier-groups/modifiers (`feat/phase-2-quote-engine` → PR #11 merged)
 
 ## Phase 3 — Contracts & payments
 *(High-level only)*
