@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Jobs\AnonymizeAccounts;
 use App\Models\Setting;
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -17,7 +18,7 @@ class AnonymizationTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(\Database\Seeders\RoleSeeder::class);
+        $this->seed(RoleSeeder::class);
     }
 
     public function test_anonymizes_user_past_retention_window(): void

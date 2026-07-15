@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use PragmaRX\Google2FA\Google2FA;
@@ -22,7 +23,7 @@ class TwoFactorTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(\Database\Seeders\RoleSeeder::class);
+        $this->seed(RoleSeeder::class);
         Storage::fake('public');
 
         // Create an admin user
@@ -78,7 +79,7 @@ class TwoFactorTest extends TestCase
         $secret = $enableResponse->json('data.secret');
 
         // Generate a valid TOTP code using the same library
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
         $validCode = $google2fa->getCurrentOtp($secret);
 
         // Verify with the valid code
