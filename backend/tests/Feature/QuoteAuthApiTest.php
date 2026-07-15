@@ -16,6 +16,7 @@ class QuoteAuthApiTest extends TestCase
     use LazilyRefreshDatabase;
 
     private string $token;
+
     private User $user;
 
     protected function setUp(): void
@@ -35,7 +36,7 @@ class QuoteAuthApiTest extends TestCase
         ]);
 
         $this->token = $response->json('data.token');
-        $this->user = \App\Models\User::where('email', 'quoteuser@example.com')->first();
+        $this->user = User::where('email', 'quoteuser@example.com')->first();
     }
 
     // ─── POST /api/v1/quotes/save (unauthenticated) ─────────────────────────

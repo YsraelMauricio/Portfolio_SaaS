@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Modifier;
 use App\Models\ModifierGroup;
-use App\Models\PriceChangeHistory;
-use App\Models\ProductType;
 use App\Models\ServiceCategory;
 use App\Models\User;
 use Database\Seeders\QuoteEngineSeeder;
@@ -19,6 +17,7 @@ class QuoteAdminApiTest extends TestCase
     use LazilyRefreshDatabase;
 
     private string $adminToken;
+
     private string $clientToken;
 
     protected function setUp(): void
@@ -108,7 +107,7 @@ class QuoteAdminApiTest extends TestCase
 
     public function test_admin_update_category_returns_200(): void
     {
-        $category = \App\Models\ServiceCategory::first();
+        $category = ServiceCategory::first();
 
         $response = $this->withToken($this->adminToken)
             ->patchJson("/api/v1/admin/quotes/categories/{$category->id}", [
@@ -126,7 +125,7 @@ class QuoteAdminApiTest extends TestCase
 
     public function test_admin_store_product_type_returns_201(): void
     {
-        $category = \App\Models\ServiceCategory::first();
+        $category = ServiceCategory::first();
 
         $response = $this->withToken($this->adminToken)
             ->postJson('/api/v1/admin/quotes/product-types', [
@@ -165,7 +164,7 @@ class QuoteAdminApiTest extends TestCase
 
     public function test_admin_store_modifier_returns_201(): void
     {
-        $group = \App\Models\ModifierGroup::first();
+        $group = ModifierGroup::first();
 
         $response = $this->withToken($this->adminToken)
             ->postJson('/api/v1/admin/quotes/modifiers', [
@@ -200,7 +199,7 @@ class QuoteAdminApiTest extends TestCase
 
         // Assert a price_change_history row was created
         $this->assertDatabaseHas('price_change_history', [
-            'changeable_type' => \App\Models\Modifier::class,
+            'changeable_type' => Modifier::class,
             'changeable_id' => $modifier->id,
             'new_value' => 999.99,
             'reason' => 'Market adjustment',

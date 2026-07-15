@@ -17,7 +17,6 @@ use App\Models\PriceChangeHistory;
 use App\Models\ProductType;
 use App\Models\ServiceCategory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class QuoteAdminController extends Controller
 {

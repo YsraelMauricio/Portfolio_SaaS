@@ -10,8 +10,6 @@ class QuoteCalculator
     /**
      * Calculate estimated price and time for a product type + modifier selection.
      *
-     * @param int $productTypeId
-     * @param array $modifierIds
      * @return array ['estimated_price_min', 'estimated_price_max', 'estimated_days_min', 'estimated_days_max']
      */
     public function calculate(int $productTypeId, array $modifierIds = []): array

@@ -11,6 +11,7 @@ use App\Models\ProductType;
 use App\Models\Quote;
 use App\Models\ServiceCategory;
 use App\Models\Setting;
+use App\Models\User;
 use App\Services\Quotes\QuoteCalculator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -130,7 +131,7 @@ class QuoteController extends Controller
             $validated['modifier_ids'] ?? []
         );
 
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = $request->user();
 
         $quote = Quote::create([
@@ -163,7 +164,7 @@ class QuoteController extends Controller
      */
     public function mine(Request $request): JsonResponse
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = $request->user();
 
         $quotes = $user->quotes()
@@ -181,7 +182,7 @@ class QuoteController extends Controller
      */
     public function sendAsLead(Request $request, int $id): JsonResponse
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = $request->user();
 
         $quote = Quote::findOrFail($id);

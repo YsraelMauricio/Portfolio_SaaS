@@ -51,7 +51,7 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $modifier = \App\Models\Modifier::factory()->create([
+        $modifier = Modifier::factory()->create([
             'price_impact_usd' => -100.00,
             'time_impact_days' => 0,
             'impact_type' => 'additive',
@@ -76,26 +76,26 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $fullStack = \App\Models\Modifier::factory()->create([
+        $fullStack = Modifier::factory()->create([
             'price_impact_usd' => 500.00,
             'time_impact_days' => 5,
             'impact_type' => 'additive',
         ]);
 
-        $premiumUx = \App\Models\Modifier::factory()->create([
+        $premiumUx = Modifier::factory()->create([
             'price_impact_usd' => 600.00,
             'time_impact_days' => 4,
             'impact_type' => 'additive',
         ]);
 
-        $blog = \App\Models\Modifier::factory()->create([
+        $blog = Modifier::factory()->create([
             'price_impact_usd' => 150.00,
             'time_impact_days' => 2,
             'impact_type' => 'additive',
         ]);
 
         $result = $this->calculator->calculate($productType->id, [
-            $fullStack->id, $premiumUx->id, $blog->id
+            $fullStack->id, $premiumUx->id, $blog->id,
         ]);
 
         // 800 + 500 + 600 + 150 = 2050
@@ -118,7 +118,7 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $modifier = \App\Models\Modifier::factory()->create([
+        $modifier = Modifier::factory()->create([
             'price_impact_usd' => 20.00,  // 20% increase
             'time_impact_days' => 10,     // 10% increase
             'impact_type' => 'multiplier',
@@ -164,7 +164,7 @@ class QuoteCalculatorTest extends TestCase
         ]);
 
         // A modifier that reduces days (e.g. urgent: -2 days)
-        $modifier = \App\Models\Modifier::factory()->create([
+        $modifier = Modifier::factory()->create([
             'price_impact_usd' => 0.00,
             'time_impact_days' => -2,
             'impact_type' => 'additive',
@@ -189,7 +189,7 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $modifier = \App\Models\Modifier::factory()->create([
+        $modifier = Modifier::factory()->create([
             'price_impact_usd' => 100.00,
             'time_impact_days' => -2,
             'impact_type' => 'additive',
@@ -213,7 +213,7 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $modifier = \App\Models\Modifier::factory()->create([
+        $modifier = Modifier::factory()->create([
             'price_impact_usd' => -200.00,
             'time_impact_days' => 0,
             'impact_type' => 'additive',
@@ -235,7 +235,7 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $modifier = \App\Models\Modifier::factory()->create([
+        $modifier = Modifier::factory()->create([
             'price_impact_usd' => 0.00,
             'time_impact_days' => -5,
             'impact_type' => 'additive',
@@ -276,13 +276,13 @@ class QuoteCalculatorTest extends TestCase
             'is_floor_not_ceiling' => false,
         ]);
 
-        $additiveMod = \App\Models\Modifier::factory()->create([
+        $additiveMod = Modifier::factory()->create([
             'price_impact_usd' => 200.00,
             'time_impact_days' => 2,
             'impact_type' => 'additive',
         ]);
 
-        $multiplierMod = \App\Models\Modifier::factory()->create([
+        $multiplierMod = Modifier::factory()->create([
             'price_impact_usd' => 10.00,  // 10% increase
             'time_impact_days' => 0,
             'impact_type' => 'multiplier',

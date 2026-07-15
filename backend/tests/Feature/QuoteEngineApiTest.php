@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Modifier;
-use App\Models\ModifierGroup;
 use App\Models\ProductType;
 use App\Models\ServiceCategory;
 use Database\Seeders\QuoteEngineSeeder;

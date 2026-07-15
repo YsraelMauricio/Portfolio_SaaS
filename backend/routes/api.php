@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\Admin\QuoteAdminController;
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\QuoteController;
 use Illuminate\Support\Facades\Route;
 
