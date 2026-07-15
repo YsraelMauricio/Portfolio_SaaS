@@ -15,9 +15,9 @@
 - [x] P0-5: Root-level `.gitignore` for monorepo-wide concerns only (`ARCHITECTURE.md` §2) — confirmed each subfolder's own `.gitignore` from scaffolding is untouched
 - [x] P0-6: `.env.example` in both `frontend/` and `backend/` with every variable name this project will eventually need, no real values
 - [x] P0-7a: GitHub repo created (private) at `github.com/YsraelMauricio/Portfolio_SaaS`, local folder connected via SSH remote — done, no commits yet
-- [ ] P0-7b: Branch protection on `main` requiring PR + passing CI — do this after the first commit exists (P0-9), not before; an empty repo has nothing meaningful to protect yet
+- [x] P0-7b: Branch protection on `main` requiring PR + passing CI (`fix(infra): resolve docker-compose port conflicts, SELinux mount, nginx upstream, reverb dep, and CI PHP version`)
 - [x] P0-8: CI skeleton (`.github/workflows/`) — backend (Pint + PHPUnit) and frontend (ESLint + TypeScript + build) jobs, green on merge to main
-- [ ] P0-9: Confirm `docker-compose up` brings up every service without error — this is Phase 0's actual exit condition
+- [x] P0-9: `docker-compose up` brings all 17 services without error — port conflicts (nginx/reverb both on 8080) resolved, SELinux bind-mount permissions fixed, nginx upstream config fixed, Reverb dependency installed, PHP 8.4 aligned across Docker/CI/composer (`feat/p0-9-fixes` → PR #7 merged)
 
 ## Phase 1 — Data layer & auth
 
