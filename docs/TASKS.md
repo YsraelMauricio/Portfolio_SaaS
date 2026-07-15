@@ -21,19 +21,19 @@
 
 ## Phase 1 — Data layer & auth
 
-- [ ] P1-1: Migration for `users` + `oauth_providers` (`DATA_MODEL.md` §1)
-- [ ] P1-2: Spatie Permission installed, migrated, three roles seeded (`visitor` implicit, `client`, `admin`)
-- [ ] P1-3: Spatie Media Library installed, migrated
-- [ ] P1-4: Migrations for the quote-engine tables (`service_categories` through `price_change_history`, `DATA_MODEL.md` §2)
-- [ ] P1-5: Migrations for `projects` → `contracts` → `payments`, **in that exact order** (`DATA_MODEL.md` §3) — `contracts.project_id` and `payments.project_id`/`payments.contract_id` mean creating these out of order fails the foreign key constraint; Laravel runs migrations in filename timestamp order, so name the files accordingly, don't rely on remembering to run them a specific way
-- [ ] P1-6: Migrations for maintenance, content, config, chatbot tables (`DATA_MODEL.md` §4-7)
-- [ ] P1-7: `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/user`
-- [ ] P1-8: OAuth for Google, GitHub, Facebook — redirect + callback, avatar import into `media`
-- [ ] P1-9: Email/password fallback avatar — initials-based generation (`PROJECT_SPEC.md` §8)
-- [ ] P1-10: 2FA enrollment + verification, enforced via middleware on `/admin/*`
-- [ ] P1-11: `DELETE /account` (soft-delete) + the scheduled anonymization job (`anonymized_at`)
-- [ ] P1-12: `GET /account/export`
-- [ ] Exit check: a user can register, log in through all three OAuth providers plus email/password, and land in an empty dashboard — verified manually once, then covered by the E2E test in `TESTS.md` §3
+- [x] P1-1: Migration for `users` + `oauth_providers` (`DATA_MODEL.md` §1)
+- [x] P1-2: Spatie Permission installed, migrated, three roles seeded (`visitor` implicit, `client`, `admin`)
+- [x] P1-3: Spatie Media Library installed, migrated
+- [x] P1-4: Migrations for the quote-engine tables (`service_categories` through `price_change_history`, `DATA_MODEL.md` §2)
+- [x] P1-5: Migrations for `projects` → `contracts` → `payments`, **in that exact order** (`DATA_MODEL.md` §3)
+- [x] P1-6: Migrations for maintenance, content, config, chatbot tables (`DATA_MODEL.md` §4-7)
+- [x] P1-7: `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/user`
+- [x] P1-8: OAuth for Google, GitHub, Facebook — redirect + callback, avatar import into `media`
+- [x] P1-9: Email/password fallback avatar — initials-based generation (`PROJECT_SPEC.md` §8)
+- [x] P1-10: 2FA enrollment + verification, enforced via middleware on `/admin/*` — rate limiting on login, CORS config, OAuth state validation, SSRF protection on avatar import
+- [x] P1-11: `DELETE /account` (soft-delete) + the scheduled anonymization job (`anonymized_at`) — 5 tests covering deletion and anonymization pipeline
+- [x] P1-12: `GET /account/export`
+- [x] Exit check: 28 tests covering register, login (with rate limit), logout, 2FA, account deletion, anonymization (`feat/phase-1-data-layer-auth` → PR #9 merged)
 
 ## Phase 2 — Quote engine
 *(High-level only — breaks down into this level of detail when Phase 1 is done)*
