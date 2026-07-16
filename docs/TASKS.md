@@ -72,15 +72,15 @@
 
 ## Phase 5 — Content & i18n
 
-- [ ] P5-1: Create models: BlogPost, BlogPostTranslation, BlogComment, PortfolioProject, PortfolioProjectTranslation, Testimonial
-- [ ] P5-2: Create `BlogController` — public `GET /blog/posts`, `GET /blog/posts/{slug}`
-- [ ] P5-3: Create `BlogAdminController` — full CRUD, featured_image upload, comment moderation
-- [ ] P5-4: Create `PortfolioController` — public `GET /portfolio`, `GET /portfolio/{slug}`
-- [ ] P5-5: Create `PortfolioAdminController` — full CRUD with translations
-- [ ] P5-6: Create `TestimonialController` — public `GET /testimonials`, `POST /testimonials`
-- [ ] P5-7: Create `TestimonialAdminController` — approve/reject actions
-- [ ] P5-8: Add all Phase 5 routes to `api.php`
-- [ ] P5-9: Write backend tests for blog, portfolio, testimonials
+- [x] P5-1: Create models: BlogPost, BlogPostTranslation, BlogComment, PortfolioProject, PortfolioProjectTranslation, Testimonial
+- [x] P5-2: Create `BlogController` — public `GET /blog/posts`, `GET /blog/posts/{slug}`
+- [x] P5-3: Create `BlogAdminController` — full CRUD, featured_image upload, comment moderation
+- [x] P5-4: Create `PortfolioController` — public `GET /portfolio`, `GET /portfolio/{slug}`
+- [x] P5-5: Create `PortfolioAdminController` — full CRUD with translations
+- [x] P5-6: Create `TestimonialController` — public `GET /testimonials`, `POST /testimonials`
+- [x] P5-7: Create `TestimonialAdminController` — approve/reject actions
+- [x] P5-8: Add all Phase 5 routes to `api.php`
+- [x] P5-9: Write backend tests for blog, portfolio, testimonials
 - [ ] P5-10: Frontend — set up `next-intl`, restructure pages under `[locale]`, create `messages/en.json` and `messages/es.json`
 - [ ] P5-11: Frontend — public blog pages (list + detail)
 - [ ] P5-12: Frontend — public portfolio pages (list + detail)
