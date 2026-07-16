@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Admin\CVController;
+use App\Http\Controllers\Api\V1\Admin\DashboardController;
+use App\Http\Controllers\Api\V1\Admin\DeletedUsersController;
 use App\Http\Controllers\Api\V1\Admin\QuoteAdminController;
+use App\Http\Controllers\Api\V1\Admin\SettingsController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ContractController;
 use App\Http\Controllers\Api\V1\DocumensoWebhookController;
 use App\Http\Controllers\Api\V1\PaymentController;
+use App\Http\Controllers\Api\V1\ProfileLinksController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\QuoteController;
 use App\Services\Payments\BinancePayProvider;
@@ -31,6 +36,12 @@ Route::prefix('v1')->group(function () {
 
     // Public — Documenso webhook (signature verified inside the controller)
     Route::post('/webhooks/documenso', [DocumensoWebhookController::class, 'handle']);
+
+    // Public — Settings, CV, and profile links
+    Route::get('/settings/public', [SettingsController::class, 'public']);
+    Route::get('/cv', [CVController::class, 'metadata']);
+    Route::get('/cv/download', [CVController::class, 'download']);
+    Route::get('/profile-links', [ProfileLinksController::class, 'index']);
 
     // Payment webhooks (public — signature verification is done inside each provider)
     Route::prefix('webhooks/payments')->group(function () {
@@ -125,5 +136,22 @@ Route::prefix('v1')->group(function () {
 
         // Admin payment confirmation (bank transfers)
         Route::patch('/payments/{id}/confirm', [PaymentController::class, 'confirm']);
+
+        // Admin — Settings
+        Route::get('/settings', [SettingsController::class, 'index']);
+        Route::patch('/settings', [SettingsController::class, 'update']);
+
+        // Admin — CV upload
+        Route::post('/cv', [CVController::class, 'upload']);
+
+        // Admin — Profile links
+        Route::patch('/profile-links', [ProfileLinksController::class, 'update']);
+
+        // Admin — Deleted users
+        Route::get('/deleted-users', [DeletedUsersController::class, 'index']);
+
+        // Admin — Dashboard
+        Route::get('/dashboard/metrics', [DashboardController::class, 'metrics']);
+        Route::get('/dashboard/recalibration', [DashboardController::class, 'recalibration']);
     });
 });
