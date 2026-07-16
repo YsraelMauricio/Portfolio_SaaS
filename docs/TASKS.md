@@ -57,7 +57,18 @@
 - [x] **Exit check:** All webhooks verify signature before processing; idempotency via `provider_transaction_id` unique constraint; contract→pay order is fixed (never inverted); bank transfer confirmation is manual-only
 
 ## Phase 4 — Client dashboard & admin panel
-*(High-level only)*
+
+- [ ] P4-1: Create `SettingsController` — `GET /settings/public`, `GET/PATCH /admin/settings`
+- [ ] P4-2: Create `CVController` — `GET /cv`, `GET /cv/download`, `POST /admin/cv`
+- [ ] P4-3: Create `ProfileLinksController` — `GET /profile-links`, `PATCH /admin/profile-links`
+- [ ] P4-4: Create `DeletedUsersController` — `GET /admin/deleted-users`
+- [ ] P4-5: Create `DashboardController` — `GET /admin/dashboard/metrics`, `GET /admin/dashboard/recalibration`
+- [ ] P4-6: Add all Phase 4 routes to `api.php`
+- [ ] P4-7: Write backend tests for all Phase 4 endpoints
+- [ ] P4-8: Frontend — client dashboard (project list, project detail with milestones/contracts)
+- [ ] P4-9: Frontend — admin panel (projects, contracts, payments management)
+- [ ] P4-10: Frontend — admin settings, CV upload, profile links
+- [ ] P4-11: Frontend — admin BI dashboard (metrics, recalibration)
 
 ## Phase 5 — Content & i18n
 *(High-level only)*
