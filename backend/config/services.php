@@ -58,4 +58,36 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Providers
+    |--------------------------------------------------------------------------
+    */
+    'openbcb' => [
+        'api_url' => env('OPENBCB_API_URL'),
+        'api_token' => env('OPENBCB_API_TOKEN'),
+    ],
+
+    'paypal' => [
+        'client_id' => env('PAYPAL_CLIENT_ID'),
+        'client_secret' => env('PAYPAL_CLIENT_SECRET'),
+        'sandbox' => env('PAYPAL_SANDBOX', true),
+        'webhook_id' => env('PAYPAL_WEBHOOK_ID'),
+    ],
+
+    'binance_pay' => [
+        'api_key' => env('BINANCE_PAY_API_KEY'),
+        'secret_key' => env('BINANCE_PAY_SECRET_KEY'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Documenso (Self-Hosted Document Signing)
+    |--------------------------------------------------------------------------
+    */
+    'documenso' => [
+        'api_url' => env('DOCUMENSO_API_URL'),
+        'api_token' => env('DOCUMENSO_API_TOKEN'),
+    ],
+
 ];
