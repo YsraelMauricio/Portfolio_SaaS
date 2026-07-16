@@ -44,10 +44,17 @@
 - [x] Full admin CRUD for categories/product-types/modifier-groups/modifiers (`feat/phase-2-quote-engine` → PR #11 merged)
 
 ## Phase 3 — Contracts & payments
-*(High-level only)*
-- [ ] `PaymentProvider` interface + four implementations, each with signature verification and idempotency from first commit
-- [ ] Documenso integration, fixed draft→approve→sign→pay order
-- [ ] Partial payment support
+
+- [x] P3-1: Create `Payment` Eloquent model with fillable fields, casts, and relationships
+- [x] P3-2: Create `Services/Payments/PaymentProvider.php` interface
+- [x] P3-3/4/5/6: Implement OpenBcbProvider, BinancePayProvider, PaypalProvider, BankTransferProvider
+- [x] P3-7: Create `ContractController` — draft, approve-send, cancel, view
+- [x] P3-8: Create `ProjectController` — list, view, update, milestones, pause-clock
+- [x] P3-9: Create `PaymentController` — initiate, proof upload, confirm
+- [x] P3-10: Create Documenso webhook handler + `POST /webhooks/documenso`
+- [x] P3-11: Add all Phase 3 routes to `api.php`
+- [x] P3-12/13: 41 tests covering contracts, payments, projects, webhooks (115 total, 836 assertions)
+- [x] **Exit check:** All webhooks verify signature before processing; idempotency via `provider_transaction_id` unique constraint; contract→pay order is fixed (never inverted); bank transfer confirmation is manual-only
 
 ## Phase 4 — Client dashboard & admin panel
 *(High-level only)*
