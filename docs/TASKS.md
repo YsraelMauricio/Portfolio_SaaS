@@ -89,7 +89,24 @@
 - [ ] P5-15: Audit Phases 1-4 frontend for hardcoded strings, move to messages/
 
 ## Phase 6 — Chatbot & escalation
-*(High-level only)*
+
+- [x] P6-1: Install `laravel/ai` package via Composer, publish config, configure Groq as an `openai-compatible` provider in `config/ai.php` with `GROQ_API_KEY`
+- [x] P6-2: Run `php artisan install:broadcasting --reverb` to generate `config/broadcasting.php`, `routes/channels.php`, and update `.env.example` with Reverb variables
+- [x] P6-3: Create `ChatbotConversation` and `ChatbotMessage` Eloquent models with relationships, casts, and fillable fields
+- [x] P6-4: Create `Services/Chatbot/ChatbotService` — orchestrates Groq via `agent()` helper, manages conversation history, supports streaming
+- [x] P6-5: Create `Events/ChatbotMessageStreamed.php` — `ShouldBroadcast` event with public channel per conversation, carries partial message chunks
+- [x] P6-6: Create `ChatbotController` with `POST /chatbot/message` — creates conversation if needed (with `session_id` for anonymous), saves user message, calls AI SDK, broadcasts streamed response chunk by chunk via Reverb, saves assistant message
+- [x] P6-7: Create `ChatbotController` with `POST /chatbot/escalate` — calls AI SDK to summarize conversation, saves `escalation_summary`/`escalation_channel`, sets `status = escalated`, returns `{ link }` (wa.me / t.me/username / mailto: with URL-encoded summary), fires `AdminEscalationNotification` regardless of channel
+- [x] P6-8: Create `Notifications/AdminEscalationNotification.php` — mail notification to admin with conversation summary, client info, and escalation channel
+- [x] P6-9: Create scheduled job `CloseStaleConversations` — marks conversations with no activity for N days as `closed`
+- [x] P6-10: Add all Phase 6 routes to `api.php` (chatbot group)
+- [x] P6-11: Add Reverb broadcasting environment variables to backend `.env.example` and frontend `.env.example`
+- [x] P6-12: Frontend — install `laravel-echo` and `pusher-js`, configure Echo for Reverb, set `VITE_REVERB_*` in frontend `.env.example`
+- [x] P6-13: Frontend — create ChatWidget component (floating button → chat panel → conversation display → message input), with Reverb event listener for streaming responses
+- [x] P6-14: Frontend — create escalation channel picker UI (WhatsApp/Telegram/email buttons after bot can't help), editable summary text before sending
+- [x] P6-15: Add chatbot i18n messages to `messages/en.json` and `messages/es.json`
+- [x] P6-16: Write backend tests for chatbot message, escalation, stale conversation closing
+- [x] P6-17: **Exit check:** 16 tests passing (53 assertions), 197 total (1072 assertions), `tsc --noEmit` clean, `npm run lint` 0 errors — visitor can start a chat session, receive streamed AI responses, and escalate to a human channel with prefilled summary; admin receives email notification on escalation
 
 ## Phase 7 — Design pass
 *(High-level only)*

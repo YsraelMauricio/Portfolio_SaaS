@@ -400,5 +400,43 @@
     "confirmedDelivery": "Confirmed Delivery",
     "actualDelivery": "Actual Delivery",
     "deviationDays": "Deviation (days)"
+  },
+
+  "Chatbot": {
+    "chat": {
+      "title": "Chat with Índigo",
+      "subtitle": "AI assistant — ask me anything about our services",
+      "input_placeholder": "Type your message...",
+      "send": "Send",
+      "sending": "Sending...",
+      "minimize": "Minimize",
+      "close": "Close",
+      "open": "Open chat"
+    },
+    "messages": {
+      "welcome": "Hello! I'm Índigo, your AI assistant. Ask me about our services, pricing, or how we can help with your project!",
+      "error": "I'm sorry, I encountered an error. Please try again or click \"Talk to Ysrael\" for immediate assistance.",
+      "you": "You",
+      "assistant": "Índigo"
+    },
+    "escalation": {
+      "title": "Talk to Ysrael",
+      "description": "I'll do my best to help, but if you prefer to talk directly with Ysrael, choose your preferred channel:",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "email": "Email",
+      "summary_label": "Conversation summary (editable):",
+      "send_button": "Continue on {channel}",
+      "cancel": "Cancel",
+      "success": "Opening {channel}...",
+      "admin_notified": "Ysrael has been notified via email as well."
+    },
+    "status": {
+      "processing": "Índigo is typing...",
+      "connecting": "Connecting...",
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "close_stale": "This conversation has been closed due to inactivity. Start a new chat if you need help."
   }
 }
