@@ -400,5 +400,43 @@
     "confirmedDelivery": "Entrega Confirmada",
     "actualDelivery": "Entrega Real",
     "deviationDays": "Desviación (días)"
+  },
+
+  "Chatbot": {
+    "chat": {
+      "title": "Chatea con Índigo",
+      "subtitle": "Asistente IA — pregúntame sobre nuestros servicios",
+      "input_placeholder": "Escribe tu mensaje...",
+      "send": "Enviar",
+      "sending": "Enviando...",
+      "minimize": "Minimizar",
+      "close": "Cerrar",
+      "open": "Abrir chat"
+    },
+    "messages": {
+      "welcome": "¡Hola! Soy Índigo, tu asistente IA. ¡Pregúntame sobre nuestros servicios, precios o cómo podemos ayudarte con tu proyecto!",
+      "error": "Lo siento, ocurrió un error. Por favor intenta de nuevo o haz clic en \"Hablar con Ysrael\" para recibir ayuda inmediata.",
+      "you": "Tú",
+      "assistant": "Índigo"
+    },
+    "escalation": {
+      "title": "Hablar con Ysrael",
+      "description": "Haré mi mejor esfuerzo para ayudarte, pero si prefieres hablar directamente con Ysrael, elige tu canal preferido:",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "email": "Correo electrónico",
+      "summary_label": "Resumen de la conversación (editable):",
+      "send_button": "Continuar en {channel}",
+      "cancel": "Cancelar",
+      "success": "Abriendo {channel}...",
+      "admin_notified": "Ysrael también ha sido notificado por correo electrónico."
+    },
+    "status": {
+      "processing": "Índigo está escribiendo...",
+      "connecting": "Conectando...",
+      "online": "En línea",
+      "offline": "Fuera de línea"
+    },
+    "close_stale": "Esta conversación se ha cerrado por inactividad. Inicia un nuevo chat si necesitas ayuda."
   }
 }

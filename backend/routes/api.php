@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\Admin\TestimonialAdminController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BlogCommentController;
 use App\Http\Controllers\Api\V1\BlogController;
+use App\Http\Controllers\Api\V1\ChatbotController;
 use App\Http\Controllers\Api\V1\ContractController;
 use App\Http\Controllers\Api\V1\DocumensoWebhookController;
 use App\Http\Controllers\Api\V1\PaymentController;
@@ -43,6 +44,10 @@ Route::prefix('v1')->group(function () {
 
     // Public — Documenso webhook (signature verified inside the controller)
     Route::post('/webhooks/documenso', [DocumensoWebhookController::class, 'handle']);
+
+    // Public — Chatbot (anonymous visitors can use the chatbot)
+    Route::post('/chatbot/message', [ChatbotController::class, 'message']);
+    Route::post('/chatbot/escalate', [ChatbotController::class, 'escalate']);
 
     // Public — Settings, CV, and profile links
     Route::get('/settings/public', [SettingsController::class, 'public']);
