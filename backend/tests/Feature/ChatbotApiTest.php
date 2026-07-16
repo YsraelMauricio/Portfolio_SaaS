@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\AdminEscalationNotification;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
@@ -38,7 +39,7 @@ class ChatbotApiTest extends TestCase
         // uses a non-streaming prompt. We inspect the request body to distinguish:
         // if body contains "stream":true, respond with SSE; otherwise, JSON.
         Http::fake([
-            'api.groq.com/*' => function (\Illuminate\Http\Client\Request $request) {
+            'api.groq.com/*' => function (Request $request) {
                 $body = $request->body();
                 $isStreaming = str_contains($body, '"stream":true') || str_contains($body, '"stream": true');
 
@@ -333,7 +334,7 @@ class ChatbotApiTest extends TestCase
         $message->created_at = now()->subHours(48);
         $message->save();
 
-        (new CloseStaleConversations())->handle();
+        (new CloseStaleConversations)->handle();
 
         $conversation->refresh();
         $this->assertSame('closed', $conversation->status);
@@ -355,7 +356,7 @@ class ChatbotApiTest extends TestCase
         $message->created_at = now()->subHour();
         $message->save();
 
-        (new CloseStaleConversations())->handle();
+        (new CloseStaleConversations)->handle();
 
         $conversation->refresh();
         $this->assertSame('active', $conversation->status);
@@ -379,7 +380,7 @@ class ChatbotApiTest extends TestCase
         $message->created_at = now()->subHours(48);
         $message->save();
 
-        (new CloseStaleConversations())->handle();
+        (new CloseStaleConversations)->handle();
 
         $conversation->refresh();
         $this->assertSame('escalated', $conversation->status);

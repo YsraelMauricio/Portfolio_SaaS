@@ -18,7 +18,7 @@ try {
     Broadcast::channel('chatbot.{conversationId}', function ($user, $conversationId) {
         return true; // Public channel — visitors without accounts can listen
     });
-} catch (\Throwable $e) {
+} catch (Throwable $e) {
     // Broadcasting is not configured or the driver is unavailable —
     // skip channel registration silently.
 }
