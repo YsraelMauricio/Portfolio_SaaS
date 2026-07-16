@@ -133,6 +133,97 @@ export async function fetchApiRaw(
 /**
  * Upload a file with auth (for FormData-based endpoints).
  */
+/**
+ * Fetch blog posts list (public).
+ */
+export async function fetchBlogPosts(
+  locale: string,
+  pillar?: string,
+  page = 1,
+  perPage = 10,
+): Promise<ApiResponse<import('@/app/types/content').BlogPost[]>> {
+  const params = new URLSearchParams({ locale, page: String(page), per_page: String(perPage) });
+  if (pillar) params.set('pillar', pillar);
+  return fetchApi(`/blog/posts?${params.toString()}`);
+}
+
+/**
+ * Fetch a single blog post by slug.
+ */
+export async function fetchBlogPost(
+  slug: string,
+  locale?: string,
+): Promise<ApiResponse<import('@/app/types/content').BlogPost>> {
+  const params = locale ? `?locale=${locale}` : '';
+  return fetchApi(`/blog/posts/${slug}${params}`);
+}
+
+/**
+ * Fetch blog comments for a post.
+ */
+export async function fetchBlogComments(
+  postId: number,
+): Promise<ApiResponse<import('@/app/types/content').BlogComment[]>> {
+  return fetchApi(`/blog/posts/${postId}/comments`);
+}
+
+/**
+ * Submit a blog comment.
+ */
+export async function submitBlogComment(
+  postId: number,
+  data: { content: string; author_name?: string },
+): Promise<ApiResponse<import('@/app/types/content').BlogComment>> {
+  return fetchApiWithAuth(`/blog/posts/${postId}/comments`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+/**
+ * Fetch portfolio projects list (public).
+ */
+export async function fetchPortfolioProjects(
+  locale: string,
+  technology?: string,
+): Promise<ApiResponse<import('@/app/types/content').PortfolioProject[]>> {
+  const params = new URLSearchParams({ locale });
+  if (technology) params.set('technology', technology);
+  return fetchApi(`/portfolio?${params.toString()}`);
+}
+
+/**
+ * Fetch a single portfolio project by slug.
+ */
+export async function fetchPortfolioProject(
+  slug: string,
+  locale?: string,
+): Promise<ApiResponse<import('@/app/types/content').PortfolioProject>> {
+  const params = locale ? `?locale=${locale}` : '';
+  return fetchApi(`/portfolio/${slug}${params}`);
+}
+
+/**
+ * Fetch approved testimonials (public).
+ */
+export async function fetchTestimonials(
+  locale: string,
+): Promise<ApiResponse<import('@/app/types/content').Testimonial[]>> {
+  return fetchApi(`/testimonials?locale=${locale}`);
+}
+
+/**
+ * Submit a testimonial (public).
+ */
+export async function submitTestimonial(
+  data: { author_name: string; content: string; role?: string; locale?: string },
+): Promise<ApiResponse<import('@/app/types/content').Testimonial>> {
+  return fetchApi('/testimonials', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
 export async function uploadFileWithAuth<T>(
   endpoint: string,
   formData: FormData,
