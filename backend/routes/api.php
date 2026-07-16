@@ -1,17 +1,24 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Admin\BlogAdminController;
 use App\Http\Controllers\Api\V1\Admin\CVController;
 use App\Http\Controllers\Api\V1\Admin\DashboardController;
 use App\Http\Controllers\Api\V1\Admin\DeletedUsersController;
+use App\Http\Controllers\Api\V1\Admin\PortfolioAdminController;
 use App\Http\Controllers\Api\V1\Admin\QuoteAdminController;
 use App\Http\Controllers\Api\V1\Admin\SettingsController;
+use App\Http\Controllers\Api\V1\Admin\TestimonialAdminController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BlogCommentController;
+use App\Http\Controllers\Api\V1\BlogController;
 use App\Http\Controllers\Api\V1\ContractController;
 use App\Http\Controllers\Api\V1\DocumensoWebhookController;
 use App\Http\Controllers\Api\V1\PaymentController;
+use App\Http\Controllers\Api\V1\PortfolioController;
 use App\Http\Controllers\Api\V1\ProfileLinksController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\QuoteController;
+use App\Http\Controllers\Api\V1\TestimonialController;
 use App\Services\Payments\BinancePayProvider;
 use App\Services\Payments\OpenBcbProvider;
 use App\Services\Payments\PaypalProvider;
@@ -42,6 +49,17 @@ Route::prefix('v1')->group(function () {
     Route::get('/cv', [CVController::class, 'metadata']);
     Route::get('/cv/download', [CVController::class, 'download']);
     Route::get('/profile-links', [ProfileLinksController::class, 'index']);
+
+    // Public — Blog
+    Route::get('/blog/posts', [BlogController::class, 'index']);
+    Route::get('/blog/posts/{slug}', [BlogController::class, 'show']);
+
+    // Public — Portfolio
+    Route::get('/portfolio', [PortfolioController::class, 'index']);
+    Route::get('/portfolio/{slug}', [PortfolioController::class, 'show']);
+
+    // Public — Testimonials
+    Route::get('/testimonials', [TestimonialController::class, 'index']);
 
     // Payment webhooks (public — signature verification is done inside each provider)
     Route::prefix('webhooks/payments')->group(function () {
@@ -95,6 +113,12 @@ Route::prefix('v1')->group(function () {
         // Payment initiation
         Route::post('/payments/initiate', [PaymentController::class, 'initiate']);
         Route::post('/payments/{id}/proof', [PaymentController::class, 'uploadProof']);
+
+        // Authenticated — Blog comments
+        Route::post('/blog/posts/{id}/comments', [BlogCommentController::class, 'store']);
+
+        // Authenticated — Testimonials
+        Route::post('/testimonials', [TestimonialController::class, 'store']);
 
         // Admin-only 2FA enrollment (no 2fa middleware — these routes are used to enable 2FA)
         Route::middleware('role:admin')->group(function () {
@@ -153,5 +177,16 @@ Route::prefix('v1')->group(function () {
         // Admin — Dashboard
         Route::get('/dashboard/metrics', [DashboardController::class, 'metrics']);
         Route::get('/dashboard/recalibration', [DashboardController::class, 'recalibration']);
+
+        // Admin — Blog posts
+        Route::apiResource('/blog/posts', BlogAdminController::class);
+        Route::patch('/blog/comments/{id}/moderate', [BlogAdminController::class, 'moderateComment']);
+
+        // Admin — Portfolio
+        Route::apiResource('/portfolio', PortfolioAdminController::class);
+
+        // Admin — Testimonials
+        Route::patch('/testimonials/{id}/approve', [TestimonialAdminController::class, 'approve']);
+        Route::patch('/testimonials/{id}/reject', [TestimonialAdminController::class, 'reject']);
     });
 });
