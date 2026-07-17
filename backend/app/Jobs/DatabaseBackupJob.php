@@ -53,16 +53,16 @@ class DatabaseBackupJob implements ShouldBeUnique, ShouldQueue
             mkdir($backupDir, 0755, true);
         }
 
-        $filename = 'backup_' . now()->format('Y-m-d_His') . '.sql.gz';
+        $filename = 'backup_'.now()->format('Y-m-d_His').'.sql.gz';
         $filepath = "{$backupDir}/{$filename}";
 
         // Build the pg_dump command.
         $command = [
             'pg_dump',
-            '--host=' . $host,
-            '--port=' . $port,
-            '--username=' . $username,
-            '--dbname=' . $database,
+            '--host='.$host,
+            '--port='.$port,
+            '--username='.$username,
+            '--dbname='.$database,
             '--no-owner',
             '--no-acl',
         ];

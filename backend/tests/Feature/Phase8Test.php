@@ -36,7 +36,7 @@ class Phase8Test extends TestCase
         $this->assertEquals('sqlite', config('database.default'));
 
         // Should not throw any exception — the driver check logs and returns early.
-        (new DatabaseBackupJob())->handle();
+        (new DatabaseBackupJob)->handle();
 
         $this->assertTrue(true, 'Job completed without exception on SQLite driver');
     }
@@ -55,7 +55,7 @@ class Phase8Test extends TestCase
             // The job logs the error and then re-throws the exception.
             $exceptionThrown = false;
             try {
-                (new DatabaseBackupJob())->handle();
+                (new DatabaseBackupJob)->handle();
             } catch (\Throwable $e) {
                 $exceptionThrown = true;
             }
@@ -77,7 +77,7 @@ class Phase8Test extends TestCase
     {
         Notification::fake();
 
-        (new QuarterlyRecalibrationReminderJob())->handle();
+        (new QuarterlyRecalibrationReminderJob)->handle();
 
         Notification::assertNothingSent();
     }
@@ -97,7 +97,7 @@ class Phase8Test extends TestCase
 
         Notification::fake();
 
-        (new QuarterlyRecalibrationReminderJob())->handle();
+        (new QuarterlyRecalibrationReminderJob)->handle();
 
         // Assert a QuarterlyRecalibrationReminder was sent to the admin.
         Notification::assertSentTimes(QuarterlyRecalibrationReminder::class, 1);
@@ -116,7 +116,7 @@ class Phase8Test extends TestCase
 
         Notification::fake();
 
-        (new QuarterlyRecalibrationReminderJob())->handle();
+        (new QuarterlyRecalibrationReminderJob)->handle();
 
         Notification::assertNothingSent();
     }
@@ -130,7 +130,7 @@ class Phase8Test extends TestCase
         // StagingSeeder requires the quote-engine product types to be seeded first.
         $this->seed(QuoteEngineSeeder::class);
 
-        (new StagingSeeder())->run();
+        (new StagingSeeder)->run();
 
         // Assert the test admin user was created
         $this->assertDatabaseHas('users', [
@@ -167,7 +167,7 @@ class Phase8Test extends TestCase
     {
         $this->seed(QuoteEngineSeeder::class);
 
-        (new StagingSeeder())->run();
+        (new StagingSeeder)->run();
 
         // Verify every single seeded record has is_test = true
         $quotes = Quote::all();
