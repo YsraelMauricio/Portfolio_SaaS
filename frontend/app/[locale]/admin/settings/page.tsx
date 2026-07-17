@@ -58,26 +58,26 @@ export default function AdminSettingsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">Settings</h1>
-      <p className="mt-2 text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">
+      <h1 className="text-3xl font-bold text-text font-display">Settings</h1>
+      <p className="mt-2 text-text-muted">
         Manage site-wide configuration. All changes are cached and invalidated on save.
       </p>
 
       {error && (
-        <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-4 glass-card--light border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="mt-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-sm text-green-600 dark:text-green-400">
+        <div className="mt-4 glass-card--light border border-secondary/30 px-4 py-3 text-sm text-secondary">
           {success}
         </div>
       )}
@@ -86,20 +86,20 @@ export default function AdminSettingsPage() {
         {/* Public settings section */}
         {Object.keys(publicSettings).length > 0 && (
           <div>
-            <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+            <h2 className="text-lg font-semibold text-text font-display mb-4">
               Public Settings
             </h2>
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl divide-y divide-zinc-100 dark:divide-zinc-800">
+            <div className="glass-card--light divide-y divide-[var(--glass-border)]">
               {Object.entries(publicSettings).map(([key]) => (
                 <div key={key} className="p-5">
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
                     {key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                   </label>
                   <input
                     type="text"
                     value={settings[key] ?? ''}
                     onChange={(e) => updateSetting(key, e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
               ))}
@@ -109,19 +109,19 @@ export default function AdminSettingsPage() {
 
         {/* All settings section */}
         <div>
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+          <h2 className="text-lg font-semibold text-text font-display mb-4">
             All Settings ({currentKeys.length})
           </h2>
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl divide-y divide-zinc-100 dark:divide-zinc-800">
+          <div className="glass-card--light divide-y divide-[var(--glass-border)]">
             {currentKeys.length === 0 ? (
-              <div className="p-8 text-center text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+              <div className="p-8 text-center text-sm text-text-muted">
                 No settings found. Add settings via the database or API.
               </div>
             ) : (
               currentKeys.map((key) => (
                 <div key={key} className="p-5">
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-                    <code className="text-xs bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
+                    <code className="text-xs bg-text-muted/10 px-1.5 py-0.5 rounded font-mono">
                       {key}
                     </code>
                   </label>
@@ -129,7 +129,7 @@ export default function AdminSettingsPage() {
                     type="text"
                     value={settings[key] ?? ''}
                     onChange={(e) => updateSetting(key, e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
               ))
@@ -141,7 +141,7 @@ export default function AdminSettingsPage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] disabled:opacity-50 transition-colors"
+            className="px-6 py-2.5 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 motion-safe:transition-colors"
           >
             {saving ? 'Saving...' : 'Save Settings'}
           </button>

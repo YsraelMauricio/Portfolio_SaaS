@@ -8,7 +8,7 @@ import type { Project } from '@/app/types/dashboard';
 
 const STATUS_BADGE: Record<string, string> = {
   submitted: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  in_development: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+  in_development: 'bg-accent/20 text-accent',
   delivered: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
 };
@@ -128,16 +128,16 @@ export default function AdminProjectDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   if (error || !project) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
+      <div className="glass-card--light border border-red-200 dark:border-red-800 p-6">
         <p className="text-red-600 dark:text-red-400 font-medium">{error ?? 'Project not found'}</p>
-        <Link href="/admin/projects" className="mt-4 inline-block text-sm text-[#6D28D9] hover:underline">
+        <Link href="/admin/projects" className="mt-4 inline-block text-sm text-primary hover:underline">
           ← Back to Projects
         </Link>
       </div>
@@ -151,7 +151,7 @@ export default function AdminProjectDetailPage() {
     <div>
       <Link
         href="/admin/projects"
-        className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)] hover:text-[#6D28D9] transition-colors"
+        className="text-sm text-text-muted hover:text-primary motion-safe:transition-colors"
       >
         ← Back to Projects
       </Link>
@@ -159,10 +159,10 @@ export default function AdminProjectDetailPage() {
       {/* Header */}
       <div className="mt-4 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">
+          <h1 className="text-3xl font-bold text-text font-display">
             Project #{project.id}
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+          <p className="mt-1 text-sm text-text-muted">
             Client: {project.user?.name ?? `User #${project.user_id}`} ({project.user?.email})
           </p>
         </div>
@@ -175,14 +175,14 @@ export default function AdminProjectDetailPage() {
 
       {/* Action error */}
       {actionError && (
-        <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-4 glass-card--light border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
           {actionError}
         </div>
       )}
 
       {/* Status transitions */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">Actions</h2>
+        <h2 className="text-lg font-semibold text-text font-display mb-4">Actions</h2>
         <div className="flex flex-wrap gap-3">
           {!isTerminal &&
             availableTransitions.map((status) => (
@@ -191,14 +191,14 @@ export default function AdminProjectDetailPage() {
                 type="button"
                 disabled={actionLoading !== null}
                 onClick={() => handleStatusChange(status)}
-                className="px-4 py-2 text-sm font-medium rounded-lg bg-[#6D28D9] text-white hover:bg-[#5B21B6] disabled:opacity-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-white hover:bg-primary/90 disabled:opacity-50 motion-safe:transition-colors"
               >
                 {actionLoading === `status-${status}` ? 'Updating...' : `Mark as ${STATUS_LABEL[status] ?? status}`}
               </button>
             ))}
 
           {project.status === 'delivered' && (
-            <span className="inline-flex items-center px-4 py-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <span className="inline-flex items-center px-4 py-2 text-sm text-secondary bg-secondary/10 rounded-lg">
               Delivered
             </span>
           )}
@@ -207,7 +207,7 @@ export default function AdminProjectDetailPage() {
             type="button"
             disabled={actionLoading !== null}
             onClick={handlePauseClock}
-            className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-lg border border-[var(--glass-border)] text-text-muted hover:bg-bg/50 disabled:opacity-50 motion-safe:transition-colors"
           >
             {actionLoading === 'pause' ? 'Pausing...' : `Pause Clock (${project.paused_days})`}
           </button>
@@ -216,7 +216,7 @@ export default function AdminProjectDetailPage() {
             type="button"
             disabled={actionLoading !== null}
             onClick={handleToggleScopeChanged}
-            className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-lg border border-[var(--glass-border)] text-text-muted hover:bg-bg/50 disabled:opacity-50 motion-safe:transition-colors"
           >
             {actionLoading === 'scope'
               ? 'Updating...'
@@ -227,23 +227,23 @@ export default function AdminProjectDetailPage() {
 
       {/* Project info */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">Paused Days</p>
-          <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{project.paused_days}</p>
+        <div className="glass-card--light p-5">
+          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">Paused Days</p>
+          <p className="mt-2 text-2xl font-bold text-text">{project.paused_days}</p>
         </div>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">is_test</p>
-          <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{project.is_test ? 'Yes' : 'No'}</p>
+        <div className="glass-card--light p-5">
+          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">is_test</p>
+          <p className="mt-2 text-2xl font-bold text-text">{project.is_test ? 'Yes' : 'No'}</p>
         </div>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">Scope Changed</p>
-          <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{project.scope_changed ? 'Yes' : 'No'}</p>
+        <div className="glass-card--light p-5">
+          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">Scope Changed</p>
+          <p className="mt-2 text-2xl font-bold text-text">{project.scope_changed ? 'Yes' : 'No'}</p>
         </div>
       </div>
 
       {/* Milestones */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">Milestones</h2>
+        <h2 className="text-lg font-semibold text-text font-display mb-4">Milestones</h2>
 
         {project.milestones && project.milestones.length > 0 ? (
           <div className="space-y-2">
@@ -252,26 +252,26 @@ export default function AdminProjectDetailPage() {
               .map((m) => (
                 <div
                   key={m.id}
-                  className="flex items-center justify-between bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4"
+                  className="flex items-center justify-between glass-card--light p-4"
                 >
                   <div>
-                    <p className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">{m.name}</p>
-                    <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+                    <p className="text-sm font-medium text-text">{m.name}</p>
+                    <p className="text-xs text-text-muted">
                       Est: {new Date(m.estimated_date).toLocaleDateString()}
                       {m.completed_date && ` | Completed: ${new Date(m.completed_date).toLocaleDateString()}`}
                     </p>
                   </div>
-                  <span className="text-xs text-zinc-400">Order: {m.sort_order}</span>
+                  <span className="text-xs text-text-muted">Order: {m.sort_order}</span>
                 </div>
               ))}
           </div>
         ) : (
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">No milestones yet.</p>
+          <p className="text-sm text-text-muted">No milestones yet.</p>
         )}
 
         {/* Add milestone form */}
-        <form onSubmit={handleCreateMilestone} className="mt-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-3">Add Milestone</h3>
+        <form onSubmit={handleCreateMilestone} className="mt-4 glass-card--light p-5">
+          <h3 className="text-sm font-semibold text-text font-display mb-3">Add Milestone</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <input
               type="text"
@@ -279,14 +279,14 @@ export default function AdminProjectDetailPage() {
               placeholder="Milestone name"
               value={newMilestone.name}
               onChange={(e) => setNewMilestone((prev) => ({ ...prev, name: e.target.value }))}
-              className="px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+              className="px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <input
               type="date"
               required
               value={newMilestone.estimated_date}
               onChange={(e) => setNewMilestone((prev) => ({ ...prev, estimated_date: e.target.value }))}
-              className="px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+              className="px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <div className="flex gap-2">
               <input
@@ -295,12 +295,12 @@ export default function AdminProjectDetailPage() {
                 placeholder="Sort order"
                 value={newMilestone.sort_order}
                 onChange={(e) => setNewMilestone((prev) => ({ ...prev, sort_order: Number(e.target.value) }))}
-                className="flex-1 px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                className="flex-1 px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <button
                 type="submit"
                 disabled={actionLoading === 'milestone'}
-                className="px-4 py-2 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] disabled:opacity-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 motion-safe:transition-colors"
               >
                 {actionLoading === 'milestone' ? 'Adding...' : 'Add'}
               </button>

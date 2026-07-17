@@ -68,19 +68,19 @@ export default function BlogDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+      <div className="min-h-dvh bg-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B]">
+      <div className="min-h-dvh bg-bg">
         <div className="max-w-3xl mx-auto px-6 py-16">
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
             <p className="text-red-600 dark:text-red-400 font-medium">{error ?? 'Post not found'}</p>
-            <Link href="/blog" className="mt-4 inline-block text-sm text-[#6D28D9] hover:underline">
+            <Link href="/blog" className="mt-4 inline-block text-sm text-primary hover:underline">
               {t('backToBlog')}
             </Link>
           </div>
@@ -90,11 +90,11 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B]">
+    <div className="min-h-dvh bg-bg">
       <article className="max-w-3xl mx-auto px-6 py-16">
         <Link
           href="/blog"
-          className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)] hover:text-[#6D28D9] transition-colors"
+          className="text-sm text-text-muted hover:text-primary transition-colors"
         >
           {t('backToBlog')}
         </Link>
@@ -102,14 +102,14 @@ export default function BlogDetailPage() {
         {/* Header */}
         <header className="mt-6">
           {post.pillar && (
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
               {PILLAR_LABEL[post.pillar] ?? post.pillar}
             </span>
           )}
-          <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-[#FAFAFA]">
+          <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-text font-display">
             {post.title}
           </h1>
-          <div className="mt-4 flex items-center gap-4 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+          <div className="mt-4 flex items-center gap-4 text-sm text-text-muted">
             <span>{t('byAuthor', { name: post.author_name })}</span>
             {post.published_at && (
               <span>
@@ -137,8 +137,8 @@ export default function BlogDetailPage() {
         />
 
         {/* Comments Section */}
-        <section className="mt-16 border-t border-zinc-200 dark:border-zinc-800 pt-10">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+        <section className="mt-16 border-t border-[var(--glass-border)] pt-10">
+          <h2 className="text-xl font-semibold text-text">
             {t('comments')}
           </h2>
 
@@ -147,33 +147,33 @@ export default function BlogDetailPage() {
               {comments.map((comment) => (
                 <div
                   key={comment.id}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4"
+                  className="glass-card--light p-4"
                 >
-                  <p className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+                  <p className="text-sm font-medium text-text">
                     {comment.author_name}
                   </p>
-                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="mt-1 text-sm text-text-muted">
                     {comment.content}
                   </p>
-                  <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
+                  <p className="mt-2 text-xs text-text-muted">
                     {new Date(comment.created_at).toLocaleDateString()}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="mt-4 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+            <p className="mt-4 text-sm text-text-muted">
               {t('noComments')}
             </p>
           )}
 
           {/* Comment form */}
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+            <h3 className="text-lg font-semibold text-text">
               {t('leaveComment')}
             </h3>
             {!isLoggedIn ? (
-              <p className="mt-2 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+              <p className="mt-2 text-sm text-text-muted">
                 {t('loginToComment')}
               </p>
             ) : (
@@ -184,7 +184,7 @@ export default function BlogDetailPage() {
                   </div>
                 )}
                 {commentSuccess && (
-                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-sm text-green-600 dark:text-green-400">
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-sm text-secondary">
                     Comment submitted successfully!
                   </div>
                 )}
@@ -194,12 +194,12 @@ export default function BlogDetailPage() {
                   value={commentContent}
                   onChange={(e) => setCommentContent(e.target.value)}
                   placeholder={t('commentPlaceholder')}
-                  className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg glass-card--light text-text placeholder-text-muted focus:ring-2 focus:ring-accent focus:border-transparent"
                 />
                 <button
                   type="submit"
                   disabled={submittingComment}
-                  className="px-6 py-2.5 bg-[#6D28D9] text-white font-medium rounded-lg hover:bg-[#5B21B6] disabled:opacity-50 transition-colors text-sm"
+                  className="px-6 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 disabled:opacity-50 transition-all text-sm"
                 >
                   {submittingComment ? 'Submitting...' : t('submitComment')}
                 </button>

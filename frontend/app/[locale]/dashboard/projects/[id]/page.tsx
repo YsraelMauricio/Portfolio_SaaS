@@ -37,7 +37,7 @@ export default function ClientProjectDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
@@ -62,17 +62,17 @@ export default function ClientProjectDetailPage() {
     <div>
       <Link
         href="/dashboard/projects"
-        className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)] hover:text-[#6D28D9] transition-colors"
+        className="text-sm text-text-muted hover:text-primary transition-colors"
       >
         ← Back to Projects
       </Link>
 
       <div className="mt-4 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">
+          <h1 className="text-3xl font-bold text-text font-display">
             Project #{project.id}
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+          <p className="mt-1 text-sm text-text-muted">
             Created {new Date(project.created_at ?? '').toLocaleDateString()}
           </p>
         </div>
@@ -85,29 +85,29 @@ export default function ClientProjectDetailPage() {
 
       {/* Details grid */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">
+        <div className="glass-card--light p-5">
+          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
             Status
           </p>
-          <p className="mt-2 text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+          <p className="mt-2 text-lg font-semibold text-text">
             {STATUS_LABEL[project.status] ?? project.status}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">
+        <div className="glass-card--light p-5">
+          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
             Paused Days
           </p>
-          <p className="mt-2 text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+          <p className="mt-2 text-lg font-semibold text-text">
             {project.paused_days}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-          <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">
+        <div className="glass-card--light p-5">
+          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
             Scope Changed
           </p>
-          <p className="mt-2 text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+          <p className="mt-2 text-lg font-semibold text-text">
             {project.scope_changed ? 'Yes' : 'No'}
           </p>
         </div>
@@ -116,31 +116,31 @@ export default function ClientProjectDetailPage() {
       {/* Dates */}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
         {project.actual_start_date && (
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-            <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">
+          <div className="glass-card--light p-5">
+            <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
               Start Date
             </p>
-            <p className="mt-1 text-sm text-zinc-900 dark:text-[#FAFAFA]">
+            <p className="mt-1 text-sm text-text">
               {new Date(project.actual_start_date).toLocaleDateString()}
             </p>
           </div>
         )}
         {project.confirmed_delivery_date && (
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-            <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">
+          <div className="glass-card--light p-5">
+            <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
               Est. Delivery Date
             </p>
-            <p className="mt-1 text-sm text-zinc-900 dark:text-[#FAFAFA]">
+            <p className="mt-1 text-sm text-text">
               {new Date(project.confirmed_delivery_date).toLocaleDateString()}
             </p>
           </div>
         )}
         {project.actual_delivery_date && (
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
-            <p className="text-xs font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)] uppercase tracking-wide">
+          <div className="glass-card--light p-5">
+            <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
               Actual Delivery Date
             </p>
-            <p className="mt-1 text-sm text-zinc-900 dark:text-[#FAFAFA]">
+            <p className="mt-1 text-sm text-text">
               {new Date(project.actual_delivery_date).toLocaleDateString()}
             </p>
           </div>
@@ -149,7 +149,7 @@ export default function ClientProjectDetailPage() {
 
       {/* Milestones Timeline */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+        <h2 className="text-lg font-semibold text-text mb-4">
           Milestones
         </h2>
         {project.milestones && project.milestones.length > 0 ? (
@@ -159,27 +159,27 @@ export default function ClientProjectDetailPage() {
               .map((milestone, index) => (
                 <div
                   key={milestone.id}
-                  className="flex items-start gap-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4"
+                  className="flex items-start gap-4 glass-card--light p-4"
                 >
                   <div className="flex flex-col items-center">
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                         milestone.completed_date
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                          : 'bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500'
+                          : 'bg-[var(--surface-rgb)] text-text-muted'
                       }`}
                     >
                       {index + 1}
                     </div>
                     {index < project.milestones!.length - 1 && (
-                      <div className="w-0.5 flex-1 bg-zinc-200 dark:bg-zinc-700 mt-1" />
+                      <div className="w-0.5 flex-1 bg-[var(--glass-border)] mt-1" />
                     )}
                   </div>
                   <div className="flex-1 pb-4">
-                    <p className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+                    <p className="text-sm font-medium text-text">
                       {milestone.name}
                     </p>
-                    <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)] mt-0.5">
+                    <p className="text-xs text-text-muted mt-0.5">
                       {milestone.completed_date
                         ? `Completed: ${new Date(milestone.completed_date).toLocaleDateString()}`
                         : `Estimated: ${new Date(milestone.estimated_date).toLocaleDateString()}`}
@@ -189,7 +189,7 @@ export default function ClientProjectDetailPage() {
               ))}
           </div>
         ) : (
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">
+          <p className="text-sm text-text-muted">
             No milestones defined yet.
           </p>
         )}

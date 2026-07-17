@@ -1,26 +1,147 @@
 @import "tailwindcss";
 
+/* ─── Design tokens: Índigo Profundo ─── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default: Dark mode */
+  --bg: #09090B;
+  --primary: #6D28D9;
+  --accent: #00D4FF;
+  --secondary: #34D399;
+  --text: #FAFAFA;
+  --text-muted: rgba(250, 250, 250, 0.6);
+
+  /* RGB versions for rgba() usage in gradients */
+  --primary-rgb: 109, 40, 217;
+  --accent-rgb: 0, 212, 255;
+  --secondary-rgb: 52, 211, 153;
+  --surface-rgb: 9, 9, 11;
+
+  /* Glass surface tokens */
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --glass-inner-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --glass-gradient: linear-gradient(160deg, rgba(109, 40, 217, 0.22), rgba(0, 212, 255, 0.06));
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="light"] {
+  --bg: #F4F2FB;
+  --primary: #6D28D9;
+  --accent: #00A9D6;
+  --secondary: #0EA371;
+  --text: #1E1B2E;
+  --text-muted: rgba(30, 27, 46, 0.55);
+
+  --primary-rgb: 109, 40, 217;
+  --accent-rgb: 0, 169, 214;
+  --secondary-rgb: 14, 163, 113;
+  --surface-rgb: 244, 242, 251;
+
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px rgba(109, 40, 217, 0.14);
+  --glass-inner-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─── Tailwind v4 theme mapping ─── */
+
+@theme {
+  --color-bg: var(--bg);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ─── Base elements ─── */
+
+html {
+  transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* ─── Fluid type scale (STYLEGUIDE §2) ─── */
+
+h1, .h1 {
+  font-size: clamp(28px, 5vw, 44px);
+}
+
+h2, .h2 {
+  font-size: clamp(22px, 4vw, 32px);
+}
+
+h3, .h3 {
+  font-size: clamp(18px, 3vw, 24px);
+}
+
+/* Body text stays fixed at 16px per STYLEGUIDE §2 */
+body {
+  font-size: 16px;
+}
+
+/* ─── Glass surface utilities ─── */
+
+@layer utilities {
+  /**
+   * Hero glass card — full blur/saturation.
+   * LIMITED to 2-3 hero surfaces per page (STYLEGUIDE §3).
+   */
+  .glass-card {
+    border-radius: 20px;
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), var(--glass-inner-shadow);
+    background: var(--glass-gradient);
+  }
+
+  /**
+   * Vidrio liviano (lightweight glass) — minimal blur.
+   * Auto-selected via device-capability check for low-end hardware.
+   * Used for all non-hero elevated surfaces.
+   */
+  .glass-card--light {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(var(--surface-rgb), 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Accessibility: forced-colors fallback ─── */
+/* backdrop-filter breaks under Windows High Contrast Mode without a solid fallback */
+
+@media (forced-colors: active) {
+  .glass-card,
+  .glass-card--light {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: Canvas;
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ─── Accessibility: reduced motion ─── */
+/* Disable all transitions entirely when user prefers reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }

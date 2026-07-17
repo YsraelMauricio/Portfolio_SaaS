@@ -31,7 +31,7 @@ function formatTimeImpact(days: number): { text: string; isPositive: boolean; is
 export default function ModifierPanel({ groups, selectedModifierIds, onToggle }: ModifierPanelProps) {
   if (groups.length === 0) {
     return (
-      <div className="text-center py-10 text-gray-500">
+      <div className="text-center py-10 text-text-muted">
         <p className="text-lg font-medium">No options available for this product type</p>
         <p className="text-sm mt-1">You can proceed to the summary with the base configuration.</p>
       </div>
@@ -45,13 +45,13 @@ export default function ModifierPanel({ groups, selectedModifierIds, onToggle }:
 
         return (
           <fieldset key={group.id}>
-            <legend className="text-base font-semibold text-gray-900 mb-3">
+            <legend className="text-base font-semibold text-text mb-3">
               {group.name}
               {isRadioGroup && (
-                <span className="ml-2 text-xs font-normal text-gray-400">(choose one)</span>
+                <span className="ml-2 text-xs font-normal text-text-muted">(choose one)</span>
               )}
               {group.allows_multiple && (
-                <span className="ml-2 text-xs font-normal text-gray-400">(select all that apply)</span>
+                <span className="ml-2 text-xs font-normal text-text-muted">(select all that apply)</span>
               )}
             </legend>
             <div className="space-y-2">
@@ -70,8 +70,8 @@ export default function ModifierPanel({ groups, selectedModifierIds, onToggle }:
                         flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer
                         transition-all duration-150
                         ${isSelected
-                          ? 'border-blue-600 bg-blue-50'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
+                          ? 'border-accent glass-card--light'
+                          : 'border-[var(--glass-border)] hover:border-accent/30 glass-card--light'
                         }
                       `}
                     >
@@ -82,14 +82,14 @@ export default function ModifierPanel({ groups, selectedModifierIds, onToggle }:
                         onChange={() => onToggle(modifier.id, group.id, group.allows_multiple)}
                         className={`
                           ${isRadioGroup
-                            ? 'w-4 h-4 text-blue-600 border-gray-300'
-                            : 'w-4 h-4 text-blue-600 rounded border-gray-300'
+                            ? 'w-4 h-4 text-accent border-gray-300'
+                            : 'w-4 h-4 text-accent rounded border-gray-300'
                           }
-                          focus:ring-blue-500
+                          focus:ring-accent
                         `}
                       />
                       <div className="flex-1 min-w-0">
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-sm font-medium text-text">
                           {modifier.name}
                         </span>
                       </div>

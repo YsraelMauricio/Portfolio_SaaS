@@ -66,53 +66,53 @@ export default function AdminCVPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">CV Management</h1>
-      <p className="mt-2 text-zinc-500 dark:text-[rgba(250,250,250,0.6])">
+      <h1 className="text-3xl font-bold text-text font-display">CV Management</h1>
+      <p className="mt-2 text-text-muted">
         Upload, replace, or download your CV. Only one active CV file is stored at a time.
       </p>
 
       {error && (
-        <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-4 glass-card--light border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="mt-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-sm text-green-600 dark:text-green-400">
+        <div className="mt-4 glass-card--light border border-secondary/30 px-4 py-3 text-sm text-secondary">
           {success}
         </div>
       )}
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Current CV info */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+        <div className="glass-card--light p-6">
+          <h2 className="text-lg font-semibold text-text font-display mb-4">
             Current CV
           </h2>
           {metadata ? (
             <div className="space-y-3">
-              <div className="flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800">
-                <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">File Name</span>
-                <span className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+              <div className="flex items-center justify-between py-2 border-b border-[var(--glass-border)]">
+                <span className="text-sm text-text-muted">File Name</span>
+                <span className="text-sm font-medium text-text">
                   {metadata.file_name}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800">
-                <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Size</span>
-                <span className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+              <div className="flex items-center justify-between py-2 border-b border-[var(--glass-border)]">
+                <span className="text-sm text-text-muted">Size</span>
+                <span className="text-sm font-medium text-text">
                   {formatSize(metadata.size_bytes)}
                 </span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Last Updated</span>
-                <span className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+                <span className="text-sm text-text-muted">Last Updated</span>
+                <span className="text-sm font-medium text-text">
                   {new Date(metadata.updated_at).toLocaleDateString()}
                 </span>
               </div>
@@ -120,7 +120,7 @@ export default function AdminCVPage() {
                 href={`${API_BASE}/cv/download`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] transition-colors"
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 motion-safe:transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -130,25 +130,25 @@ export default function AdminCVPage() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-sm text-zinc-400 dark:text-zinc-500">No CV uploaded yet.</p>
+              <p className="text-sm text-text-muted">No CV uploaded yet.</p>
             </div>
           )}
         </div>
 
         {/* Upload new CV */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+        <div className="glass-card--light p-6">
+          <h2 className="text-lg font-semibold text-text font-display mb-4">
             {metadata ? 'Replace CV' : 'Upload CV'}
           </h2>
-          <p className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)] mb-4">
+          <p className="text-sm text-text-muted mb-4">
             Upload a PDF file. The existing CV will be replaced.
           </p>
 
-          <label className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-xl p-8 cursor-pointer hover:border-[#6D28D9]/50 transition-colors">
-            <svg className="w-10 h-10 text-zinc-400 dark:text-zinc-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <label className="flex flex-col items-center justify-center border-2 border-dashed border-[var(--glass-border)] rounded-xl p-8 cursor-pointer hover:border-primary/50 motion-safe:transition-colors">
+            <svg className="w-10 h-10 text-text-muted mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
-            <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm font-medium text-text-muted">
               {uploading ? 'Uploading...' : 'Click to select a PDF file'}
             </p>
             <input

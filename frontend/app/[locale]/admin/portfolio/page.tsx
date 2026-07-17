@@ -142,18 +142,18 @@ export default function AdminPortfolioPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{t('portfolio')}</h1>
+        <h1 className="text-3xl font-bold text-text font-display">{t('portfolio')}</h1>
         <button
           type="button"
           onClick={handleCreateNew}
-          className="px-4 py-2 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] transition-colors"
+          className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 motion-safe:transition-colors"
         >
           New Project
         </button>
       </div>
 
       {error && (
-        <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-4 glass-card--light border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
@@ -161,13 +161,13 @@ export default function AdminPortfolioPage() {
       {/* Form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl max-w-3xl w-full mt-8 p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl">
+          <div className="glass-card--light max-w-3xl w-full mt-8 p-6 shadow-xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+              <h2 className="text-xl font-semibold text-text font-display">
                 {editingProject ? 'Edit Project' : 'Create Project'}
               </h2>
-              <button type="button" onClick={() => setShowForm(false)} className="text-zinc-400 hover:text-zinc-600">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <button type="button" onClick={() => setShowForm(false)} className="text-text-muted hover:text-text" aria-label="Close form">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -178,14 +178,14 @@ export default function AdminPortfolioPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab('en')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'en' ? 'bg-[#6D28D9] text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}`}
+                className={`px-4 py-2 text-sm font-medium rounded-lg motion-safe:transition-colors ${activeTab === 'en' ? 'bg-primary text-white' : 'bg-text-muted/10 text-text-muted'}`}
               >
                 English
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('es')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'es' ? 'bg-[#6D28D9] text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}`}
+                className={`px-4 py-2 text-sm font-medium rounded-lg motion-safe:transition-colors ${activeTab === 'es' ? 'bg-primary text-white' : 'bg-text-muted/10 text-text-muted'}`}
               >
                 Español
               </button>
@@ -193,7 +193,7 @@ export default function AdminPortfolioPage() {
 
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                <label className="block text-sm font-medium text-text-muted mb-1">
                   Title ({activeTab === 'en' ? 'English' : 'Spanish'})
                 </label>
                 <input
@@ -201,11 +201,11 @@ export default function AdminPortfolioPage() {
                   required
                   value={formData[activeTab].title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, [activeTab]: { ...prev[activeTab], title: e.target.value } }))}
-                  className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                <label className="block text-sm font-medium text-text-muted mb-1">
                   Slug
                 </label>
                 <input
@@ -213,11 +213,11 @@ export default function AdminPortfolioPage() {
                   required
                   value={formData.en.slug}
                   onChange={(e) => setFormData((prev) => ({ ...prev, en: { ...prev.en, slug: e.target.value }, es: { ...prev.es, slug: e.target.value } }))}
-                  className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent font-mono"
+                  className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent font-mono"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                <label className="block text-sm font-medium text-text-muted mb-1">
                   Description ({activeTab === 'en' ? 'English' : 'Spanish'})
                 </label>
                 <textarea
@@ -225,91 +225,91 @@ export default function AdminPortfolioPage() {
                   rows={4}
                   value={formData[activeTab].description}
                   onChange={(e) => setFormData((prev) => ({ ...prev, [activeTab]: { ...prev[activeTab], description: e.target.value } }))}
-                  className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                <label className="block text-sm font-medium text-text-muted mb-1">
                   Key Results (HTML, {activeTab === 'en' ? 'English' : 'Spanish'})
                 </label>
                 <textarea
                   rows={6}
                   value={formData[activeTab].key_results}
                   onChange={(e) => setFormData((prev) => ({ ...prev, [activeTab]: { ...prev[activeTab], key_results: e.target.value } }))}
-                  className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent font-mono"
+                  className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent font-mono"
                   placeholder="Optional: HTML content describing key results"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
                     Technologies (comma-separated)
                   </label>
                   <input
                     type="text"
                     value={formData.technologies}
                     onChange={(e) => setFormData((prev) => ({ ...prev, technologies: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="React, Node.js, PostgreSQL"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
                     Sort Order
                   </label>
                   <input
                     type="number"
                     value={formData.sort_order}
                     onChange={(e) => setFormData((prev) => ({ ...prev, sort_order: Number(e.target.value) }))}
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
                     Live Demo URL
                   </label>
                   <input
                     type="url"
                     value={formData.live_url}
                     onChange={(e) => setFormData((prev) => ({ ...prev, live_url: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="https://..."
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
                     Source Code URL
                   </label>
                   <input
                     type="url"
                     value={formData.source_url}
                     onChange={(e) => setFormData((prev) => ({ ...prev, source_url: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-sm text-zinc-900 dark:text-[#FAFAFA] focus:ring-2 focus:ring-[#6D28D9] focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-[var(--glass-border)] glass-card--light text-sm text-text placeholder-text-muted focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="https://github.com/..."
                   />
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+                <label className="flex items-center gap-2 text-sm text-text-muted">
                   <input
                     type="checkbox"
                     checked={formData.is_this_platform}
                     onChange={(e) => setFormData((prev) => ({ ...prev, is_this_platform: e.target.checked }))}
-                    className="rounded border-zinc-300 text-[#6D28D9] focus:ring-[#6D28D9]"
+                    className="rounded border-[var(--glass-border)] text-primary focus:ring-primary"
                   />
                   This is the platform itself
                 </label>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                  <label className="block text-sm font-medium text-text-muted mb-1">
                     Featured Image
                   </label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setFormData((prev) => ({ ...prev, featured_image: e.target.files?.[0] || null }))}
-                    className="w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#6D28D9]/10 file:text-[#6D28D9] hover:file:bg-[#6D28D9]/20"
+                    className="w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
                   />
                 </div>
               </div>
@@ -317,14 +317,14 @@ export default function AdminPortfolioPage() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                  className="px-4 py-2 text-sm font-medium rounded-lg border border-[var(--glass-border)] text-text-muted hover:bg-bg/50 motion-safe:transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-2 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] disabled:opacity-50 transition-colors"
+                  className="px-6 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 motion-safe:transition-colors"
                 >
                   {saving ? 'Saving...' : 'Save Project'}
                 </button>
@@ -338,50 +338,50 @@ export default function AdminPortfolioPage() {
       {loading ? (
         <div className="mt-6 space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 bg-zinc-100 dark:bg-zinc-800 rounded-xl animate-pulse" />
+            <div key={i} className="h-20 glass-card--light animate-pulse" />
           ))}
         </div>
       ) : (
-        <div className="mt-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+        <div className="mt-6 glass-card--light overflow-hidden">
           {projects.length === 0 ? (
-            <div className="p-8 text-center text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+            <div className="p-8 text-center text-sm text-text-muted">
               No portfolio projects yet.
             </div>
           ) : (
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
-                  <th className="text-left p-4 text-xs font-medium text-zinc-500 uppercase tracking-wide">Title</th>
-                  <th className="text-left p-4 text-xs font-medium text-zinc-500 uppercase tracking-wide">Technologies</th>
-                  <th className="text-center p-4 text-xs font-medium text-zinc-500 uppercase tracking-wide">Order</th>
-                  <th className="text-center p-4 text-xs font-medium text-zinc-500 uppercase tracking-wide">Platform</th>
-                  <th className="text-right p-4 text-xs font-medium text-zinc-500 uppercase tracking-wide">Actions</th>
+                <tr className="border-b border-[var(--glass-border)] bg-text-muted/10">
+                  <th className="text-left p-4 text-xs font-medium text-text-muted uppercase tracking-wide">Title</th>
+                  <th className="text-left p-4 text-xs font-medium text-text-muted uppercase tracking-wide">Technologies</th>
+                  <th className="text-center p-4 text-xs font-medium text-text-muted uppercase tracking-wide">Order</th>
+                  <th className="text-center p-4 text-xs font-medium text-text-muted uppercase tracking-wide">Platform</th>
+                  <th className="text-right p-4 text-xs font-medium text-text-muted uppercase tracking-wide">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <tbody className="divide-y divide-[var(--glass-border)]">
                 {projects
                   .sort((a, b) => a.sort_order - b.sort_order)
                   .map((project) => (
-                    <tr key={project.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
-                      <td className="p-4 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+                    <tr key={project.id} className="hover:bg-text-muted/5 motion-safe:transition-colors">
+                      <td className="p-4 text-sm font-medium text-text">
                         {project.title}
                       </td>
                       <td className="p-4">
                         <div className="flex flex-wrap gap-1">
                           {project.technologies?.slice(0, 3).map((tech) => (
-                            <span key={tech} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                            <span key={tech} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-text-muted/20 text-text-muted">
                               {tech}
                             </span>
                           ))}
                           {(project.technologies?.length || 0) > 3 && (
-                            <span className="text-xs text-zinc-400">+{project.technologies!.length - 3}</span>
+                            <span className="text-xs text-text-muted">+{project.technologies!.length - 3}</span>
                           )}
                         </div>
                       </td>
-                      <td className="p-4 text-center text-sm text-zinc-500">{project.sort_order}</td>
+                      <td className="p-4 text-center text-sm text-text-muted">{project.sort_order}</td>
                       <td className="p-4 text-center">
                         {project.is_this_platform && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                             ✓
                           </span>
                         )}
@@ -390,7 +390,7 @@ export default function AdminPortfolioPage() {
                         <button
                           type="button"
                           onClick={() => handleEdit(project)}
-                          className="px-3 py-1.5 text-xs font-medium text-[#6D28D9] bg-[#6D28D9]/10 rounded-lg hover:bg-[#6D28D9]/20 transition-colors"
+                          className="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 motion-safe:transition-colors"
                         >
                           Edit
                         </button>

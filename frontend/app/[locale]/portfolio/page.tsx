@@ -43,15 +43,15 @@ export default function PortfolioListPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+      <div className="min-h-dvh bg-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B]">
+      <div className="min-h-dvh bg-bg">
         <div className="max-w-5xl mx-auto px-6 py-16">
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
             <p className="text-red-600 dark:text-red-400 font-medium">{error}</p>
@@ -62,10 +62,10 @@ export default function PortfolioListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B]">
+    <div className="min-h-dvh bg-bg">
       <div className="max-w-5xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{t('title')}</h1>
-        <p className="mt-2 text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">{t('subtitle')}</p>
+        <h1 className="text-4xl font-bold text-text font-display">{t('title')}</h1>
+        <p className="mt-2 text-text-muted">{t('subtitle')}</p>
 
         {/* Technology filter */}
         {allTechnologies.length > 0 && (
@@ -75,8 +75,8 @@ export default function PortfolioListPage() {
               onClick={() => setSelectedTech('')}
               className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                 !selectedTech
-                  ? 'bg-[#6D28D9] text-white'
-                  : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:border-[#6D28D9]/30'
+                  ? 'bg-primary text-white'
+                  : 'glass-card--light text-text-muted border border-[var(--glass-border)] hover:border-primary/30'
               }`}
             >
               {t('allTechnologies')}
@@ -88,8 +88,8 @@ export default function PortfolioListPage() {
                 onClick={() => setSelectedTech(tech)}
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                   selectedTech === tech
-                    ? 'bg-[#6D28D9] text-white'
-                    : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:border-[#6D28D9]/30'
+                    ? 'bg-primary text-white'
+                    : 'glass-card--light text-text-muted border border-[var(--glass-border)] hover:border-primary/30'
                 }`}
               >
                 {tech}
@@ -100,38 +100,39 @@ export default function PortfolioListPage() {
 
         {/* Projects grid */}
         {filteredProjects.length === 0 ? (
-          <div className="mt-12 text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-            <p className="text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">{t('noProjects')}</p>
+          <div className="mt-12 text-center py-16 glass-card--light">
+            <p className="text-text-muted">{t('noProjects')}</p>
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="@container">
+            <div className="mt-8 grid grid-cols-1 @sm:grid-cols-2 @lg:grid-cols-3 gap-6">
             {filteredProjects.map((project) => (
               <Link
                 key={project.id}
                 href={`/portfolio/${project.slug}`}
-                className="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-[#6D28D9]/30 transition-colors"
+                className="group glass-card--light overflow-hidden hover:border-primary/30 transition-all"
               >
                 {project.featured_image_url && (
                   <div className="aspect-video overflow-hidden">
                     <img
                       src={project.featured_image_url}
                       alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300"
                     />
                   </div>
                 )}
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] group-hover:text-[#6D28D9] transition-colors">
+                    <h2 className="text-lg font-semibold text-text group-hover:text-primary transition-colors">
                       {project.title}
                     </h2>
                     {project.is_this_platform && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                         {t('thisPlatform')}
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.6)] line-clamp-2">
+                  <p className="text-sm text-text-muted line-clamp-2">
                     {project.description}
                   </p>
                   {project.technologies && project.technologies.length > 0 && (
@@ -139,26 +140,27 @@ export default function PortfolioListPage() {
                       {project.technologies.slice(0, 4).map((tech) => (
                         <span
                           key={tech}
-                          className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                          className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--surface-rgb)] text-text-muted"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 4 && (
-                        <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                        <span className="text-xs text-text-muted">
                           +{project.technologies.length - 4}
                         </span>
                       )}
                     </div>
                   )}
                   <div className="mt-4">
-                    <span className="text-sm font-medium text-[#6D28D9] group-hover:underline">
+                    <span className="text-sm font-medium text-primary group-hover:underline">
                       {t('viewProject')} →
                     </span>
                   </div>
                 </div>
               </Link>
             ))}
+          </div>
           </div>
         )}
       </div>
