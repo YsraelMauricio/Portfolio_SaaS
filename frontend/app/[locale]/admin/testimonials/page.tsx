@@ -69,11 +69,11 @@ export default function AdminTestimonialsPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{t('testimonials')}</h1>
+        <h1 className="text-3xl font-bold text-text font-display">{t('testimonials')}</h1>
       </div>
 
       {error && (
-        <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-4 glass-card--light border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
@@ -85,10 +85,10 @@ export default function AdminTestimonialsPage() {
             key={filter}
             type="button"
             onClick={() => setStatusFilter(filter)}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+            className={`px-4 py-2 text-sm font-medium rounded-lg motion-safe:transition-colors ${
               statusFilter === filter
-                ? 'bg-[#6D28D9] text-white'
-                : 'bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-[#6D28D9]/30'
+                ? 'bg-primary text-white'
+                : 'glass-card--light text-text-muted hover:border-primary/30'
             }`}
           >
             {filter === 'all' ? 'All' : filter === 'pending' ? `Pending (${testimonials.filter((t) => !t.is_approved).length})` : 'Approved'}
@@ -100,43 +100,43 @@ export default function AdminTestimonialsPage() {
       {loading ? (
         <div className="mt-6 space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 bg-zinc-100 dark:bg-zinc-800 rounded-xl animate-pulse" />
+            <div key={i} className="h-24 glass-card--light animate-pulse" />
           ))}
         </div>
       ) : (
         <div className="mt-6 space-y-4">
           {filtered.length === 0 ? (
-            <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-              <p className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">No testimonials found.</p>
+            <div className="text-center py-16 glass-card--light">
+              <p className="text-sm text-text-muted">No testimonials found.</p>
             </div>
           ) : (
             filtered.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5"
+                className="glass-card--light p-5"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
-                      <p className="font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+                      <p className="font-semibold text-text">
                         {testimonial.author_name}
                       </p>
                       {testimonial.role && (
-                        <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+                        <span className="text-sm text-text-muted">
                           {testimonial.role}
                         </span>
                       )}
                     </div>
-                    <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                    <p className="mt-2 text-sm text-text-muted">
                       {testimonial.content}
                     </p>
-                    <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
+                    <p className="mt-2 text-xs text-text-muted">
                       {new Date(testimonial.created_at).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 ml-4">
                     {testimonial.is_approved ? (
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-secondary/20 text-secondary">
                         Approved
                       </span>
                     ) : (
@@ -144,14 +144,14 @@ export default function AdminTestimonialsPage() {
                         <button
                           type="button"
                           onClick={() => handleApprove(testimonial.id)}
-                          className="px-3 py-1.5 text-xs font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                          className="px-3 py-1.5 text-xs font-medium bg-secondary text-white rounded-lg hover:bg-secondary/90 motion-safe:transition-colors"
                         >
                           Approve
                         </button>
                         <button
                           type="button"
                           onClick={() => handleReject(testimonial.id)}
-                          className="px-3 py-1.5 text-xs font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                          className="px-3 py-1.5 text-xs font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 motion-safe:transition-colors"
                         >
                           Reject
                         </button>

@@ -32,11 +32,11 @@ export default function Navigation() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
+    <header className="sticky top-0 z-40 bg-[var(--bg)]/80 backdrop-blur-md border-b border-[var(--glass-border)]">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="text-xl font-bold text-[#6D28D9] dark:text-[#6D28D9]">
+          <Link href="/" className="text-xl font-bold text-primary">
             Portfolio SaaS
           </Link>
 
@@ -52,8 +52,8 @@ export default function Navigation() {
                   href={link.href}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-[#6D28D9]/10 text-[#6D28D9] dark:bg-[#6D28D9]/20'
-                      : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-muted hover:bg-[var(--surface-rgb)]/10'
                   }`}
                 >
                   {link.label}
@@ -68,7 +68,7 @@ export default function Navigation() {
               <>
                 <Link
                   href="/dashboard"
-                  className="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-[#FAFAFA] transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-text-muted hover:text-text transition-colors"
                 >
                   {t('dashboard')}
                 </Link>
@@ -83,7 +83,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] transition-colors"
+                className="px-4 py-2 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 transition-all"
               >
                 {t('signIn')}
               </Link>
@@ -96,10 +96,10 @@ export default function Navigation() {
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="md:hidden p-2 rounded-lg hover:bg-[var(--surface-rgb)]/10"
             aria-label="Toggle menu"
           >
-            <svg className="w-6 h-6 text-zinc-600 dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               {mobileOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -111,25 +111,25 @@ export default function Navigation() {
 
         {/* Mobile nav */}
         {mobileOpen && (
-          <div className="md:hidden pb-4 border-t border-zinc-200 dark:border-zinc-800 pt-4">
+          <div className="md:hidden pb-4 border-t border-[var(--glass-border)] pt-4">
             <nav className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="px-4 py-2.5 text-sm font-medium rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                  className="px-4 py-2.5 text-sm font-medium rounded-lg hover:bg-[var(--surface-rgb)]/10 text-text-muted"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="mt-3 pt-3 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="mt-3 pt-3 border-t border-[var(--glass-border)]">
                 {isLoggedIn ? (
                   <>
                     <Link
                       href="/dashboard"
                       onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2.5 text-sm font-medium rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                      className="block px-4 py-2.5 text-sm font-medium rounded-lg hover:bg-[var(--surface-rgb)]/10 text-text-muted"
                     >
                       {t('dashboard')}
                     </Link>
@@ -145,7 +145,7 @@ export default function Navigation() {
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-medium bg-[#6D28D9] text-white rounded-lg hover:bg-[#5B21B6] text-center"
+                    className="block px-4 py-2.5 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 text-center"
                   >
                     {t('signIn')}
                   </Link>
@@ -180,7 +180,7 @@ function LocaleSwitcher() {
     <button
       type="button"
       onClick={switchLocale}
-      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors uppercase"
+      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--glass-border)] text-text-muted hover:bg-[var(--surface-rgb)]/10 transition-colors uppercase"
       aria-label={t('language')}
     >
       {otherLocale === 'en' ? 'EN' : 'ES'}

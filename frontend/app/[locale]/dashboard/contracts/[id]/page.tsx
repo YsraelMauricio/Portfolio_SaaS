@@ -39,7 +39,7 @@ export default function ClientContractViewPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
@@ -66,13 +66,13 @@ export default function ClientContractViewPage() {
     <div>
       <Link
         href="/dashboard/projects"
-        className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)] hover:text-[#6D28D9] transition-colors"
+        className="text-sm text-text-muted hover:text-primary transition-colors"
       >
         ← Back to Projects
       </Link>
 
       <div className="mt-4 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">
+        <h1 className="text-3xl font-bold text-text font-display">
           Contract #{contract.id}
         </h1>
         <span
@@ -84,33 +84,33 @@ export default function ClientContractViewPage() {
 
       {/* Contract timeline */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
-          <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Generated</p>
-          <p className="mt-1 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+        <div className="glass-card--light p-4 text-center">
+          <p className="text-xs text-text-muted">Generated</p>
+          <p className="mt-1 text-sm font-medium text-text">
             {contract.generated_at
               ? new Date(contract.generated_at).toLocaleDateString()
               : '—'}
           </p>
         </div>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
-          <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Approved</p>
-          <p className="mt-1 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+        <div className="glass-card--light p-4 text-center">
+          <p className="text-xs text-text-muted">Approved</p>
+          <p className="mt-1 text-sm font-medium text-text">
             {contract.approved_by_admin_at
               ? new Date(contract.approved_by_admin_at).toLocaleDateString()
               : '—'}
           </p>
         </div>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
-          <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Sent</p>
-          <p className="mt-1 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+        <div className="glass-card--light p-4 text-center">
+          <p className="text-xs text-text-muted">Sent</p>
+          <p className="mt-1 text-sm font-medium text-text">
             {contract.sent_at
               ? new Date(contract.sent_at).toLocaleDateString()
               : '—'}
           </p>
         </div>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-center">
-          <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Signed</p>
-          <p className="mt-1 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+        <div className="glass-card--light p-4 text-center">
+          <p className="text-xs text-text-muted">Signed</p>
+          <p className="mt-1 text-sm font-medium text-text">
             {contract.signed_at
               ? new Date(contract.signed_at).toLocaleDateString()
               : '—'}
@@ -120,25 +120,25 @@ export default function ClientContractViewPage() {
 
       {/* Quote Snapshot */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+        <h2 className="text-lg font-semibold text-text mb-4">
           Quote Details
         </h2>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl divide-y divide-zinc-100 dark:divide-zinc-800">
+        <div className="glass-card--light divide-y divide-[var(--glass-border)]">
           <div className="p-5 flex items-center justify-between">
-            <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Product Type</span>
-            <span className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+            <span className="text-sm text-text-muted">Product Type</span>
+            <span className="text-sm font-medium text-text">
               {snapshot.product_type_name}
             </span>
           </div>
           <div className="p-5 flex items-center justify-between">
-            <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Price (USD)</span>
-            <span className="text-sm font-bold text-zinc-900 dark:text-[#FAFAFA] tabular-nums">
+            <span className="text-sm text-text-muted">Price (USD)</span>
+            <span className="text-sm font-bold text-text tabular-nums">
               ${snapshot.price_usd.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </span>
           </div>
           <div className="p-5 flex items-center justify-between">
-            <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Estimated Timeline</span>
-            <span className="text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+            <span className="text-sm text-text-muted">Estimated Timeline</span>
+            <span className="text-sm font-medium text-text">
               {snapshot.estimated_days_min}
               {snapshot.estimated_days_max !== snapshot.estimated_days_min
                 ? ` – ${snapshot.estimated_days_max}`
@@ -148,12 +148,12 @@ export default function ClientContractViewPage() {
           </div>
           {snapshot.modifiers.length > 0 && (
             <div className="p-5">
-              <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">Modifiers</span>
+              <span className="text-sm text-text-muted">Modifiers</span>
               <div className="mt-2 flex flex-wrap gap-2">
                 {snapshot.modifiers.map((mod, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--surface-rgb)] text-text-muted"
                   >
                     {mod}
                   </span>
@@ -171,7 +171,7 @@ export default function ClientContractViewPage() {
             href={contract.pdf_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#6D28D9] text-white font-medium rounded-lg hover:bg-[#5B21B6] transition-colors text-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 transition-all text-sm"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

@@ -56,10 +56,10 @@ export default function BlogListPage() {
   }, [locale, pillar, page]);
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#09090B]">
+    <div className="min-h-dvh bg-bg">
       <div className="max-w-4xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{t('title')}</h1>
-        <p className="mt-2 text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">{t('subtitle')}</p>
+        <h1 className="text-4xl font-bold text-text font-display">{t('title')}</h1>
+        <p className="mt-2 text-text-muted">{t('subtitle')}</p>
 
         {/* Pillar filter tabs */}
         <div className="mt-8 flex flex-wrap gap-2">
@@ -68,8 +68,8 @@ export default function BlogListPage() {
             onClick={() => { setPillar(''); setPage(1); }}
             className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
               !pillar
-                ? 'bg-[#6D28D9] text-white'
-                : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:border-[#6D28D9]/30'
+                ? 'bg-primary text-white'
+                : 'glass-card--light text-text-muted border border-[var(--glass-border)] hover:border-primary/30'
             }`}
           >
             {t('allPillars')}
@@ -81,8 +81,8 @@ export default function BlogListPage() {
               onClick={() => { setPillar(p); setPage(1); }}
               className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                 pillar === p
-                  ? 'bg-[#6D28D9] text-white'
-                  : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:border-[#6D28D9]/30'
+                  ? 'bg-primary text-white'
+                  : 'glass-card--light text-text-muted border border-[var(--glass-border)] hover:border-primary/30'
               }`}
             >
               {PILLAR_LABEL[p] ?? p}
@@ -101,7 +101,7 @@ export default function BlogListPage() {
         {loading && (
           <div className="mt-8 space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-40 bg-white dark:bg-zinc-800 rounded-xl animate-pulse" />
+              <div key={i} className="h-40 glass-card--light animate-pulse" />
             ))}
           </div>
         )}
@@ -110,8 +110,8 @@ export default function BlogListPage() {
         {!loading && !error && (
           <>
             {posts.length === 0 ? (
-              <div className="mt-12 text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-                <p className="text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">{t('noPosts')}</p>
+              <div className="mt-12 text-center py-16 glass-card--light">
+                <p className="text-text-muted">{t('noPosts')}</p>
               </div>
             ) : (
               <div className="mt-8 space-y-6">
@@ -119,32 +119,32 @@ export default function BlogListPage() {
                   <Link
                     key={post.id}
                     href={`/blog/${post.slug}`}
-                    className="block bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-[#6D28D9]/30 transition-colors group"
+                    className="block glass-card--light overflow-hidden hover:border-primary/30 transition-all group"
                   >
                     <div className="p-6">
                       <div className="flex items-center gap-3 mb-3">
                         {post.pillar && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                             {PILLAR_LABEL[post.pillar] ?? post.pillar}
                           </span>
                         )}
                         {post.published_at && (
-                          <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                          <span className="text-xs text-text-muted">
                             {t('publishedOn', { date: new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) })}
                           </span>
                         )}
                       </div>
-                      <h2 className="text-xl font-semibold text-zinc-900 dark:text-[#FAFAFA] group-hover:text-[#6D28D9] transition-colors">
+                      <h2 className="text-xl font-semibold text-text group-hover:text-primary transition-colors">
                         {post.title}
                       </h2>
-                      <p className="mt-2 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.6)] line-clamp-2">
+                      <p className="mt-2 text-sm text-text-muted line-clamp-2">
                         {post.summary}
                       </p>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                        <span className="text-xs text-text-muted">
                           {t('byAuthor', { name: post.author_name })}
                         </span>
-                        <span className="text-sm font-medium text-[#6D28D9] group-hover:underline">
+                        <span className="text-sm font-medium text-primary group-hover:underline">
                           {t('readMore')} →
                         </span>
                       </div>
@@ -161,18 +161,18 @@ export default function BlogListPage() {
                   type="button"
                   disabled={page <= 1}
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 disabled:opacity-50 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                  className="px-4 py-2 text-sm font-medium rounded-lg glass-card--light text-text-muted disabled:opacity-50 hover:border-accent/30 transition-all"
                 >
                   {tc('previous')}
                 </button>
-                <span className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+                <span className="text-sm text-text-muted">
                   {tc('pageXofY', { current: meta.current_page, total: meta.last_page })}
                 </span>
                 <button
                   type="button"
                   disabled={page >= meta.last_page}
                   onClick={() => setPage((p) => p + 1)}
-                  className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 disabled:opacity-50 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                  className="px-4 py-2 text-sm font-medium rounded-lg glass-card--light text-text-muted disabled:opacity-50 hover:border-accent/30 transition-all"
                 >
                   {tc('next')}
                 </button>

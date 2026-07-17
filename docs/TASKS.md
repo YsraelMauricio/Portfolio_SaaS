@@ -109,7 +109,20 @@
 - [x] P6-17: **Exit check:** 16 tests passing (53 assertions), 197 total (1072 assertions), `tsc --noEmit` clean, `npm run lint` 0 errors — visitor can start a chat session, receive streamed AI responses, and escalate to a human channel with prefilled summary; admin receives email notification on escalation
 
 ## Phase 7 — Design pass
-*(High-level only)*
+
+- [x] P7-1: Configure CSS custom properties for all color tokens (dark + light mode per `STYLEGUIDE.md` §1), set up Tailwind v4 theme extension with `@theme` directive mapping to custom properties
+- [x] P7-2: Load Space Grotesk, Inter, and JetBrains Mono via `next/font` (self-hosted) in root layout
+- [x] P7-3: Create `glass-card` utility (full blur + gradient) and `glass-card--light` (vidrio liviano) as Tailwind-compatible class layers
+- [x] P7-4: Add fixed-position mesh gradient background layer (multiple soft radial-gradients in palette hues) to the root layout
+- [x] P7-5: Implement device-capability check (low-end Android detection) that auto-switches heavy glass → vidrio liviano
+- [x] P7-6: Create light/dark mode toggle component with `prefers-color-scheme` detection, persisted preference (`localStorage`), and 0.5s CSS transitions on `background`/`border`/`box-shadow`
+- [x] P7-7: Audit every existing page and component — apply glass surface tokens to cards/modals/panels, apply button/badge/form styles from `STYLEGUIDE.md` §4, ensure no hardcoded colors remain outside the token system
+- [x] P7-8: Restyle the quote wizard specifically — each step as its own glass card, price/time numbers in JetBrains Mono, responsive container-query layout
+- [x] P7-9: Apply `prefers-reduced-motion` (disable transitions entirely) and `forced-colors` fallback (solid background behind every `backdrop-filter`) across all components
+- [x] P7-10: Verify WCAG AA contrast for every text/background pairing, especially glass surfaces; fix any failures
+- [x] P7-11: Add `aria-label`/`sr-only` labels to every icon-only control (ChatWidget floating button, escalation channel icons, theme toggle)
+- [x] P7-12: Full responsive pass — `dvh` units for full-height sections, container queries on service/category cards, fluid type verified across breakpoints
+- [x] P7-13: E2E verify — toggle light/dark persists on reload, glass surfaces render in both modes, reduced-motion respected, keyboard-navigable
 
 ## Phase 8 — Launch readiness
 *(High-level only)*

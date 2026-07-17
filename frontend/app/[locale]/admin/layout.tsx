@@ -51,14 +51,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+      <div className="min-h-dvh flex items-center justify-center bg-bg">
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex bg-zinc-50 dark:bg-[#09090B]">
+    <div className="min-h-dvh flex bg-bg">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <button
@@ -71,12 +71,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-30 w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col shrink-0 transform transition-transform lg:transform-none ${
+        className={`fixed lg:static inset-y-0 left-0 z-30 w-64 glass-card--light rounded-none border-r border-[var(--glass-border)] flex flex-col shrink-0 transform motion-safe:transition-transform lg:transform-none ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
-          <Link href="/admin" className="text-xl font-bold text-[#6D28D9]">
+        <div className="p-6 border-b border-[var(--glass-border)]">
+          <Link href="/admin" className="text-xl font-bold text-primary">
             Admin Panel
           </Link>
         </div>
@@ -93,8 +93,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-[#6D28D9]/10 text-[#6D28D9] dark:bg-[#6D28D9]/20'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-text-muted hover:bg-[var(--surface-rgb)]/10'
                 }`}
               >
                 <span className="text-base">{item.icon}</span>
@@ -104,9 +104,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
 
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 border-t border-[var(--glass-border)]">
           {user && (
-            <div className="mb-3 px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 truncate">
+            <div className="mb-3 px-4 py-2 text-sm text-text-muted truncate">
               {user.email}
             </div>
           )}
@@ -121,20 +121,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto min-h-screen">
+      <main className="flex-1 overflow-auto min-h-dvh">
         {/* Mobile header */}
-        <div className="sticky top-0 z-10 lg:hidden bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-4 py-3 flex items-center gap-3">
+        <div className="sticky top-0 z-10 lg:hidden glass-card--light rounded-none border-b border-[var(--glass-border)] px-4 py-3 flex items-center gap-3">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="p-2 rounded-lg hover:bg-[var(--surface-rgb)]/10"
             aria-label="Open sidebar"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="text-sm font-semibold text-zinc-900 dark:text-[#FAFAFA]">Admin Panel</span>
+          <span className="text-sm font-semibold text-text">Admin Panel</span>
         </div>
 
         <div className="max-w-6xl mx-auto p-8">{children}</div>

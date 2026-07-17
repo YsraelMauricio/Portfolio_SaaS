@@ -36,7 +36,7 @@ export default function ClientProjectsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
@@ -51,17 +51,17 @@ export default function ClientProjectsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">{t('myProjects')}</h1>
-      <p className="mt-2 text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">
+      <h1 className="text-3xl font-bold text-text font-display">{t('myProjects')}</h1>
+      <p className="mt-2 text-text-muted">
         {t('trackProgress')}
       </p>
 
       {projects.length === 0 ? (
-        <div className="mt-8 text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-          <p className="text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">{t('noProjects')}</p>
+        <div className="mt-8 text-center py-16 glass-card--light">
+          <p className="text-text-muted">{t('noProjects')}</p>
           <Link
             href="/cotizar"
-            className="mt-3 inline-block px-6 py-2.5 bg-[#6D28D9] text-white font-medium rounded-lg hover:bg-[#5B21B6] transition-colors text-sm"
+            className="mt-3 inline-block px-6 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 transition-all text-sm"
           >
             {t('getQuote')}
           </Link>
@@ -72,14 +72,14 @@ export default function ClientProjectsPage() {
             <Link
               key={project.id}
               href={`/dashboard/projects/${project.id}`}
-              className="block bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 hover:border-[#6D28D9]/30 transition-colors"
+              className="block glass-card--light p-5 hover:border-primary/30 transition-all"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+                  <h3 className="font-semibold text-text">
                     Project #{project.id}
                   </h3>
-                  <p className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)] mt-1">
+                  <p className="text-sm text-text-muted mt-1">
                     Created {new Date(project.created_at ?? '').toLocaleDateString()}
                   </p>
                 </div>
@@ -90,7 +90,7 @@ export default function ClientProjectsPage() {
                 </span>
               </div>
 
-              <div className="mt-4 flex items-center gap-6 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+              <div className="mt-4 flex items-center gap-6 text-sm text-text-muted">
                 {project.confirmed_delivery_date && (
                   <span>
                     Est. delivery:{' '}

@@ -10,9 +10,9 @@ export default function HomePage() {
   return (
     <div className="flex flex-col flex-1">
       {/* Hero section */}
-      <section className="bg-gradient-to-br from-[#6D28D9] via-[#5B21B6] to-[#4C1D95] text-white">
+      <section className="bg-gradient-to-br from-primary via-[#5B21B6] to-[#4C1D95] text-white">
         <div className="max-w-5xl mx-auto px-6 py-24 sm:py-32 text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight font-display">
             {t('heroTitle')}
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-purple-200 max-w-2xl mx-auto">
@@ -21,7 +21,7 @@ export default function HomePage() {
           <div className="mt-10 flex items-center justify-center gap-4">
             <Link
               href="/cotizar"
-              className="px-8 py-3 bg-white text-[#6D28D9] font-semibold rounded-lg hover:bg-purple-50 transition-colors"
+              className="px-8 py-3 bg-accent text-[#1E1B2E] font-semibold rounded-lg hover:brightness-110 transition-all"
             >
               {t('ctaGetQuote')}
             </Link>
@@ -36,45 +36,45 @@ export default function HomePage() {
       </section>
 
       {/* Features section */}
-      <section className="bg-white dark:bg-zinc-900 py-20">
+      <section className="bg-bg py-20">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center text-zinc-900 dark:text-[#FAFAFA]">
+          <h2 className="text-3xl font-bold text-center text-text font-display">
             {t('featureTitle')}
           </h2>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto">
-                <svg className="w-7 h-7 text-[#6D28D9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
+                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">{t('featureQuality')}</h3>
-              <p className="mt-2 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">{t('featureQualityDesc')}</p>
+              <h3 className="mt-4 text-lg font-semibold text-text">{t('featureQuality')}</h3>
+              <p className="mt-2 text-sm text-text-muted">{t('featureQualityDesc')}</p>
             </div>
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto">
-                <svg className="w-7 h-7 text-[#6D28D9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
+                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">{t('featureTimely')}</h3>
-              <p className="mt-2 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">{t('featureTimelyDesc')}</p>
+              <h3 className="mt-4 text-lg font-semibold text-text">{t('featureTimely')}</h3>
+              <p className="mt-2 text-sm text-text-muted">{t('featureTimelyDesc')}</p>
             </div>
             <div className="text-center p-6">
-              <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto">
-                <svg className="w-7 h-7 text-[#6D28D9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
+                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 0l-3.536-3.536m3.536 3.536L9.172 15.536m0 0L5.636 12" />
                 </svg>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA]">{t('featureSupport')}</h3>
-              <p className="mt-2 text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">{t('featureSupportDesc')}</p>
+              <h3 className="mt-4 text-lg font-semibold text-text">{t('featureSupport')}</h3>
+              <p className="mt-2 text-sm text-text-muted">{t('featureSupportDesc')}</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials section */}
-      <section className="bg-zinc-50 dark:bg-[#09090B] py-20">
+      <section className="bg-bg py-20">
         <div className="max-w-5xl mx-auto px-6">
           <TestimonialsSection />
         </div>

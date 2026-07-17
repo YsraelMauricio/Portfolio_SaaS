@@ -40,12 +40,12 @@ export default function TestimonialsSection() {
   if (loading) {
     return (
       <div>
-        <h2 className="text-3xl font-bold text-center text-zinc-900 dark:text-[#FAFAFA]">
+        <h2 className="text-3xl font-bold text-center text-text font-display">
           {t('title')}
         </h2>
         <div className="mt-8 space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-white dark:bg-zinc-800 rounded-xl animate-pulse" />
+            <div key={i} className="h-32 glass-card--light animate-pulse" />
           ))}
         </div>
       </div>
@@ -60,31 +60,32 @@ export default function TestimonialsSection() {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-center text-zinc-900 dark:text-[#FAFAFA]">
+      <h2 className="text-3xl font-bold text-center text-text font-display">
         {t('title')}
       </h2>
-      <p className="mt-2 text-center text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">
+      <p className="mt-2 text-center text-text-muted">
         {t('subtitle')}
       </p>
 
       <div className="mt-10 max-w-2xl mx-auto">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-8 text-center">
+        <div className="glass-card--light p-8 text-center">
           <svg
-            className="w-8 h-8 text-[#6D28D9]/30 mx-auto mb-4"
+            className="w-8 h-8 text-primary/30 mx-auto mb-4"
             fill="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 italic leading-relaxed">
+          <p className="text-lg text-text-muted italic leading-relaxed">
             &ldquo;{current.content}&rdquo;
           </p>
           <div className="mt-6">
-            <p className="font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+            <p className="font-semibold text-text">
               {current.author_name}
             </p>
             {current.role && (
-              <p className="text-sm text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+              <p className="text-sm text-text-muted">
                 {current.role}
               </p>
             )}
@@ -101,8 +102,8 @@ export default function TestimonialsSection() {
                 onClick={() => setActiveIndex(idx)}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${
                   idx === activeIndex
-                    ? 'bg-[#6D28D9]'
-                    : 'bg-zinc-300 dark:bg-zinc-600 hover:bg-zinc-400'
+                    ? 'bg-primary'
+                    : 'bg-text-muted/30 hover:bg-text-muted/50'
                 }`}
                 aria-label={`Go to testimonial ${idx + 1}`}
               />

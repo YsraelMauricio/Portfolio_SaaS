@@ -29,7 +29,7 @@ export default function MyQuotesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
@@ -44,44 +44,44 @@ export default function MyQuotesPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-zinc-900 dark:text-[#FAFAFA]">My Quotes</h1>
-      <p className="mt-2 text-zinc-500 dark:text-[rgba(250,250,250,0.6)]">
+      <h1 className="text-3xl font-bold text-text font-display">My Quotes</h1>
+      <p className="mt-2 text-text-muted">
         Review and compare your saved quotes. Select quotes to compare them side by side.
       </p>
 
       {/* Compare section */}
       {compareIds.length >= 2 && (
         <div className="mt-8">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-[#FAFAFA] mb-4">
+          <h2 className="text-lg font-semibold text-text mb-4">
             Comparing {compareIds.length} Quotes
           </h2>
           <div className="overflow-x-auto">
-            <table className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+            <table className="w-full glass-card--light">
               <thead>
-                <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                  <th className="text-left p-4 text-sm font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+                <tr className="border-b border-[var(--glass-border)]">
+                  <th className="text-left p-4 text-sm font-medium text-text-muted">
                     Feature
                   </th>
                   {comparedQuotes.map((q) => (
-                    <th key={q.id} className="text-left p-4 text-sm font-medium text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+                    <th key={q.id} className="text-left p-4 text-sm font-medium text-text-muted">
                       {q.product_type?.name ?? `Quote #${q.id}`}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <tbody className="divide-y divide-[var(--glass-border)]">
                 <tr>
-                  <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">Category</td>
+                  <td className="p-4 text-sm text-text-muted">Category</td>
                   {comparedQuotes.map((q) => (
-                    <td key={q.id} className="p-4 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+                    <td key={q.id} className="p-4 text-sm font-medium text-text">
                       {q.product_type?.name ?? '—'}
                     </td>
                   ))}
                 </tr>
                 <tr>
-                  <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">Price Range</td>
+                  <td className="p-4 text-sm text-text-muted">Price Range</td>
                   {comparedQuotes.map((q) => (
-                    <td key={q.id} className="p-4 text-sm font-medium tabular-nums text-zinc-900 dark:text-[#FAFAFA]">
+                    <td key={q.id} className="p-4 text-sm font-medium tabular-nums text-text">
                       ${parseFloat(q.estimated_price_min).toLocaleString('en-US')}
                       {' – '}
                       ${parseFloat(q.estimated_price_max).toLocaleString('en-US')}
@@ -89,9 +89,9 @@ export default function MyQuotesPage() {
                   ))}
                 </tr>
                 <tr>
-                  <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">Timeline</td>
+                  <td className="p-4 text-sm text-text-muted">Timeline</td>
                   {comparedQuotes.map((q) => (
-                    <td key={q.id} className="p-4 text-sm font-medium text-zinc-900 dark:text-[#FAFAFA]">
+                    <td key={q.id} className="p-4 text-sm font-medium text-text">
                       {q.estimated_days_min}
                       {q.estimated_days_max !== q.estimated_days_min
                         ? ` – ${q.estimated_days_max}`
@@ -101,18 +101,18 @@ export default function MyQuotesPage() {
                   ))}
                 </tr>
                 <tr>
-                  <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">Status</td>
+                  <td className="p-4 text-sm text-text-muted">Status</td>
                   {comparedQuotes.map((q) => (
-                    <td key={q.id} className="p-4 text-sm capitalize text-zinc-900 dark:text-[#FAFAFA]">
+                    <td key={q.id} className="p-4 text-sm capitalize text-text">
                       {q.status.replace(/_/g, ' ')}
                     </td>
                   ))}
                 </tr>
                 {comparedQuotes.some((q) => q.modifiers && q.modifiers.length > 0) && (
                   <tr>
-                    <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">Modifiers</td>
+                    <td className="p-4 text-sm text-text-muted">Modifiers</td>
                     {comparedQuotes.map((q) => (
-                      <td key={q.id} className="p-4 text-sm text-zinc-900 dark:text-[#FAFAFA]">
+                      <td key={q.id} className="p-4 text-sm text-text">
                         {q.modifiers && q.modifiers.length > 0
                           ? q.modifiers.map((m) => m.name).join(', ')
                           : 'None'}
@@ -126,7 +126,7 @@ export default function MyQuotesPage() {
           <button
             type="button"
             onClick={() => setCompareIds([])}
-            className="mt-4 text-sm text-[#6D28D9] hover:underline"
+            className="mt-4 text-sm text-primary hover:underline"
           >
             Clear comparison
           </button>
@@ -135,13 +135,13 @@ export default function MyQuotesPage() {
 
       {/* Quote list */}
       {quotes.length === 0 ? (
-        <div className="mt-8 text-center py-16 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-          <p className="text-zinc-500 dark:text-[rgba(250,250,250,0.55)]">
+        <div className="mt-8 text-center py-16 glass-card--light">
+          <p className="text-text-muted">
             No saved quotes yet.
           </p>
           <Link
             href="/cotizar"
-            className="mt-3 inline-block px-6 py-2.5 bg-[#6D28D9] text-white font-medium rounded-lg hover:bg-[#5B21B6] transition-colors text-sm"
+            className="mt-3 inline-block px-6 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 transition-all text-sm"
           >
             Get a Quote
           </Link>
@@ -151,10 +151,10 @@ export default function MyQuotesPage() {
           {quotes.map((quote) => (
             <div
               key={quote.id}
-              className={`bg-white dark:bg-zinc-900 border rounded-xl p-5 transition-colors ${
+              className={`glass-card--light p-5 transition-all ${
                 compareIds.includes(quote.id)
-                  ? 'border-[#6D28D9] dark:border-[#6D28D9] ring-1 ring-[#6D28D9]/20'
-                  : 'border-zinc-200 dark:border-zinc-800'
+                  ? 'border-accent ring-1 ring-accent/20'
+                  : ''
               }`}
             >
               <div className="flex items-start justify-between">
@@ -163,25 +163,25 @@ export default function MyQuotesPage() {
                     type="checkbox"
                     checked={compareIds.includes(quote.id)}
                     onChange={() => toggleCompare(quote.id)}
-                    className="mt-1 rounded border-zinc-300 dark:border-zinc-600 text-[#6D28D9] focus:ring-[#6D28D9]"
+                    className="mt-1 rounded border-zinc-300 dark:border-zinc-600 text-accent focus:ring-accent"
                     aria-label={`Select quote ${quote.id} for comparison`}
                   />
                   <div>
-                    <h3 className="font-semibold text-zinc-900 dark:text-[#FAFAFA]">
+                    <h3 className="font-semibold text-text">
                       {quote.product_type?.name ?? `Quote #${quote.id}`}
                     </h3>
-                    <p className="text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)] mt-0.5">
+                    <p className="text-xs text-text-muted mt-0.5">
                       Created {new Date(quote.created_at ?? '').toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold text-[#6D28D9] dark:text-[#6D28D9] tabular-nums">
+                  <p className="text-lg font-bold text-primary tabular-nums">
                     ${parseFloat(quote.estimated_price_min).toLocaleString('en-US')}
-                    <span className="text-zinc-300 dark:text-zinc-600 mx-1">–</span>
+                    <span className="text-text-muted mx-1">–</span>
                     ${parseFloat(quote.estimated_price_max).toLocaleString('en-US')}
                   </p>
-                  <span className="inline-block text-xs text-zinc-500 dark:text-[rgba(250,250,250,0.55)] capitalize">
+                  <span className="inline-block text-xs text-text-muted capitalize">
                     {quote.status.replace(/_/g, ' ')}
                   </span>
                 </div>
@@ -193,7 +193,7 @@ export default function MyQuotesPage() {
                   {quote.modifiers.map((mod) => (
                     <span
                       key={mod.id}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--surface-rgb)] text-text-muted"
                     >
                       {mod.name}
                     </span>
@@ -202,7 +202,7 @@ export default function MyQuotesPage() {
               )}
 
               {/* Timeline */}
-              <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2 text-xs text-text-muted">
                 Timeline: {quote.estimated_days_min}
                 {quote.estimated_days_max !== quote.estimated_days_min
                   ? ` – ${quote.estimated_days_max}`

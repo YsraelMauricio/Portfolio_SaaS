@@ -15,16 +15,16 @@ export default function CategoryCard({ category, isSelected, onSelect }: Categor
         relative flex flex-col p-6 rounded-xl border-2 text-left
         transition-all duration-200
         ${isSelected
-          ? 'border-blue-600 bg-blue-50 shadow-md'
-          : 'border-gray-200 bg-white hover:border-blue-400 hover:shadow-sm'
+          ? 'border-accent glass-card--light shadow-md'
+          : 'border-[var(--glass-border)] hover:border-accent/50 hover:shadow-sm glass-card--light'
         }
       `}
       aria-pressed={isSelected}
     >
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
+        <h3 className="text-lg font-semibold text-text">{category.name}</h3>
         {category.product_types_count !== undefined && (
-          <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2.5 py-0.5 font-medium">
+          <span className="text-xs text-text-muted bg-[var(--surface-rgb)] rounded-full px-2.5 py-0.5 font-medium">
             {category.product_types_count} product{category.product_types_count !== 1 ? 's' : ''}
           </span>
         )}

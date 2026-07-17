@@ -213,8 +213,8 @@ export default function QuoteWizard() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-          <p className="text-sm text-gray-500">{tc('loading')}</p>
+          <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
+          <p className="text-sm text-text-muted">{tc('loading')}</p>
         </div>
       </div>
     );
@@ -223,9 +223,9 @@ export default function QuoteWizard() {
   if (error && categories.length === 0) {
     return (
       <div className="max-w-md mx-auto py-20 text-center">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-          <p className="text-red-600 font-medium">{tc('error')}</p>
-          <p className="text-sm text-red-500 mt-1">{error}</p>
+        <div className="glass-card--light border border-red-200 dark:border-red-800 p-6">
+          <p className="text-red-600 dark:text-red-400 font-medium">{tc('error')}</p>
+          <p className="text-sm text-red-500 dark:text-red-300 mt-1">{error}</p>
           <button
             type="button"
             onClick={() => window.location.reload()}
@@ -242,8 +242,8 @@ export default function QuoteWizard() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Page title */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-        <p className="mt-2 text-gray-500">
+        <h1 className="text-3xl font-bold text-text font-display">{t('title')}</h1>
+        <p className="mt-2 text-text-muted">
           {t('subtitle')}
         </p>
       </div>
@@ -253,7 +253,7 @@ export default function QuoteWizard() {
 
       {/* Error banner (non-blocking) */}
       {error && categories.length > 0 && (
-        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+        <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-lg px-4 py-3 text-sm">
           {error}
           <button
             type="button"
@@ -268,10 +268,11 @@ export default function QuoteWizard() {
       {/* Step 1: Choose Category */}
       {step === 1 && (
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          <h2 className="text-xl font-semibold text-text mb-6 font-display">
             {t('selectCategory')}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="@container">
+            <div className="grid grid-cols-1 @sm:grid-cols-2 @lg:grid-cols-3 gap-4">
             {categories
               .sort((a, b) => a.sort_order - b.sort_order)
               .map((category) => (
@@ -283,6 +284,7 @@ export default function QuoteWizard() {
                 />
               ))}
           </div>
+          </div>
         </div>
       )}
 
@@ -293,25 +295,25 @@ export default function QuoteWizard() {
             <button
               type="button"
               onClick={handleBack}
-              className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
+              className="text-sm text-text-muted hover:text-text flex items-center gap-1"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               {tc('back')}
             </button>
-            <span className="text-sm text-gray-300">|</span>
-            <span className="text-sm text-gray-500">
-              Category: <span className="font-medium text-gray-700">{selectedCategory.name}</span>
+            <span className="text-sm text-text-muted/50">|</span>
+            <span className="text-sm text-text-muted">
+              Category: <span className="font-medium text-text">{selectedCategory.name}</span>
             </span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          <h2 className="text-xl font-semibold text-text mb-6 font-display">
             {t('selectProduct')}
           </h2>
           {loading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-24 bg-gray-100 rounded-xl animate-pulse" />
+                <div key={i} className="h-24 glass-card--light animate-pulse" />
               ))}
             </div>
           ) : (
@@ -338,28 +340,28 @@ export default function QuoteWizard() {
             <button
               type="button"
               onClick={handleBack}
-              className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
+              className="text-sm text-text-muted hover:text-text flex items-center gap-1"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               {tc('back')}
             </button>
-            <span className="text-sm text-gray-300">|</span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-text-muted/50">|</span>
+            <span className="text-sm text-text-muted">
               {selectedProductType.name}
             </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div className="lg:col-span-3">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              <h2 className="text-xl font-semibold text-text mb-6 font-display">
                 {t('configureOptions')}
               </h2>
               {loading && modifierGroups.length === 0 ? (
                 <div className="space-y-4">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-16 bg-gray-100 rounded-lg animate-pulse" />
+                    <div key={i} className="h-16 glass-card--light animate-pulse" />
                   ))}
                 </div>
               ) : (
@@ -392,39 +394,39 @@ export default function QuoteWizard() {
             <button
               type="button"
               onClick={handleBack}
-              className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
+              className="text-sm text-text-muted hover:text-text flex items-center gap-1"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back
             </button>
           </div>
 
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">{t('reviewSummary')}</h2>
+          <h2 className="text-xl font-semibold text-text mb-6 font-display">{t('reviewSummary')}</h2>
 
-          <div className="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
+          <div className="glass-card--light divide-y divide-[var(--glass-border)]">
             {/* Category */}
             <div className="p-5 flex items-center justify-between">
-              <span className="text-sm text-gray-500">Category</span>
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-sm text-text-muted">Category</span>
+              <span className="text-sm font-medium text-text">
                 {selectedCategory?.name}
               </span>
             </div>
 
             {/* Product Type */}
             <div className="p-5 flex items-center justify-between">
-              <span className="text-sm text-gray-500">Product Type</span>
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-sm text-text-muted">Product Type</span>
+              <span className="text-sm font-medium text-text">
                 {selectedProductType.name}
               </span>
             </div>
 
             {/* Selected modifiers */}
             <div className="p-5">
-              <span className="text-sm text-gray-500 block mb-2">Selected Options</span>
+              <span className="text-sm text-text-muted block mb-2">Selected Options</span>
               {selectedModifierIds.length === 0 ? (
-                <span className="text-sm text-gray-400">None selected (base configuration)</span>
+                <span className="text-sm text-text-muted">None selected (base configuration)</span>
               ) : (
                 <ul className="space-y-1">
                   {modifierGroups
@@ -434,9 +436,9 @@ export default function QuoteWizard() {
                       const price = parseFloat(m.price_impact_usd);
                       return (
                         <li key={m.id} className="flex items-center justify-between text-sm">
-                          <span className="text-gray-700">{m.name}</span>
+                          <span className="text-text">{m.name}</span>
                           {price !== 0 && (
-                            <span className={`font-medium tabular-nums ${price > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            <span className={`font-medium tabular-nums ${price > 0 ? 'text-secondary' : 'text-red-600'}`}>
                               {price > 0 ? '+' : ''}${price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                             </span>
                           )}
@@ -452,59 +454,59 @@ export default function QuoteWizard() {
               {calculation ? (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-gray-500 font-medium mb-1">Estimated Price</p>
-                    <p className="text-xl font-bold text-gray-900 tabular-nums">
+                    <p className="text-xs text-text-muted font-medium mb-1 font-mono uppercase tracking-wider">Estimated Price</p>
+                    <p className="text-xl font-bold text-text tabular-nums font-mono">
                       ${calculation.estimated_price_min.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      <span className="text-gray-400 mx-1">–</span>
+                      <span className="text-text-muted mx-1">–</span>
                       ${calculation.estimated_price_max.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">+15% buffer included</p>
+                    <p className="text-xs text-text-muted mt-0.5">+15% buffer included</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 font-medium mb-1">Timeline</p>
-                    <p className="text-xl font-bold text-gray-900 tabular-nums">
+                    <p className="text-xs text-text-muted font-medium mb-1 font-mono uppercase tracking-wider">Timeline</p>
+                    <p className="text-xl font-bold text-text tabular-nums font-mono">
                       {calculation.estimated_days_min}
                       {calculation.estimated_days_max !== calculation.estimated_days_min && (
                         <>
-                          <span className="text-gray-400 mx-1">–</span>
+                          <span className="text-text-muted mx-1">–</span>
                           {calculation.estimated_days_max}
                         </>
                       )}
-                      <span className="text-base font-normal text-gray-500 ml-1">
+                      <span className="text-base font-normal text-text-muted ml-1">
                         {calculation.estimated_days_max === 1 ? 'day' : 'days'}
                       </span>
                     </p>
                     {selectedProductType.is_floor_not_ceiling && (
-                      <p className="text-xs text-blue-600 mt-0.5">Minimum estimate</p>
+                      <p className="text-xs text-accent mt-0.5">Minimum estimate</p>
                     )}
                   </div>
                 </div>
               ) : (
-                <div className="text-sm text-gray-400">Calculating...</div>
+                <div className="text-sm text-text-muted">Calculating...</div>
               )}
             </div>
           </div>
 
           {nextStartDate && (
-            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-center gap-3">
-              <svg className="w-5 h-5 text-blue-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mt-4 glass-card--light border border-accent/20 p-4 flex items-center gap-3">
+              <svg className="w-5 h-5 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <div>
-                <p className="text-xs text-blue-600 font-medium">Next available start date</p>
-                <p className="text-sm text-blue-800">{nextStartDate}</p>
+                <p className="text-xs text-accent font-medium">Next available start date</p>
+                <p className="text-sm text-text">{nextStartDate}</p>
               </div>
             </div>
           )}
 
           {/* CTA */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-text-muted mb-4">
               Log in to save your quote and compare different configurations
             </p>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 transition-all"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -521,7 +523,7 @@ export default function QuoteWizard() {
           <button
             type="button"
             onClick={handleBack}
-            className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-5 py-2.5 text-sm font-medium text-text-muted glass-card--light hover:border-accent/30 transition-all"
           >
             Back
           </button>
@@ -529,7 +531,7 @@ export default function QuoteWizard() {
             <button
               type="button"
               onClick={handleContinue}
-              className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-5 py-2.5 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 transition-all"
             >
               View Summary
             </button>
@@ -539,7 +541,7 @@ export default function QuoteWizard() {
 
       {/* Step 1: Continue hint */}
       {step === 1 && (
-        <p className="mt-6 text-center text-sm text-gray-400">
+        <p className="mt-6 text-center text-sm text-text-muted">
           Select a category to get started
         </p>
       )}

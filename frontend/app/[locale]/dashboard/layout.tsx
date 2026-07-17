@@ -42,18 +42,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+      <div className="min-h-dvh flex items-center justify-center bg-bg">
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex bg-zinc-50 dark:bg-[#09090B]">
+    <div className="min-h-dvh flex bg-bg">
       {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col shrink-0">
-        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
-          <Link href="/dashboard" className="text-xl font-bold text-[#6D28D9] dark:text-[#6D28D9]">
+      <aside className="w-64 glass-card--light rounded-none border-r border-[var(--glass-border)] flex flex-col shrink-0">
+        <div className="p-6 border-b border-[var(--glass-border)]">
+          <Link href="/dashboard" className="text-xl font-bold text-primary">
             Client Panel
           </Link>
         </div>
@@ -67,8 +67,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-[#6D28D9]/10 text-[#6D28D9] dark:bg-[#6D28D9]/20 dark:text-[#6D28D9]'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-text-muted hover:bg-[var(--surface-rgb)]/10'
                 }`}
               >
                 <span className="text-base">{item.icon}</span>
@@ -78,9 +78,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })}
         </nav>
 
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 border-t border-[var(--glass-border)]">
           {user && (
-            <div className="mb-3 px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 truncate">
+            <div className="mb-3 px-4 py-2 text-sm text-text-muted truncate">
               {user.email}
             </div>
           )}
