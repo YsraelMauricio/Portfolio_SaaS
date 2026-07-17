@@ -125,7 +125,18 @@
 - [x] P7-13: E2E verify — toggle light/dark persists on reload, glass surfaces render in both modes, reduced-motion respected, keyboard-navigable
 
 ## Phase 8 — Launch readiness
-*(High-level only)*
+
+- [x] P8-1: SEO — Set up `metadataBase` and `title.template` in root layout, `generateMetadata` for dynamic pages (blog posts, portfolio projects)
+- [x] P8-2: SEO — Create JSON-LD structured data: `Organization`/`Person` in global layout, `Service` in services, `Article` in blog
+- [x] P8-3: SEO — Create `sitemap.ts` (auto-generates URLs from DB for blog, portfolio) and `robots.ts` (blocks `/admin/`, `/dashboard/`, `/api/`)
+- [x] P8-4: SEO — Configure `hreflang` + canonical autoreferenciado por locale
+- [x] P8-5: Infrastructure — Create `infra/docker-compose.staging.yml` with environment overrides
+- [x] P8-6: Infrastructure — Create DB backup scheduled job (Laravel + PostgreSQL pg_dump)
+- [x] P8-7: Infrastructure — Configure Dependabot for security updates in `.github/dependabot.yml`
+- [x] P8-8: Staging — Create seeder with test data exercising `is_test` flag across quotes, projects, contracts, payments
+- [x] P8-9: Backend — Create `QuarterlyRecalibrationReminder` scheduled job + admin notification for the feedback loop
+- [x] P8-10: Write backend tests for Phase 8 items (seeder, backup job, quarterly reminder)
+- [x] P8-11: **Exit check:** 204 tests passing (1099 assertions), `tsc --noEmit` clean, `npm run build` generates 45 pages, SEO metadata on all page types, sitemap.xml/robots.txt accessible, staging docker-compose config valid, `is_test` seed data present, quarterly feedback-loop reminder confirmed working
 
 ---
 

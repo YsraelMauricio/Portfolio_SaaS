@@ -1,4 +1,10 @@
 {
+  "metadata": {
+    "title": "Ysrael Mauricio — Software Development & AI Solutions",
+    "description": "Full-stack software development, AI solutions, and technical consulting. Web, mobile, and desktop applications.",
+    "brand": "Ysrael Mauricio"
+  },
+
   "Common": {
     "loading": "Loading...",
     "error": "An error occurred",
