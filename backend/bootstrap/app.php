@@ -3,6 +3,8 @@
 use App\Http\Middleware\EnsureTwoFactorEnabled;
 use App\Jobs\AnonymizeAccounts;
 use App\Jobs\CloseStaleConversations;
+use App\Jobs\DatabaseBackupJob;
+use App\Jobs\QuarterlyRecalibrationReminderJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -32,6 +34,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Schedule $schedule): void {
         $schedule->job(new AnonymizeAccounts)->daily();
         $schedule->job(new CloseStaleConversations)->daily();
+        $schedule->job(new DatabaseBackupJob)->dailyAt('00:00');
+        $schedule->job(new QuarterlyRecalibrationReminderJob)->cron('0 8 1 1,4,7,10 *');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

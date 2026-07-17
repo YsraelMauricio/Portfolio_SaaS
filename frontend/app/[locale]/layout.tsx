@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
@@ -8,6 +9,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
 import ThemeScript from './components/ThemeScript';
+import Script from 'next/script';
 import '../globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -31,6 +33,8 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ysraelmauricio.com';
+
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: string }>;
@@ -38,6 +42,33 @@ type Props = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata' });
+
+  return {
+    title: {
+      default: t('title'),
+      template: `%s | ${t('brand')}`,
+    },
+    description: t('description'),
+    alternates: {
+      canonical: `${APP_URL}${locale === routing.defaultLocale ? '' : `/${locale}`}`,
+      languages: {
+        en: `${APP_URL}/`,
+        es: `${APP_URL}/es`,
+      },
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+      locale: locale === 'es' ? 'es_BO' : 'en_US',
+      siteName: 'Ysrael Mauricio',
+      type: 'website',
+    },
+  };
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -53,6 +84,18 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   const messages = await getMessages();
 
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Ysrael Mauricio',
+    url: `${APP_URL}${locale === routing.defaultLocale ? '' : `/${locale}`}`,
+    jobTitle: 'Software Developer',
+    knowsAbout: ['Software Development', 'Artificial Intelligence', 'Web Development', 'Mobile Development'],
+    sameAs: [
+      'https://github.com/YsraelMauricio',
+    ],
+  };
+
   return (
     <html
       lang={locale}
@@ -62,6 +105,13 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="min-h-full flex flex-col">
         {/* Inline theme-sync script — runs before any paint to prevent FOUC */}
         <ThemeScript />
+
+        {/* JSON-LD structured data for Person/Organization */}
+        <Script
+          id="schema-person"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
 
         {/* Mesh gradient background — always present behind glass surfaces */}
         <div

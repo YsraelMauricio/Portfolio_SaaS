@@ -1,0 +1,143 @@
+# infra/docker-compose.staging.yml
+# Staging environment override for Portfolio SaaS.
+# Extends docker-compose.yml — use together:
+#   docker compose -f docker-compose.yml -f docker-compose.staging.yml up -d
+#
+# All values use ${VAR:-default} syntax so the file works without modification.
+# Override any variable by creating a .env file in this directory or exporting it.
+
+services:
+
+  # ─── Application Services ───────────────────────────────────────────────
+
+  postgres:
+    container_name: portfolio_staging_postgres
+    environment:
+      POSTGRES_DB: ${STAGING_DB_NAME:-portfolio_saas_staging}
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+
+  redis:
+    container_name: portfolio_staging_redis
+    # Uses same image / volume; staging uses separate DB index via REDIS_DB if needed
+
+  backend:
+    container_name: portfolio_staging_backend
+    image: ${STAGING_BACKEND_IMAGE:-portfolio_backend:staging}
+    environment:
+      APP_ENV: staging
+      APP_DEBUG: "false"
+      APP_URL: ${STAGING_APP_URL:-https://staging.ysraelmauricio.com}
+      DB_DATABASE: ${STAGING_DB_NAME:-portfolio_saas_staging}
+      SESSION_DRIVER: redis
+      CACHE_STORE: redis
+      LOG_LEVEL: ${STAGING_LOG_LEVEL:-warning}
+      # Reverb overrides for staging (WSS)
+      REVERB_SCHEME: ${STAGING_REVERB_SCHEME:-https}
+      REVERB_HOST: ${STAGING_DOMAIN:-staging.ysraelmauricio.com}
+      REVERB_PORT: ${STAGING_REVERB_PORT:-443}
+
+  reverb:
+    container_name: portfolio_staging_reverb
+    image: ${STAGING_BACKEND_IMAGE:-portfolio_backend:staging}
+    environment:
+      APP_ENV: staging
+      APP_DEBUG: "false"
+      APP_URL: ${STAGING_APP_URL:-https://staging.ysraelmauricio.com}
+      DB_DATABASE: ${STAGING_DB_NAME:-portfolio_saas_staging}
+      LOG_LEVEL: ${STAGING_LOG_LEVEL:-warning}
+      REVERB_SCHEME: ${STAGING_REVERB_SCHEME:-https}
+      REVERB_HOST: ${STAGING_DOMAIN:-staging.ysraelmauricio.com}
+      REVERB_PORT: ${STAGING_REVERB_PORT:-443}
+
+  queue-worker:
+    container_name: portfolio_staging_queue_worker
+    image: ${STAGING_BACKEND_IMAGE:-portfolio_backend:staging}
+    environment:
+      APP_ENV: staging
+      APP_DEBUG: "false"
+      APP_URL: ${STAGING_APP_URL:-https://staging.ysraelmauricio.com}
+      DB_DATABASE: ${STAGING_DB_NAME:-portfolio_saas_staging}
+      LOG_LEVEL: ${STAGING_LOG_LEVEL:-warning}
+    # Staging concurrency: higher tries, sleep between polls, rotate worker hourly
+    command: >
+      sh -c "php artisan queue:work --tries=5 --timeout=120 --sleep=3 --max-time=3600 --queue=default,staging,high"
+
+  scheduler:
+    container_name: portfolio_staging_scheduler
+    image: ${STAGING_BACKEND_IMAGE:-portfolio_backend:staging}
+    environment:
+      APP_ENV: staging
+      APP_DEBUG: "false"
+      APP_URL: ${STAGING_APP_URL:-https://staging.ysraelmauricio.com}
+      DB_DATABASE: ${STAGING_DB_NAME:-portfolio_saas_staging}
+      LOG_LEVEL: ${STAGING_LOG_LEVEL:-warning}
+
+  frontend:
+    container_name: portfolio_staging_frontend
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${STAGING_API_URL:-https://staging.ysraelmauricio.com/api/v1}
+      NEXT_PUBLIC_APP_URL: ${STAGING_APP_URL:-https://staging.ysraelmauricio.com}
+      NEXT_PUBLIC_REVERB_APP_KEY: ${REVERB_APP_KEY:-portfolio-reverb-key}
+      NEXT_PUBLIC_REVERB_HOST: ${STAGING_DOMAIN:-staging.ysraelmauricio.com}
+      NEXT_PUBLIC_REVERB_PORT: ${STAGING_REVERB_PORT:-443}
+      NEXT_PUBLIC_REVERB_SCHEME: ${STAGING_REVERB_SCHEME:-https}
+
+  nginx:
+    container_name: portfolio_staging_nginx
+    environment:
+      NGINX_HOST: ${STAGING_DOMAIN:-staging.ysraelmauricio.com}
+      NGINX_PORT: 443
+    # For staging with a real domain, mount a production-grade nginx config:
+    # volumes:
+    #   - ./nginx/staging.conf:/etc/nginx/conf.d/default.conf:ro,z
+
+  # ─── Support Services ────────────────────────────────────────────────────
+  #
+  # Support services retain their default images unless overridden via env vars.
+  # Each already uses its own isolated database — no changes needed for staging.
+
+  umami:
+    image: ghcr.io/umami-software/umami:${STAGING_UMAMI_TAG:-latest}
+    container_name: portfolio_staging_umami
+
+  umami-db:
+    container_name: portfolio_staging_umami_db
+
+  listmonk:
+    image: listmonk/listmonk:${STAGING_LISTMONK_TAG:-latest}
+    container_name: portfolio_staging_listmonk
+
+  listmonk-db:
+    container_name: portfolio_staging_listmonk_db
+
+  glitchtip:
+    image: glitchtip/glitchtip:${STAGING_GLITCHTIP_TAG:-latest}
+    container_name: portfolio_staging_glitchtip
+    environment:
+      GLITCHTIP_DOMAIN: ${STAGING_GLITCHTIP_DOMAIN:-https://staging.ysraelmauricio.com/errors}
+      CELERY_WORKER_CONCURRENCY: ${STAGING_GLITCHTIP_CONCURRENCY:-4}
+      ENABLE_USER_REGISTRATION: "false"
+
+  glitchtip-db:
+    container_name: portfolio_staging_glitchtip_db
+
+  documenso:
+    image: documenso/documenso:${STAGING_DOCUMENSO_TAG:-latest}
+    container_name: portfolio_staging_documenso
+    environment:
+      NEXT_PUBLIC_WEBAPP_URL: ${STAGING_DOCUMENSO_URL:-https://staging.ysraelmauricio.com/documentos}
+      NEXT_PUBLIC_DISABLE_SIGNUP: "true"
+
+  documenso-db:
+    container_name: portfolio_staging_documenso_db
+
+  mailpit:
+    image: axllent/mailpit:${STAGING_MAILPIT_TAG:-latest}
+    container_name: portfolio_staging_mailpit
+
+volumes:
+  # Isolated database volume for staging — never shares data with dev
+  postgres_staging_data:
+    driver: local
