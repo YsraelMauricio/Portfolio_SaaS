@@ -10,27 +10,41 @@ export default function HomePage() {
   return (
     <div className="flex flex-col flex-1">
       {/* Hero section */}
-      <section className="bg-gradient-to-br from-primary via-[#5B21B6] to-[#4C1D95] text-white">
-        <div className="max-w-5xl mx-auto px-6 py-24 sm:py-32 text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight font-display">
-            {t('heroTitle')}
-          </h1>
-          <p className="mt-6 text-lg sm:text-xl text-purple-200 max-w-2xl mx-auto">
-            {t('heroSubtitle')}
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-4">
-            <Link
-              href="/cotizar"
-              className="px-8 py-3 bg-accent text-[#1E1B2E] font-semibold rounded-lg hover:brightness-110 transition-all"
-            >
-              {t('ctaGetQuote')}
-            </Link>
-            <Link
-              href="/portfolio"
-              className="px-8 py-3 border border-white/30 text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
-            >
-              {t('ctaViewPortfolio')}
-            </Link>
+      <section className="relative overflow-hidden">
+        {/* Fondo mesh-gradient — el vidrio necesita algo rico detrás para refractar */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            background: `
+              radial-gradient(circle at 20% 20%, rgba(109, 40, 217, 0.18), transparent 45%),
+              radial-gradient(circle at 80% 30%, rgba(91, 33, 182, 0.25), transparent 50%),
+              radial-gradient(circle at 50% 80%, rgba(0, 212, 255, 0.14), transparent 45%),
+              var(--bg)
+            `,
+          }}
+        />
+        <div className="max-w-5xl mx-auto px-6 py-24 sm:py-32">
+          <div className="glass-card p-10 sm:p-14 text-center">
+            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight font-display text-text">
+              {t('heroTitle')}
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl text-text-muted max-w-2xl mx-auto">
+              {t('heroSubtitle')}
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-4">
+              <Link
+                href="/cotizar"
+                className="px-8 py-3 bg-accent text-[#1E1B2E] font-semibold rounded-lg hover:brightness-110 transition-all"
+              >
+                {t('ctaGetQuote')}
+              </Link>
+              <Link
+                href="/portfolio"
+                className="px-8 py-3 border border-[var(--glass-border)] text-text font-semibold rounded-lg hover:bg-white/10 transition-colors"
+              >
+                {t('ctaViewPortfolio')}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
