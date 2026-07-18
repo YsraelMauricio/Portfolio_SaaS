@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\V1\BlogCommentController;
 use App\Http\Controllers\Api\V1\BlogController;
 use App\Http\Controllers\Api\V1\ChatbotController;
 use App\Http\Controllers\Api\V1\ContractController;
+use App\Http\Controllers\Api\V1\MaintenanceController;
+use App\Http\Controllers\Api\V1\Admin\MaintenanceAdminController;
 use App\Http\Controllers\Api\V1\DocumensoWebhookController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\PortfolioController;
@@ -54,6 +56,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/cv', [CVController::class, 'metadata']);
     Route::get('/cv/download', [CVController::class, 'download']);
     Route::get('/profile-links', [ProfileLinksController::class, 'index']);
+
+    // Public — Maintenance plans
+    Route::get('/maintenance/plans', [MaintenanceController::class, 'plans']);
 
     // Public — Blog
     Route::get('/blog/posts', [BlogController::class, 'index']);
@@ -119,6 +124,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/payments/initiate', [PaymentController::class, 'initiate']);
         Route::post('/payments/{id}/proof', [PaymentController::class, 'uploadProof']);
 
+        // Authenticated — Maintenance subscriptions
+        Route::post('/maintenance/subscribe', [MaintenanceController::class, 'subscribe']);
+        Route::patch('/maintenance/{subscription}/cancel', [MaintenanceController::class, 'cancel']);
+        Route::patch('/maintenance/{subscription}/pause', [MaintenanceController::class, 'pause']);
+
         // Authenticated — Blog comments
         Route::post('/blog/posts/{id}/comments', [BlogCommentController::class, 'store']);
 
@@ -165,6 +175,9 @@ Route::prefix('v1')->group(function () {
 
         // Admin payment confirmation (bank transfers)
         Route::patch('/payments/{id}/confirm', [PaymentController::class, 'confirm']);
+
+        // Admin — Maintenance plans
+        Route::apiResource('/maintenance/plans', MaintenanceAdminController::class)->except(['show', 'destroy']);
 
         // Admin — Settings
         Route::get('/settings', [SettingsController::class, 'index']);
