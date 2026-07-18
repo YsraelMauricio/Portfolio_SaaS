@@ -288,6 +288,8 @@ class AuthController extends Controller
         $user->two_factor_enabled = true;
         $user->save();
 
+        session(['2fa_verified' => true]);
+
         return response()->json([
             'data' => [
                 'message' => '2FA has been enabled successfully.',

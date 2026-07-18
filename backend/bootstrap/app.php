@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => RoleMiddleware::class,
             '2fa' => EnsureTwoFactorEnabled::class,
+            '2fa.verified' => \App\Http\Middleware\EnsureTwoFactorVerified::class,
         ]);
     })
     ->withSchedule(function (Schedule $schedule): void {

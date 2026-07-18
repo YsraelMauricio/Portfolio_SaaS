@@ -136,7 +136,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // Admin quote CRUD (separate from the auth:sanctum group to avoid nesting issues)
-    Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+    Route::middleware(['auth:sanctum', 'role:admin', '2fa', '2fa.verified'])->prefix('admin')->group(function () {
         Route::get('/quotes/categories', [QuoteAdminController::class, 'indexCategories']);
         Route::post('/quotes/categories', [QuoteAdminController::class, 'storeCategory']);
         Route::patch('/quotes/categories/{id}', [QuoteAdminController::class, 'updateCategory']);
