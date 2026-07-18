@@ -41,7 +41,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/quotes/categories', [QuoteController::class, 'categories']);
     Route::get('/quotes/product-types', [QuoteController::class, 'productTypes']);
     Route::get('/quotes/modifiers', [QuoteController::class, 'modifiers']);
-    Route::post('/quotes/calculate', [QuoteController::class, 'calculate'])->middleware('throttle:30,1');
+    Route::post('/quotes/calculate', [QuoteController::class, 'calculate'])->middleware('throttle:60,1');
     Route::get('/quotes/next-available-start-date', [QuoteController::class, 'nextAvailableStartDate']);
 
     // Public — Documenso webhook (signature verified inside the controller)
