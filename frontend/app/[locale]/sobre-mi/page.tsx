@@ -98,7 +98,7 @@ export default function AboutPage() {
               href="/cotizar"
               className="px-8 py-3 border border-[var(--glass-border)] text-text font-semibold rounded-lg hover:bg-white/10 transition-colors"
             >
-              {t('cta', { default: 'Get a Quote' })}
+              {t('cta')}
             </Link>
           </div>
         </div>

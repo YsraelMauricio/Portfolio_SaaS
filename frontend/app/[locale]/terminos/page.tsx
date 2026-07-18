@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 export default async function TermsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await useTranslations('Terms');
+  const t = await getTranslations('Terms');
 
   return (
     <div className="flex flex-col flex-1">

@@ -29,6 +29,24 @@ export function clearAuthToken(): void {
 }
 
 /**
+ * Log out the user by clearing the token and posting to the logout endpoint.
+ */
+export async function logout(): Promise<void> {
+  localStorage.removeItem('auth_token');
+  try {
+    await fetch(`${API_BASE}/auth/logout`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+        Accept: 'application/json',
+      },
+    });
+  } catch {
+    // Silently fail — token is already cleared locally
+  }
+}
+
+/**
  * Generic fetch without auth (for public endpoints).
  */
 export async function fetchApi<T>(
