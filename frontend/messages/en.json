@@ -44,10 +44,13 @@
   },
 
   "Navigation": {
+    "brandName": "Ysrael Mauricio",
     "home": "Home",
     "services": "Services",
     "portfolio": "Portfolio",
+    "maintenance": "Maintenance",
     "blog": "Blog",
+    "about": "About",
     "contact": "Contact",
     "getQuote": "Get a Quote",
     "dashboard": "Dashboard",
@@ -87,23 +90,30 @@
   },
 
   "Auth": {
-    "loginTitle": "Sign In",
-    "registerTitle": "Create Account",
+    "loginTitle": "Sign in",
+    "registerTitle": "Create an account",
+    "name": "Full name",
     "email": "Email",
     "password": "Password",
-    "name": "Name",
+    "confirmPassword": "Confirm password",
     "rememberMe": "Remember me",
     "forgotPassword": "Forgot password?",
-    "loginButton": "Sign In",
-    "registerButton": "Create Account",
+    "loginButton": "Sign in",
+    "registerButton": "Create account",
+    "loggingIn": "Signing in...",
+    "registering": "Creating account...",
+    "loginError": "Invalid email or password.",
+    "registerError": "Registration failed. Please try again.",
+    "needAccount": "Need an account? Register",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
     "loginWithGoogle": "Continue with Google",
     "loginWithGitHub": "Continue with GitHub",
     "loginWithFacebook": "Continue with Facebook",
     "logout": "Sign out",
     "noAccount": "Don't have an account?",
-    "hasAccount": "Already have an account?",
     "registerLink": "Register",
-    "loginLink": "Sign In",
+    "loginLink": "Sign in",
     "orContinueWith": "or continue with",
     "twoFactorTitle": "Two-Factor Authentication",
     "twoFactorCode": "Authentication Code",
@@ -444,5 +454,64 @@
       "offline": "Offline"
     },
     "close_stale": "This conversation has been closed due to inactivity. Start a new chat if you need help."
+  },
+
+  "Services": {
+    "title": "Services",
+    "subtitle": "Custom software solutions tailored to your needs, from web to desktop.",
+    "webTitle": "Web Development",
+    "webDesc": "Modern web applications, APIs, and platforms using the latest technologies. Includes WordPress solutions.",
+    "mobileTitle": "Mobile Development",
+    "mobileDesc": "Native and cross-platform mobile applications for iOS and Android.",
+    "desktopTitle": "Desktop Development",
+    "desktopDesc": "Cross-platform desktop applications with modern interfaces.",
+    "maintenanceTitle": "Maintenance & Support",
+    "maintenanceDesc": "Ongoing maintenance, updates, and technical support for your existing software.",
+    "cta": "Get a Quote"
+  },
+
+  "About": {
+    "title": "About Me",
+    "subtitle": "Software developer passionate about building great digital experiences.",
+    "bio": "I'm a software developer with experience in web, mobile, and desktop development. I specialize in creating custom solutions that help businesses grow and thrive in the digital landscape.",
+    "skills": "Skills & Technologies",
+    "downloadCv": "Download CV",
+    "connect": "Let's Connect"
+  },
+
+  "Maintenance": {
+    "title": "Maintenance Plans",
+    "subtitle": "Keep your software running smoothly with our maintenance and support plans.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "basic": "Basic",
+    "basicDesc": "Essential maintenance for small projects.",
+    "pro": "Pro",
+    "proDesc": "Comprehensive support for growing applications.",
+    "enterprise": "Enterprise",
+    "enterpriseDesc": "Full-service maintenance for critical systems.",
+    "subscribe": "Subscribe",
+    "loginRequired": "Please log in to subscribe",
+    "features": ["Security updates", "Bug fixes", "Priority support", "Performance monitoring"]
+  },
+
+  "Privacy": {
+    "title": "Privacy Policy",
+    "content": "Your privacy is important to us. This policy outlines how we collect, use, and protect your personal information..."
+  },
+
+  "Terms": {
+    "title": "Terms of Service",
+    "content": "By using our services, you agree to these terms. Please read them carefully..."
+  },
+
+  "Cookies": {
+    "title": "Cookie Policy",
+    "content": "We use cookies to enhance your browsing experience and analyze site traffic..."
+  },
+
+  "Legal": {
+    "title": "Legal Notice",
+    "content": "This legal notice governs the use of the website ysraelmauricio.com..."
   }
 }

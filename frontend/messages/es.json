@@ -44,10 +44,13 @@
   },
 
   "Navigation": {
+    "brandName": "Ysrael Mauricio",
     "home": "Inicio",
     "services": "Servicios",
     "portfolio": "Portafolio",
+    "maintenance": "Mantenimiento",
     "blog": "Blog",
+    "about": "Sobre mí",
     "contact": "Contacto",
     "getQuote": "Cotizar",
     "dashboard": "Panel",
@@ -87,23 +90,30 @@
   },
 
   "Auth": {
-    "loginTitle": "Iniciar Sesión",
-    "registerTitle": "Crear Cuenta",
+    "loginTitle": "Iniciar sesión",
+    "registerTitle": "Crear una cuenta",
+    "name": "Nombre completo",
     "email": "Correo electrónico",
     "password": "Contraseña",
-    "name": "Nombre",
+    "confirmPassword": "Confirmar contraseña",
     "rememberMe": "Recordarme",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "loginButton": "Iniciar Sesión",
-    "registerButton": "Crear Cuenta",
+    "loginButton": "Iniciar sesión",
+    "registerButton": "Crear cuenta",
+    "loggingIn": "Iniciando sesión...",
+    "registering": "Creando cuenta...",
+    "loginError": "Correo o contraseña incorrectos.",
+    "registerError": "Registro fallido. Intenta de nuevo.",
+    "needAccount": "¿No tienes cuenta? Regístrate",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "signIn": "Iniciar sesión",
     "loginWithGoogle": "Continuar con Google",
     "loginWithGitHub": "Continuar con GitHub",
     "loginWithFacebook": "Continuar con Facebook",
     "logout": "Cerrar sesión",
     "noAccount": "¿No tienes una cuenta?",
-    "hasAccount": "¿Ya tienes una cuenta?",
     "registerLink": "Registrarse",
-    "loginLink": "Iniciar Sesión",
+    "loginLink": "Iniciar sesión",
     "orContinueWith": "o continúa con",
     "twoFactorTitle": "Autenticación de Dos Factores",
     "twoFactorCode": "Código de autenticación",
@@ -444,5 +454,64 @@
       "offline": "Fuera de línea"
     },
     "close_stale": "Esta conversación se ha cerrado por inactividad. Inicia un nuevo chat si necesitas ayuda."
+  },
+
+  "Services": {
+    "title": "Servicios",
+    "subtitle": "Soluciones de software personalizadas para tus necesidades, desde web hasta escritorio.",
+    "webTitle": "Desarrollo Web",
+    "webDesc": "Aplicaciones web modernas, APIs y plataformas usando las últimas tecnologías. Incluye soluciones WordPress.",
+    "mobileTitle": "Desarrollo Móvil",
+    "mobileDesc": "Aplicaciones móviles nativas y multiplataforma para iOS y Android.",
+    "desktopTitle": "Desarrollo de Escritorio",
+    "desktopDesc": "Aplicaciones de escritorio multiplataforma con interfaces modernas.",
+    "maintenanceTitle": "Mantenimiento y Soporte",
+    "maintenanceDesc": "Mantenimiento continuo, actualizaciones y soporte técnico para tu software existente.",
+    "cta": "Cotizar"
+  },
+
+  "About": {
+    "title": "Sobre Mí",
+    "subtitle": "Desarrollador de software apasionado por crear grandes experiencias digitales.",
+    "bio": "Soy un desarrollador de software con experiencia en desarrollo web, móvil y de escritorio. Me especializo en crear soluciones personalizadas que ayudan a las empresas a crecer y prosperar.",
+    "skills": "Habilidades y Tecnologías",
+    "downloadCv": "Descargar CV",
+    "connect": "Conectemos"
+  },
+
+  "Maintenance": {
+    "title": "Planes de Mantenimiento",
+    "subtitle": "Mantén tu software funcionando sin problemas con nuestros planes de mantenimiento y soporte.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "basic": "Básico",
+    "basicDesc": "Mantenimiento esencial para proyectos pequeños.",
+    "pro": "Pro",
+    "proDesc": "Soporte integral para aplicaciones en crecimiento.",
+    "enterprise": "Empresarial",
+    "enterpriseDesc": "Mantenimiento completo para sistemas críticos.",
+    "subscribe": "Suscribirse",
+    "loginRequired": "Inicia sesión para suscribirte",
+    "features": ["Actualizaciones de seguridad", "Corrección de errores", "Soporte prioritario", "Monitoreo de rendimiento"]
+  },
+
+  "Privacy": {
+    "title": "Política de Privacidad",
+    "content": "Tu privacidad es importante para nosotros. Esta política describe cómo recopilamos, usamos y protegemos tu información personal..."
+  },
+
+  "Terms": {
+    "title": "Términos del Servicio",
+    "content": "Al usar nuestros servicios, aceptas estos términos. Por favor, léelos cuidadosamente..."
+  },
+
+  "Cookies": {
+    "title": "Política de Cookies",
+    "content": "Usamos cookies para mejorar tu experiencia de navegación y analizar el tráfico del sitio..."
+  },
+
+  "Legal": {
+    "title": "Aviso Legal",
+    "content": "Este aviso legal regula el uso del sitio web ysraelmauricio.com..."
   }
 }
