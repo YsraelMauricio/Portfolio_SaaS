@@ -37,6 +37,7 @@ class PaymentApiTest extends TestCase
         // Create admin
         $this->admin = User::factory()->create(['name' => 'Admin', 'email' => 'admin@test.com']);
         $this->admin->assignRole('admin');
+        $this->admin->update(['two_factor_enabled' => true]);
 
         // Create client
         $this->client = User::factory()->create(['name' => 'Client', 'email' => 'client@test.com']);
@@ -68,6 +69,8 @@ class PaymentApiTest extends TestCase
         Config::set('services.paypal.client_secret', 'test-paypal-secret');
         Config::set('services.paypal.webhook_id', 'test-webhook-id');
         Config::set('services.documenso.api_token', 'test-documenso-token');
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── POST /api/v1/payments/initiate ────────────────────────────────────

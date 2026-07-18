@@ -31,6 +31,7 @@ class ProjectApiTest extends TestCase
         // Create an admin
         $this->admin = User::factory()->create(['name' => 'Admin', 'email' => 'admin@test.com']);
         $this->admin->assignRole('admin');
+        $this->admin->update(['two_factor_enabled' => true]);
 
         // Create a client
         $this->client = User::factory()->create(['name' => 'Client', 'email' => 'client@test.com']);
@@ -39,6 +40,8 @@ class ProjectApiTest extends TestCase
         // Create another client
         $this->otherClient = User::factory()->create(['name' => 'Other', 'email' => 'other@test.com']);
         $this->otherClient->assignRole('client');
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── GET /api/v1/projects (Index) ──────────────────────────────────────
