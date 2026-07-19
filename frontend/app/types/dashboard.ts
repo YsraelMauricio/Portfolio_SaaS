@@ -12,6 +12,8 @@ export interface User {
 
 export type ProjectStatus =
   | 'submitted'
+  | 'under_review'
+  | 'approved'
   | 'in_development'
   | 'delivered'
   | 'cancelled';

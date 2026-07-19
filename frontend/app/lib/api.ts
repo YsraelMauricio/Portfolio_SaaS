@@ -4,56 +4,47 @@ export interface ApiResponse<T> {
   errors?: string[];
 }
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 /**
- * Get the stored auth token (Sanctum Bearer token).
+ * Sanctum SPA cookie-based auth: no token is stored in JS-accessible
+ * storage. `credentials: 'include'` sends the httpOnly session cookie
+ * automatically on every request.
  */
+
+// Compatibility stubs for code that still references token-based auth.
+// These are kept to avoid breaking imports across the codebase during
+// the migration. They return null / no-op.
 export function getAuthToken(): string | null {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem('auth_token');
+  return null;
 }
-
-/**
- * Store the auth token after login.
- */
-export function setAuthToken(token: string): void {
-  localStorage.setItem('auth_token', token);
-}
-
-/**
- * Remove the auth token on logout.
- */
 export function clearAuthToken(): void {
-  localStorage.removeItem('auth_token');
+  // no-op — cookies are server-managed
+}
+export function setAuthToken(_token: string): void {
+  // no-op — cookies are server-managed
 }
 
 /**
- * Log out the user by clearing the token and posting to the logout endpoint.
+ * Call once before login/register to get Sanctum's CSRF cookie set.
  */
-export async function logout(): Promise<void> {
-  localStorage.removeItem('auth_token');
-  try {
-    await fetch(`${API_BASE}/auth/logout`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-        Accept: 'application/json',
-      },
-    });
-  } catch {
-    // Silently fail — token is already cleared locally
-  }
+export async function ensureCsrfCookie(): Promise<void> {
+  await fetch(`${API_BASE.replace('/api/v1', '')}/sanctum/csrf-cookie`, {
+    credentials: 'include',
+  });
 }
 
-/**
- * Generic fetch without auth (for public endpoints).
- */
+function getCsrfTokenFromCookie(): string {
+  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : '';
+}
+
 export async function fetchApi<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<ApiResponse<T>> {
   const res = await fetch(`${API_BASE}${endpoint}`, {
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -71,53 +62,36 @@ export async function fetchApi<T>(
 }
 
 /**
- * Build headers for authenticated requests.
- */
-function buildAuthHeaders(options?: RequestInit): HeadersInit {
-  const token = getAuthToken();
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  // Only set Content-Type for non-FormData bodies
-  if (!(options?.body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
-  }
-
-  return headers;
-}
-
-/**
- * Fetch with authentication (Bearer token from localStorage).
+ * Authenticated requests — with cookie auth, this is the same as
+ * fetchApi plus the CSRF header for state-changing verbs.
  */
 export async function fetchApiWithAuth<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<ApiResponse<T>> {
-  const headers = buildAuthHeaders(options);
-
-  const res = await fetch(`${API_BASE}${endpoint}`, {
+  const isMutation = !!options?.method && options.method !== 'GET';
+  return fetchApi<T>(endpoint, {
     ...options,
     headers: {
-      ...headers,
       ...(options?.headers || {}),
+      ...(isMutation ? { 'X-XSRF-TOKEN': getCsrfTokenFromCookie() } : {}),
     },
   });
+}
 
-  if (!res.ok) {
-    if (res.status === 401) {
-      // Token expired or invalid — clear it
-      clearAuthToken();
-    }
-    const error = await res.json().catch(() => ({ errors: ['Request failed'] }));
-    throw new Error(error.errors?.[0] || `HTTP ${res.status}`);
-  }
+/**
+ * Login/logout no longer manage a stored token — the cookie IS the session.
+ */
+export async function login(email: string, password: string): Promise<void> {
+  await ensureCsrfCookie();
+  await fetchApiWithAuth('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+}
 
-  return res.json();
+export async function logout(): Promise<void> {
+  await fetchApiWithAuth('/auth/logout', { method: 'POST' });
 }
 
 /**
@@ -127,20 +101,18 @@ export async function fetchApiRaw(
   endpoint: string,
   options?: RequestInit,
 ): Promise<Response> {
-  const headers = buildAuthHeaders(options);
-
+  const isMutation = !!options?.method && options.method !== 'GET';
   const res = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
+    credentials: 'include',
     headers: {
-      ...headers,
+      Accept: 'application/json',
       ...(options?.headers || {}),
+      ...(isMutation ? { 'X-XSRF-TOKEN': getCsrfTokenFromCookie() } : {}),
     },
   });
 
   if (!res.ok) {
-    if (res.status === 401) {
-      clearAuthToken();
-    }
     const error = await res.json().catch(() => ({ errors: ['Request failed'] }));
     throw new Error(error.errors?.[0] || `HTTP ${res.status}`);
   }
@@ -151,6 +123,29 @@ export async function fetchApiRaw(
 /**
  * Upload a file with auth (for FormData-based endpoints).
  */
+export async function uploadFileWithAuth<T>(
+  endpoint: string,
+  formData: FormData,
+): Promise<ApiResponse<T>> {
+  const isMutation = true;
+  const res = await fetch(`${API_BASE}${endpoint}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      ...(isMutation ? { 'X-XSRF-TOKEN': getCsrfTokenFromCookie() } : {}),
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ errors: ['Upload failed'] }));
+    throw new Error(error.errors?.[0] || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
 /**
  * Fetch blog posts list (public).
  */
@@ -240,33 +235,4 @@ export async function submitTestimonial(
     method: 'POST',
     body: JSON.stringify(data),
   });
-}
-
-export async function uploadFileWithAuth<T>(
-  endpoint: string,
-  formData: FormData,
-): Promise<ApiResponse<T>> {
-  const token = getAuthToken();
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-  };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const res = await fetch(`${API_BASE}${endpoint}`, {
-    method: 'POST',
-    headers,
-    body: formData,
-  });
-
-  if (!res.ok) {
-    if (res.status === 401) {
-      clearAuthToken();
-    }
-    const error = await res.json().catch(() => ({ errors: ['Upload failed'] }));
-    throw new Error(error.errors?.[0] || `HTTP ${res.status}`);
-  }
-
-  return res.json();
 }

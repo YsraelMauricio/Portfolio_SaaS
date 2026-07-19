@@ -1,23 +1,18 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import { getAuthToken } from './api';
+import { useEffect, useState } from 'react';
+import { fetchApiWithAuth } from '@/app/lib/api';
+import type { User } from '@/app/types/dashboard';
 
 export function useAuth() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = () => {
-      const token = getAuthToken();
-      setIsLoggedIn(!!token);
-    };
-
-    checkAuth();
-
-    // Re-check on window focus (in case another tab logged out)
-    window.addEventListener('focus', checkAuth);
-    return () => window.removeEventListener('focus', checkAuth);
+    fetchApiWithAuth<{ user: User } | User>('/auth/user')
+      .then((res) => setUser(res.data as unknown as User))
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
   }, []);
 
-  return { isLoggedIn };
+  return { user, isLoggedIn: !!user, loading };
 }
