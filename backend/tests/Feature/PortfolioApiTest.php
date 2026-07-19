@@ -29,6 +29,7 @@ class PortfolioApiTest extends TestCase
 
         $this->admin = User::factory()->create();
         $this->admin->assignRole('admin');
+        $this->admin->update(['two_factor_enabled' => true]);
 
         $this->client = User::factory()->create();
         $this->client->assignRole('client');
@@ -59,6 +60,8 @@ class PortfolioApiTest extends TestCase
         ]);
 
         Storage::fake('public');
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── Public: GET /portfolio ─────────────────────────────────────────────

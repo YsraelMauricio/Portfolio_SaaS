@@ -5,6 +5,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 
 export default function Footer() {
   const t = useTranslations('Footer');
+  const nav = useTranslations('Navigation');
   const pathname = usePathname();
 
   const isAdmin = pathname?.startsWith('/admin');
@@ -19,8 +20,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <Link href="/" className="text-xl font-bold text-primary">
-              Portfolio SaaS
+            <Link href="/" className="text-xl font-bold text-primary font-display">
+              {nav('brandName')}
             </Link>
             <p className="mt-2 text-sm text-text-muted">
               Professional software development services.
@@ -47,7 +48,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-[var(--glass-border)] text-center text-xs text-text-muted">
-          &copy; {new Date().getFullYear()} Portfolio SaaS. {t('rights')}
+          &copy; {new Date().getFullYear()} {nav('brandName')}. {t('rights')}
         </div>
       </div>
     </footer>

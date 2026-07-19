@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import Script from 'next/script';
 import QuoteWizard from '@/app/[locale]/components/QuoteWizard';
+import { routing } from '@/i18n/routing';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ysraelmauricio.com';
 
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       'Configure your project, choose options, and get an instant price and timeline estimate for custom software development services.',
     alternates: {
-      canonical: `${APP_URL}${locale === 'en' ? '' : `/${locale}`}/cotizar`,
+      canonical: `${APP_URL}${locale === routing.defaultLocale ? '' : `/${locale}`}/cotizar`,
     },
   };
 }

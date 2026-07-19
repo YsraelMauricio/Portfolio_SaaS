@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Admin\BlogAdminController;
 use App\Http\Controllers\Api\V1\Admin\CVController;
 use App\Http\Controllers\Api\V1\Admin\DashboardController;
 use App\Http\Controllers\Api\V1\Admin\DeletedUsersController;
+use App\Http\Controllers\Api\V1\Admin\MaintenanceAdminController;
 use App\Http\Controllers\Api\V1\Admin\PortfolioAdminController;
 use App\Http\Controllers\Api\V1\Admin\QuoteAdminController;
 use App\Http\Controllers\Api\V1\Admin\SettingsController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Api\V1\BlogController;
 use App\Http\Controllers\Api\V1\ChatbotController;
 use App\Http\Controllers\Api\V1\ContractController;
 use App\Http\Controllers\Api\V1\DocumensoWebhookController;
+use App\Http\Controllers\Api\V1\MaintenanceController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\PortfolioController;
 use App\Http\Controllers\Api\V1\ProfileLinksController;
@@ -39,7 +41,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/quotes/categories', [QuoteController::class, 'categories']);
     Route::get('/quotes/product-types', [QuoteController::class, 'productTypes']);
     Route::get('/quotes/modifiers', [QuoteController::class, 'modifiers']);
-    Route::post('/quotes/calculate', [QuoteController::class, 'calculate'])->middleware('throttle:30,1');
+    Route::post('/quotes/calculate', [QuoteController::class, 'calculate'])->middleware('throttle:60,1');
     Route::get('/quotes/next-available-start-date', [QuoteController::class, 'nextAvailableStartDate']);
 
     // Public — Documenso webhook (signature verified inside the controller)
@@ -54,6 +56,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/cv', [CVController::class, 'metadata']);
     Route::get('/cv/download', [CVController::class, 'download']);
     Route::get('/profile-links', [ProfileLinksController::class, 'index']);
+
+    // Public — Maintenance plans
+    Route::get('/maintenance/plans', [MaintenanceController::class, 'plans']);
 
     // Public — Blog
     Route::get('/blog/posts', [BlogController::class, 'index']);
@@ -119,6 +124,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/payments/initiate', [PaymentController::class, 'initiate']);
         Route::post('/payments/{id}/proof', [PaymentController::class, 'uploadProof']);
 
+        // Authenticated — Maintenance subscriptions
+        Route::post('/maintenance/subscribe', [MaintenanceController::class, 'subscribe']);
+        Route::patch('/maintenance/{subscription}/cancel', [MaintenanceController::class, 'cancel']);
+        Route::patch('/maintenance/{subscription}/pause', [MaintenanceController::class, 'pause']);
+
         // Authenticated — Blog comments
         Route::post('/blog/posts/{id}/comments', [BlogCommentController::class, 'store']);
 
@@ -136,7 +146,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // Admin quote CRUD (separate from the auth:sanctum group to avoid nesting issues)
-    Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+    Route::middleware(['auth:sanctum', 'role:admin', '2fa', '2fa.verified'])->prefix('admin')->group(function () {
         Route::get('/quotes/categories', [QuoteAdminController::class, 'indexCategories']);
         Route::post('/quotes/categories', [QuoteAdminController::class, 'storeCategory']);
         Route::patch('/quotes/categories/{id}', [QuoteAdminController::class, 'updateCategory']);
@@ -165,6 +175,9 @@ Route::prefix('v1')->group(function () {
 
         // Admin payment confirmation (bank transfers)
         Route::patch('/payments/{id}/confirm', [PaymentController::class, 'confirm']);
+
+        // Admin — Maintenance plans
+        Route::apiResource('/maintenance/plans', MaintenanceAdminController::class)->except(['show', 'destroy']);
 
         // Admin — Settings
         Route::get('/settings', [SettingsController::class, 'index']);

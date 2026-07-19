@@ -2,7 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
-import { getAuthToken, clearAuthToken } from '@/app/lib/api';
+import { logout } from '@/app/lib/api';
+import { useAuth } from '@/app/lib/useAuth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -12,7 +13,7 @@ export default function Navigation() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const isLoggedIn = typeof window !== 'undefined' && !!getAuthToken();
+  const { isLoggedIn } = useAuth();
   const isAdmin = pathname?.startsWith('/admin');
   const isDashboard = pathname?.startsWith('/dashboard');
 
@@ -20,14 +21,17 @@ export default function Navigation() {
   if (isAdmin || isDashboard) return null;
 
   const handleLogout = () => {
-    clearAuthToken();
+    logout();
     router.push('/');
   };
 
   const navLinks = [
     { href: '/', label: t('home') },
+    { href: '/servicios', label: t('services') },
     { href: '/portfolio', label: t('portfolio') },
+    { href: '/mantenimiento', label: t('maintenance') },
     { href: '/blog', label: t('blog') },
+    { href: '/sobre-mi', label: t('about') },
     { href: '/cotizar', label: t('getQuote') },
   ];
 
@@ -36,8 +40,8 @@ export default function Navigation() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="text-xl font-bold text-primary">
-            Portfolio SaaS
+          <Link href="/" className="text-xl font-bold text-primary font-display">
+            {t('brandName')}
           </Link>
 
           {/* Desktop nav */}
