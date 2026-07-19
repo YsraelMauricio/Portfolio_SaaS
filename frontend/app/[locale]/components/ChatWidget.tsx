@@ -604,7 +604,7 @@ export default function ChatWidget() {
                   <button
                     type="button"
                     onClick={handleSendEscalation}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium bg-accent text-[#1E1B2E] hover:brightness-110 transition-all"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium bg-accent text-bg hover:brightness-110 transition-all"
                   >
                   {t('escalation.send_button', {
                     channel: t(`escalation.${selectedChannel}`),
@@ -675,7 +675,7 @@ export default function ChatWidget() {
                     type="button"
                     onClick={handleSend}
                     disabled={!inputValue.trim() || isSending}
-                    className="p-2.5 bg-accent text-[#1E1B2E] rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                    className="p-2.5 bg-accent text-bg rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     aria-label={isSending ? t('chat.sending') : t('chat.send')}
                   >
                     {isSending ? icons.spinner : icons.send}

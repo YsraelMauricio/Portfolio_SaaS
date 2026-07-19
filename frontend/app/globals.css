@@ -2,9 +2,13 @@
 
 /* ─── Design tokens: Índigo Profundo ─── */
 
+/* ─── Dark mode variant for Tailwind v4 (uses data-theme attr, not prefers-color-scheme) ─── */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   /* Default: Dark mode */
-  --bg: #09090B;
+  --bg: #050507;
   --primary: #6D28D9;
   --accent: #00D4FF;
   --secondary: #34D399;
@@ -40,6 +44,7 @@
   --glass-border: rgba(255, 255, 255, 0.6);
   --glass-shadow: 0 8px 32px rgba(109, 40, 217, 0.14);
   --glass-inner-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --glass-gradient: linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(0, 180, 230, 0.10));
 }
 
 /* ─── Tailwind v4 theme mapping ─── */
@@ -97,6 +102,7 @@ body {
    */
   .glass-card {
     border-radius: 20px;
+    padding: 26px 24px;
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
     border: 1px solid var(--glass-border);

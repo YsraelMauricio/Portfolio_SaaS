@@ -18,21 +18,15 @@ export default function ThemeScript() {
             try {
               var theme = localStorage.getItem('theme');
               if (theme === 'light' || theme === 'dark') {
-                if (theme === 'light') {
-                  document.documentElement.setAttribute('data-theme', 'light');
-                } else {
-                  document.documentElement.removeAttribute('data-theme');
-                }
+                document.documentElement.setAttribute('data-theme', theme);
               } else {
                 // No stored preference — check system preference
                 var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-                if (prefersLight) {
-                  document.documentElement.setAttribute('data-theme', 'light');
-                }
-                // Otherwise keep default (no attribute = dark mode)
+                document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
               }
             } catch(e) {
-              // localStorage unavailable — use default dark mode
+              // localStorage unavailable — default dark
+              document.documentElement.setAttribute('data-theme', 'dark');
             }
           })();
         `,

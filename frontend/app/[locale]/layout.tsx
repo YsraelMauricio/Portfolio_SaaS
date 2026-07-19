@@ -119,9 +119,9 @@ export default async function LocaleLayout({ children, params }: Props) {
           aria-hidden="true"
           style={{
             background: `
-              radial-gradient(ellipse 80% 60% at 0% 0%, rgba(109, 40, 217, 0.15) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at 100% 20%, rgba(0, 212, 255, 0.10) 0%, transparent 50%),
-              radial-gradient(ellipse 50% 40% at 50% 100%, rgba(52, 211, 153, 0.08) 0%, transparent 50%)
+              radial-gradient(circle at 18% 22%, rgba(0, 212, 255, 0.16) 0%, transparent 40%),
+              radial-gradient(circle at 85% 18%, rgba(109, 40, 217, 0.22) 0%, transparent 45%),
+              radial-gradient(circle at 25% 82%, rgba(52, 211, 153, 0.14) 0%, transparent 42%)
             `,
           }}
         />
