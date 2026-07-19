@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureTwoFactorEnabled;
+use App\Http\Middleware\EnsureTwoFactorVerified;
 use App\Jobs\AnonymizeAccounts;
 use App\Jobs\CloseStaleConversations;
 use App\Jobs\DatabaseBackupJob;
@@ -29,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => RoleMiddleware::class,
             '2fa' => EnsureTwoFactorEnabled::class,
-            '2fa.verified' => \App\Http\Middleware\EnsureTwoFactorVerified::class,
+            '2fa.verified' => EnsureTwoFactorVerified::class,
         ]);
     })
     ->withSchedule(function (Schedule $schedule): void {

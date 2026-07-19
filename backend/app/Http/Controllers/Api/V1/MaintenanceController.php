@@ -41,6 +41,7 @@ class MaintenanceController extends Controller
     {
         $this->authorize('update', $subscription);
         $subscription->update(['status' => 'cancelled']);
+
         return response()->json(['data' => $subscription]);
     }
 
@@ -48,6 +49,7 @@ class MaintenanceController extends Controller
     {
         $this->authorize('update', $subscription);
         $subscription->update(['status' => 'paused']);
+
         return response()->json(['data' => $subscription]);
     }
 }
