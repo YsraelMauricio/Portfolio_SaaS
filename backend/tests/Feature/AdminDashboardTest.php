@@ -33,10 +33,13 @@ class AdminDashboardTest extends TestCase
         // Create admin
         $this->admin = User::factory()->create(['name' => 'Admin', 'email' => 'admin@test.com']);
         $this->admin->assignRole('admin');
+        $this->admin->update(['two_factor_enabled' => true]);
 
         // Create client
         $this->client = User::factory()->create(['name' => 'Client', 'email' => 'client@test.com']);
         $this->client->assignRole('client');
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── GET /api/v1/settings/public ───────────────────────────────────────────

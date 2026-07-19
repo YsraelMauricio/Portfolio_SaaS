@@ -38,6 +38,7 @@ class QuoteAdminApiTest extends TestCase
         $this->adminToken = $adminResponse->json('data.token');
         $adminUser = User::where('email', 'admin@example.com')->first();
         $adminUser->assignRole('admin');
+        $adminUser->update(['two_factor_enabled' => true]);
 
         // Create a client user
         $clientResponse = $this->postJson('/api/v1/auth/register', [
@@ -47,6 +48,8 @@ class QuoteAdminApiTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
         $this->clientToken = $clientResponse->json('data.token');
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── GET /api/v1/admin/quotes/categories ─────────────────────────────────

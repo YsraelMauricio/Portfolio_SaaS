@@ -31,6 +31,7 @@ class TestimonialApiTest extends TestCase
 
         $this->admin = User::factory()->create();
         $this->admin->assignRole('admin');
+        $this->admin->update(['two_factor_enabled' => true]);
 
         $this->client = User::factory()->create();
         $this->client->assignRole('client');
@@ -50,10 +51,12 @@ class TestimonialApiTest extends TestCase
         ]);
 
         $this->rejected = Testimonial::create([
-            'client_name' => 'Bob',
+            'client_name' => 'Bob Johnson',
             'content' => 'Not good.',
             'status' => 'rejected',
         ]);
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── Public: GET /testimonials ───────────────────────────────────────────

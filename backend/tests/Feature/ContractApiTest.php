@@ -34,6 +34,7 @@ class ContractApiTest extends TestCase
         // Create an admin user
         $this->admin = User::factory()->create(['name' => 'Admin User', 'email' => 'admin@example.com']);
         $this->admin->assignRole('admin');
+        $this->admin->update(['two_factor_enabled' => true]);
 
         // Create a client user
         $this->client = User::factory()->create(['name' => 'Client User', 'email' => 'client@example.com']);
@@ -42,6 +43,8 @@ class ContractApiTest extends TestCase
         // Create another client (for the "other client's contract" tests)
         $this->otherClient = User::factory()->create(['name' => 'Other Client', 'email' => 'other@example.com']);
         $this->otherClient->assignRole('client');
+
+        $this->withSession(['2fa_verified' => true]);
     }
 
     // ─── POST /api/v1/admin/contracts (Store) ──────────────────────────────
