@@ -61,7 +61,7 @@ export default function ClientProjectsPage() {
           <p className="text-text-muted">{t('noProjects')}</p>
           <Link
             href="/cotizar"
-            className="mt-3 inline-block px-6 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 transition-all text-sm"
+            className="mt-3 inline-block px-6 py-2.5 bg-accent text-bg font-medium rounded-xl hover:brightness-110 transition-all text-sm"
           >
             {t('getQuote')}
           </Link>

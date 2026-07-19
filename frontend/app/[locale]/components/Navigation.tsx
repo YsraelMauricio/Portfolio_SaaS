@@ -87,7 +87,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 transition-all"
+                className="px-4 py-2 text-sm font-medium bg-accent text-bg rounded-xl hover:brightness-110 transition-all"
               >
                 {t('signIn')}
               </Link>
@@ -149,7 +149,7 @@ export default function Navigation() {
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 text-center"
+                    className="block px-4 py-2.5 text-sm font-medium bg-accent text-bg rounded-xl hover:brightness-110 text-center"
                   >
                     {t('signIn')}
                   </Link>

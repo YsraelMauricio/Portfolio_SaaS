@@ -220,7 +220,7 @@ export default function BlogDetailClient() {
                 <button
                   type="submit"
                   disabled={submittingComment}
-                  className="px-6 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 disabled:opacity-50 transition-all text-sm"
+                  className="px-6 py-2.5 bg-accent text-bg font-medium rounded-xl hover:brightness-110 disabled:opacity-50 transition-all text-sm"
                 >
                   {submittingComment ? 'Submitting...' : t('submitComment')}
                 </button>

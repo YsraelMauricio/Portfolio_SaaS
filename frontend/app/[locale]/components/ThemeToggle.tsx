@@ -14,11 +14,7 @@ export default function ThemeToggle() {
     if (typeof window === 'undefined') return 'dark';
     const saved = localStorage.getItem('theme');
     const initial = saved === 'light' || saved === 'dark' ? saved : 'dark';
-    if (initial === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
+    document.documentElement.setAttribute('data-theme', initial);
     return initial;
   });
 
@@ -38,11 +34,7 @@ export default function ThemeToggle() {
   const toggle = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
-    if (next === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
+    document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   };
 

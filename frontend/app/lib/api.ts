@@ -4,7 +4,9 @@ export interface ApiResponse<T> {
   errors?: string[];
 }
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined'
+  ? `${window.location.origin}/api/v1`
+  : 'http://localhost:8080/api/v1');
 
 /**
  * Sanctum SPA cookie-based auth: no token is stored in JS-accessible
@@ -22,6 +24,7 @@ export function clearAuthToken(): void {
   // no-op — cookies are server-managed
 }
 export function setAuthToken(_token: string): void {
+  void _token;
   // no-op — cookies are server-managed
 }
 
@@ -45,12 +48,12 @@ export async function fetchApi<T>(
 ): Promise<ApiResponse<T>> {
   const res = await fetch(`${API_BASE}${endpoint}`, {
     credentials: 'include',
+    ...options,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       ...(options?.headers || {}),
     },
-    ...options,
   });
 
   if (!res.ok) {
@@ -87,6 +90,19 @@ export async function login(email: string, password: string): Promise<void> {
   await fetchApiWithAuth('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
+  });
+}
+
+export async function register(data: {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}): Promise<void> {
+  await ensureCsrfCookie();
+  await fetchApiWithAuth('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(data),
   });
 }
 
