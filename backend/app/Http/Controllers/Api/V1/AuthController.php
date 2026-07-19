@@ -86,11 +86,26 @@ class AuthController extends Controller
     }
 
     /**
-     * Log out the current user (revoke the current token).
+     * Log out the current user (revoke token + invalidate session).
+     *
+     * Supports both token-based auth (mobile/API clients) and
+     * Sanctum SPA session cookie auth (browser).
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        // Revoke token if using token-based auth
+        if ($token = $request->user()->currentAccessToken()) {
+            $token->delete();
+        }
+
+        // Invalidate the session (required for SPA cookie auth).
+        // API routes don't have session middleware by default,
+        // so only do this when a session is available.
+        if ($request->hasSession()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json([
             'data' => [
