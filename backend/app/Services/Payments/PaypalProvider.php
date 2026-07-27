@@ -19,7 +19,7 @@ class PaypalProvider implements PaymentProvider
                     config('services.paypal.client_id'),
                     config('services.paypal.client_secret')
                 )
-                ->post(config('services.paypal.base_url') . '/v1/oauth2/token', [
+                ->post(config('services.paypal.base_url').'/v1/oauth2/token', [
                     'grant_type' => 'client_credentials',
                 ]);
 
@@ -47,6 +47,7 @@ class PaypalProvider implements PaymentProvider
 
         if (empty($webhookId)) {
             Log::error('PayPal webhook ID not configured');
+
             return false;
         }
 
@@ -59,6 +60,7 @@ class PaypalProvider implements PaymentProvider
         if (empty($transmissionId) || empty($transmissionTime) || empty($certUrl)
             || empty($transmissionSig) || empty($authAlgo)) {
             Log::warning('PayPal webhook missing one or more signature headers');
+
             return false;
         }
 
@@ -67,7 +69,7 @@ class PaypalProvider implements PaymentProvider
 
         // Use the real PayPal verification API when credentials are configured (production).
         // Fall back to local HMAC verification when credentials are absent (dev/test).
-        if (!empty($clientId) && !empty($clientSecret)) {
+        if (! empty($clientId) && ! empty($clientSecret)) {
             return $this->verifyViaApi($request, $transmissionId, $transmissionTime, $certUrl, $transmissionSig, $authAlgo, $webhookId);
         }
 
@@ -81,7 +83,7 @@ class PaypalProvider implements PaymentProvider
 
             $response = Http::withToken($accessToken)
                 ->timeout(10)
-                ->post(config('services.paypal.base_url') . '/v1/notifications/verify-webhook-signature', [
+                ->post(config('services.paypal.base_url').'/v1/notifications/verify-webhook-signature', [
                     'transmission_id' => $transmissionId,
                     'transmission_time' => $transmissionTime,
                     'cert_url' => $certUrl,
@@ -97,7 +99,7 @@ class PaypalProvider implements PaymentProvider
 
             $isValid = $verificationStatus === 'SUCCESS';
 
-            if (!$isValid) {
+            if (! $isValid) {
                 Log::warning('PayPal webhook signature verification failed', [
                     'transmission_id' => $transmissionId,
                     'verification_status' => $verificationStatus,
@@ -106,7 +108,8 @@ class PaypalProvider implements PaymentProvider
 
             return $isValid;
         } catch (\Exception $e) {
-            Log::error('PayPal webhook signature verification error: ' . $e->getMessage());
+            Log::error('PayPal webhook signature verification error: '.$e->getMessage());
+
             return false;
         }
     }
@@ -115,6 +118,7 @@ class PaypalProvider implements PaymentProvider
     {
         if (empty($clientSecret)) {
             Log::error('PayPal client secret not configured');
+
             return false;
         }
 
@@ -124,7 +128,7 @@ class PaypalProvider implements PaymentProvider
         $expectedSignature = hash_hmac('sha256', $signedPayload, $clientSecret);
         $isValid = hash_equals($expectedSignature, $request->header('PAYPAL-TRANSMISSION-SIG'));
 
-        if (!$isValid) {
+        if (! $isValid) {
             Log::warning('PayPal webhook signature verification failed (local HMAC)', [
                 'transmission_id' => $transmissionId,
             ]);
@@ -143,7 +147,7 @@ class PaypalProvider implements PaymentProvider
 
         if (empty($providerTransactionId)) {
             $transactions = $resource['transactions'] ?? [];
-            if (!empty($transactions) && isset($transactions[0]['id'])) {
+            if (! empty($transactions) && isset($transactions[0]['id'])) {
                 $providerTransactionId = $transactions[0]['id'];
             }
         }
@@ -158,6 +162,7 @@ class PaypalProvider implements PaymentProvider
                 'provider_transaction_id' => $providerTransactionId,
                 'existing_payment_id' => $existing->id,
             ]);
+
             return $existing;
         }
 
@@ -179,8 +184,11 @@ class PaypalProvider implements PaymentProvider
         ], true);
 
         $status = 'pending';
-        if ($isSuccess) $status = 'confirmed';
-        elseif ($isRejected) $status = 'rejected';
+        if ($isSuccess) {
+            $status = 'confirmed';
+        } elseif ($isRejected) {
+            $status = 'rejected';
+        }
 
         $payment = Payment::create([
             'project_id' => $projectId,
