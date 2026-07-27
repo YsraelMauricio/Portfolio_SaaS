@@ -12,7 +12,10 @@ interface PortfolioItem {
 
 export default async function FeaturedPortfolio() {
   const t = await getTranslations('Home');
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/portfolio?featured=true`, {
+  // Use SERVER_API_URL for SSR (Docker-internal: http://nginx/api/v1)
+  // fallback to NEXT_PUBLIC_API_URL for local dev
+  const apiUrl = process.env.SERVER_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  const res = await fetch(`${apiUrl}/portfolio?featured=true`, {
     next: { revalidate: 3600 },
   });
   const { data: items }: { data: PortfolioItem[] } = await res.json();
