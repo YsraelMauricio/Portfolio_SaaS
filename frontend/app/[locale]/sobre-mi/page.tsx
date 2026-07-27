@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 
 const skills = [
@@ -18,8 +16,8 @@ const skills = [
   'UI / UX Design',
 ];
 
-export default function AboutPage() {
-  const t = useTranslations('About');
+export default async function AboutPage() {
+  const t = await getTranslations('About');
 
   return (
     <div className="flex flex-col flex-1">

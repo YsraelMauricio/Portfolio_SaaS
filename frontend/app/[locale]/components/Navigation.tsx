@@ -6,6 +6,7 @@ import { logout } from '@/app/lib/api';
 import { useAuth } from '@/app/lib/useAuth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navigation() {
   const t = useTranslations('Navigation');
@@ -92,6 +93,7 @@ export default function Navigation() {
                 {t('signIn')}
               </Link>
             )}
+            <ThemeToggle />
             {/* Language switcher */}
             <LocaleSwitcher />
           </div>
@@ -154,6 +156,9 @@ export default function Navigation() {
                     {t('signIn')}
                   </Link>
                 )}
+                <div className="mt-3 px-4">
+                  <ThemeToggle />
+                </div>
                 <div className="mt-3 px-4">
                   <LocaleSwitcher />
                 </div>

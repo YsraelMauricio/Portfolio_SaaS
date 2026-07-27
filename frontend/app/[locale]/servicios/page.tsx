@@ -1,10 +1,8 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 
-export default function ServicesPage() {
-  const t = useTranslations('Services');
+export default async function ServicesPage() {
+  const t = await getTranslations('Services');
 
   const services = [
     {

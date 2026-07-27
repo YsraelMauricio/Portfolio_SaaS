@@ -8,7 +8,7 @@
 
 :root {
   /* Default: Dark mode */
-  --bg: #050507;
+  --bg: #09090B;
   --primary: #6D28D9;
   --accent: #00D4FF;
   --secondary: #34D399;
@@ -93,6 +93,13 @@ body {
   font-size: 16px;
 }
 
+/* ─── Accessibility: visible focus ─── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* ─── Glass surface utilities ─── */
 
 @layer utilities {
@@ -121,6 +128,16 @@ body {
     background: rgba(var(--surface-rgb), 0.85);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
+  }
+
+  .glass-card,
+  .glass-card--light {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-card:hover,
+  .glass-card--light:hover {
+    transform: translateY(-2px);
   }
 }
 

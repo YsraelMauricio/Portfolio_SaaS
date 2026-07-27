@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import Image from 'next/image';
 import { fetchPortfolioProject } from '@/app/lib/api';
 import type { PortfolioProject } from '@/app/types/content';
 
@@ -66,11 +67,13 @@ export default function PortfolioDetailClient() {
         {/* Hero */}
         <div className="mt-6">
           {project.featured_image_url && (
-            <div className="rounded-xl overflow-hidden mb-8">
-              <img
+            <div className="relative aspect-video rounded-xl overflow-hidden mb-8">
+              <Image
                 src={project.featured_image_url}
                 alt={project.title}
-                className="w-full h-auto object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
               />
             </div>
           )}
