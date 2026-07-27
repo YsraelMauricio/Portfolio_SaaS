@@ -70,12 +70,16 @@ services:
       redis:
         condition: service_healthy
     volumes:
+      - ../backend:/var/www/html:z
       - backend_storage:/var/www/html/storage
 
   reverb:
     build:
       context: ..
       dockerfile: infra/Dockerfile.backend
+    volumes:
+      - ../backend:/var/www/html:z
+      - backend_storage:/var/www/html/storage
     container_name: portfolio_reverb
     restart: unless-stopped
     ports:
@@ -113,6 +117,9 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile.backend
+    volumes:
+      - ../backend:/var/www/html:z
+      - backend_storage:/var/www/html/storage
     container_name: portfolio_queue_worker
     restart: unless-stopped
     environment:
@@ -143,6 +150,9 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile.backend
+    volumes:
+      - ../backend:/var/www/html:z
+      - backend_storage:/var/www/html/storage
     container_name: portfolio_scheduler
     restart: unless-stopped
     environment:
