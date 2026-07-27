@@ -506,7 +506,7 @@ export default function QuoteWizard() {
             </p>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg font-medium rounded-xl hover:brightness-110 transition-all"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -531,7 +531,7 @@ export default function QuoteWizard() {
             <button
               type="button"
               onClick={handleContinue}
-              className="px-5 py-2.5 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 transition-all"
+              className="px-5 py-2.5 text-sm font-medium bg-accent text-bg rounded-xl hover:brightness-110 transition-all"
             >
               View Summary
             </button>

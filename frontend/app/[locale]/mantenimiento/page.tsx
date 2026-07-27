@@ -39,16 +39,6 @@ export default function MaintenancePage() {
     <div className="flex flex-col flex-1">
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 20%, rgba(109, 40, 217, 0.18), transparent 45%),
-              radial-gradient(circle at 80% 30%, rgba(0, 212, 255, 0.14), transparent 50%),
-              var(--bg)
-            `,
-          }}
-        />
         <div className="max-w-5xl mx-auto px-6 py-24 sm:py-32">
           <div className="glass-card p-10 sm:p-14 text-center">
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight font-display text-text">
@@ -143,9 +133,9 @@ export default function MaintenancePage() {
 
                 <Link
                   href={plan.href}
-                  className={`mt-8 w-full text-center px-6 py-3 font-semibold rounded-lg transition-all text-sm ${
+                  className={`mt-8 w-full text-center px-6 py-3 font-semibold rounded-xl transition-all text-sm ${
                     plan.highlighted
-                      ? 'bg-accent text-[#1E1B2E] hover:brightness-110'
+                      ? 'bg-accent text-bg hover:brightness-110'
                       : 'border border-[var(--glass-border)] text-text hover:bg-white/10'
                   }`}
                 >

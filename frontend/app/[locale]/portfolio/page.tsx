@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import Image from 'next/image';
 import { fetchPortfolioProjects } from '@/app/lib/api';
 import type { PortfolioProject } from '@/app/types/content';
 
@@ -113,11 +114,13 @@ export default function PortfolioListPage() {
                 className="group glass-card--light overflow-hidden hover:border-primary/30 transition-all"
               >
                 {project.featured_image_url && (
-                  <div className="aspect-video overflow-hidden">
-                    <img
+                  <div className="relative aspect-video overflow-hidden">
+                    <Image
                       src={project.featured_image_url}
                       alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300"
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300"
                     />
                   </div>
                 )}

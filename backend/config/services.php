@@ -73,6 +73,7 @@ return [
         'client_secret' => env('PAYPAL_CLIENT_SECRET'),
         'sandbox' => env('PAYPAL_SANDBOX', true),
         'webhook_id' => env('PAYPAL_WEBHOOK_ID'),
+        'base_url' => env('PAYPAL_BASE_URL', 'https://api-m.sandbox.paypal.com'),
     ],
 
     'binance_pay' => [

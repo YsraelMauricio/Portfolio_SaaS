@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Script from 'next/script';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { fetchBlogPost, fetchBlogComments, submitBlogComment, getAuthToken } from '@/app/lib/api';
 import type { BlogPost, BlogComment } from '@/app/types/content';
@@ -142,11 +143,13 @@ export default function BlogDetailClient() {
 
         {/* Featured image */}
         {post.featured_image_url && (
-          <div className="mt-8 rounded-xl overflow-hidden">
-            <img
+          <div className="mt-8 relative aspect-video rounded-xl overflow-hidden">
+            <Image
               src={post.featured_image_url}
               alt={post.title}
-              className="w-full h-auto object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
             />
           </div>
         )}
@@ -220,7 +223,7 @@ export default function BlogDetailClient() {
                 <button
                   type="submit"
                   disabled={submittingComment}
-                  className="px-6 py-2.5 bg-accent text-[#1E1B2E] font-medium rounded-lg hover:brightness-110 disabled:opacity-50 transition-all text-sm"
+                  className="px-6 py-2.5 bg-accent text-bg font-medium rounded-xl hover:brightness-110 disabled:opacity-50 transition-all text-sm"
                 >
                   {submittingComment ? 'Submitting...' : t('submitComment')}
                 </button>

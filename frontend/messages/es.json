@@ -78,6 +78,27 @@
     "featureSupport": "Soporte Continuo",
     "featureSupportDesc": "Mantenimiento y soporte posteriores al lanzamiento incluidos.",
     "testimonialsTitle": "Lo Que Dicen Nuestros Clientes",
+    "servicesTitle": "Lo Que Construyo",
+    "servicesSubtitle": "Software moderno y escalable adaptado a tus necesidades.",
+    "service": {
+      "web": {
+        "title": "Desarrollo Web",
+        "description": "Aplicaciones web full-stack, APIs y plataformas. Desde landing pages hasta SaaS complejos."
+      },
+      "mobile": {
+        "title": "Apps Móviles",
+        "description": "Apps para iOS y Android con React Native — sensación nativa, alcance multiplataforma."
+      },
+      "desktop": {
+        "title": "Software de Escritorio",
+        "description": "Aplicaciones de escritorio multiplataforma con UIs modernas usando Tauri o Electron."
+      }
+    },
+    "featuredWorkTitle": "Trabajo Destacado",
+    "viewAll": "Ver todo",
+    "noFeaturedYet": "Aún no hay proyectos destacados.",
+    "finalCtaTitle": "¿Listo para Construir Algo Genial?",
+    "finalCtaSubtitle": "Hablemos de tu proyecto y creemos algo increíble juntos.",
     "recentBlogTitle": "Lo Último de Nuestro Blog",
     "viewAllPosts": "Ver todas las publicaciones"
   },

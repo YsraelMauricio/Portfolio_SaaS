@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import { login, ensureCsrfCookie } from '@/app/lib/api';
+import { login, register } from '@/app/lib/api';
 
 export default function RegisterPage() {
   const t = useTranslations('Auth');
@@ -27,28 +27,12 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      await ensureCsrfCookie();
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/auth/register`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'X-XSRF-TOKEN': (() => {
-              const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-              return match ? decodeURIComponent(match[1]) : '';
-            })(),
-          },
-          body: JSON.stringify({ name, email, password, password_confirmation: passwordConfirmation }),
-        },
-      );
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({ errors: ['Registration failed'] }));
-        throw new Error(errData.errors?.[0] || `HTTP ${res.status}`);
-      }
+      await register({
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+      });
 
       // Auto-login after registration
       await login(email, password);
@@ -115,7 +99,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-accent text-[#1E1B2E] font-semibold rounded-lg hover:brightness-110 transition-all disabled:opacity-50"
+            className="w-full py-3 bg-accent text-bg font-semibold rounded-xl hover:brightness-110 transition-all disabled:opacity-50"
           >
             {loading ? t('registering') : t('registerButton')}
           </button>

@@ -78,6 +78,27 @@
     "featureSupport": "Ongoing Support",
     "featureSupportDesc": "Post-launch maintenance and support included.",
     "testimonialsTitle": "What Our Clients Say",
+    "servicesTitle": "What I Build",
+    "servicesSubtitle": "Modern, scalable software tailored to your needs.",
+    "service": {
+      "web": {
+        "title": "Web Development",
+        "description": "Full-stack web applications, APIs, and platforms. From landing pages to complex SaaS."
+      },
+      "mobile": {
+        "title": "Mobile Apps",
+        "description": "iOS and Android apps built with React Native — native feel, cross-platform reach."
+      },
+      "desktop": {
+        "title": "Desktop Software",
+        "description": "Cross-platform desktop applications with modern UIs using Tauri or Electron."
+      }
+    },
+    "featuredWorkTitle": "Featured Work",
+    "viewAll": "View all",
+    "noFeaturedYet": "No featured projects yet.",
+    "finalCtaTitle": "Ready to Build Something Great?",
+    "finalCtaSubtitle": "Let's discuss your project and create something amazing together.",
     "recentBlogTitle": "Latest from Our Blog",
     "viewAllPosts": "View all posts"
   },

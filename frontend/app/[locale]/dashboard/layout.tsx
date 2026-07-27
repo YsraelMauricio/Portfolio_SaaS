@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname, Link } from '@/i18n/navigation';
-import { getAuthToken, clearAuthToken, fetchApiWithAuth } from '@/app/lib/api';
+import { clearAuthToken, fetchApiWithAuth } from '@/app/lib/api';
 import type { User } from '@/app/types/dashboard';
 
 const NAV_ITEMS = [
@@ -19,12 +19,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = getAuthToken();
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-
     fetchApiWithAuth<User>('/auth/user')
       .then((res) => setUser(res.data))
       .catch(() => {

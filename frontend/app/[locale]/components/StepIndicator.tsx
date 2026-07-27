@@ -28,7 +28,7 @@ export default function StepIndicator({ steps, currentStep }: StepIndicatorProps
                     flex items-center justify-center w-10 h-10 rounded-full
                     text-sm font-semibold border-2 transition-colors duration-200 font-mono
                     ${isCompleted
-                      ? 'bg-accent border-accent text-[#1E1B2E]'
+                      ? 'bg-accent border-accent text-bg'
                       : isCurrent
                         ? 'border-accent text-accent bg-accent/10'
                         : 'border-[var(--glass-border)] text-text-muted glass-card--light'

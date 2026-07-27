@@ -5,20 +5,34 @@ namespace App\Services\Payments;
 use App\Models\Payment;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PaypalProvider implements PaymentProvider
 {
-    /**
-     * Initiate a payment via PayPal.
-     *
-     * Returns a mock checkout link. No currency conversion needed (USD only).
-     */
+    private function getAccessToken(): string
+    {
+        return Cache::remember('paypal_access_token', 28800, function () {
+            $response = Http::asForm()
+                ->withBasicAuth(
+                    config('services.paypal.client_id'),
+                    config('services.paypal.client_secret')
+                )
+                ->post(config('services.paypal.base_url').'/v1/oauth2/token', [
+                    'grant_type' => 'client_credentials',
+                ]);
+
+            $response->throw();
+
+            return $response->json('access_token');
+        });
+    }
+
     public function initiate(Project $project, float $amountUsd): array
     {
         $invoiceId = 'PAYPAL_'.$project->id.'_'.now()->timestamp;
 
-        // Mock checkout URL — in production, this would call PayPal Orders API
         return [
             'checkout_url' => 'https://mock.paypal.com/checkout?invoiceId='.$invoiceId,
             'invoice_id' => $invoiceId,
@@ -27,12 +41,6 @@ class PaypalProvider implements PaymentProvider
         ];
     }
 
-    /**
-     * Verify the PayPal webhook signature.
-     *
-     * Uses PayPal's POST /v1/notifications/verify-webhook-signature API to validate
-     * the incoming webhook. This is the officially recommended verification method.
-     */
     public function verifyWebhookSignature(Request $request): bool
     {
         $webhookId = config('services.paypal.webhook_id');
@@ -43,38 +51,85 @@ class PaypalProvider implements PaymentProvider
             return false;
         }
 
-        // PayPal sends verification headers
         $transmissionId = $request->header('PAYPAL-TRANSMISSION-ID');
         $transmissionTime = $request->header('PAYPAL-TRANSMISSION-TIME');
         $certUrl = $request->header('PAYPAL-CERT-URL');
-        $actualSignature = $request->header('PAYPAL-TRANSMISSION-SIG');
+        $transmissionSig = $request->header('PAYPAL-TRANSMISSION-SIG');
         $authAlgo = $request->header('PAYPAL-AUTH-ALGO');
 
         if (empty($transmissionId) || empty($transmissionTime) || empty($certUrl)
-            || empty($actualSignature) || empty($authAlgo)) {
+            || empty($transmissionSig) || empty($authAlgo)) {
             Log::warning('PayPal webhook missing one or more signature headers');
 
             return false;
         }
 
-        // In production, this would call PayPal's verification API.
-        // For now, we perform a local HMAC-SHA256 verification as a reasonable mock.
-        $payload = $request->getContent();
-        $signedPayload = $transmissionId.'|'.$transmissionTime.'|'.$webhookId.'|'.crc32($payload);
-
+        $clientId = config('services.paypal.client_id');
         $clientSecret = config('services.paypal.client_secret');
 
+        // Use the real PayPal verification API when credentials are configured (production).
+        // Fall back to local HMAC verification when credentials are absent (dev/test).
+        if (! empty($clientId) && ! empty($clientSecret)) {
+            return $this->verifyViaApi($request, $transmissionId, $transmissionTime, $certUrl, $transmissionSig, $authAlgo, $webhookId);
+        }
+
+        return $this->verifyViaHmac($request, $transmissionId, $transmissionTime, $webhookId, $clientSecret);
+    }
+
+    private function verifyViaApi(Request $request, string $transmissionId, string $transmissionTime, string $certUrl, string $transmissionSig, string $authAlgo, string $webhookId): bool
+    {
+        try {
+            $accessToken = $this->getAccessToken();
+
+            $response = Http::withToken($accessToken)
+                ->timeout(10)
+                ->post(config('services.paypal.base_url').'/v1/notifications/verify-webhook-signature', [
+                    'transmission_id' => $transmissionId,
+                    'transmission_time' => $transmissionTime,
+                    'cert_url' => $certUrl,
+                    'auth_algo' => $authAlgo,
+                    'transmission_sig' => $transmissionSig,
+                    'webhook_id' => $webhookId,
+                    'webhook_event' => $request->json()->all(),
+                ]);
+
+            $response->throw();
+
+            $verificationStatus = $response->json('verification_status');
+
+            $isValid = $verificationStatus === 'SUCCESS';
+
+            if (! $isValid) {
+                Log::warning('PayPal webhook signature verification failed', [
+                    'transmission_id' => $transmissionId,
+                    'verification_status' => $verificationStatus,
+                ]);
+            }
+
+            return $isValid;
+        } catch (\Exception $e) {
+            Log::error('PayPal webhook signature verification error: '.$e->getMessage());
+
+            return false;
+        }
+    }
+
+    private function verifyViaHmac(Request $request, string $transmissionId, string $transmissionTime, string $webhookId, ?string $clientSecret): bool
+    {
         if (empty($clientSecret)) {
             Log::error('PayPal client secret not configured');
 
             return false;
         }
 
+        $payload = $request->getContent();
+        $signedPayload = $transmissionId.'|'.$transmissionTime.'|'.$webhookId.'|'.crc32($payload);
+
         $expectedSignature = hash_hmac('sha256', $signedPayload, $clientSecret);
-        $isValid = hash_equals($expectedSignature, $actualSignature);
+        $isValid = hash_equals($expectedSignature, $request->header('PAYPAL-TRANSMISSION-SIG'));
 
         if (! $isValid) {
-            Log::warning('PayPal webhook signature verification failed', [
+            Log::warning('PayPal webhook signature verification failed (local HMAC)', [
                 'transmission_id' => $transmissionId,
             ]);
         }
@@ -82,27 +137,15 @@ class PaypalProvider implements PaymentProvider
         return $isValid;
     }
 
-    /**
-     * Process a PayPal webhook.
-     *
-     * This method MUST be called only after verifyWebhookSignature() has returned true.
-     * Checks idempotency via provider_transaction_id before inserting.
-     */
     public function processWebhook(Request $request): Payment
     {
         $payload = $request->json()->all();
-
-        // PayPal webhook event types
         $eventType = $payload['event_type'] ?? '';
-
-        // Extract the resource (payment) object from the webhook
         $resource = $payload['resource'] ?? [];
 
-        // PayPal transaction IDs from the resource
         $providerTransactionId = $resource['id'] ?? $resource['custom_id'] ?? $payload['id'] ?? null;
 
         if (empty($providerTransactionId)) {
-            // Try to extract from the resource's transactions array
             $transactions = $resource['transactions'] ?? [];
             if (! empty($transactions) && isset($transactions[0]['id'])) {
                 $providerTransactionId = $transactions[0]['id'];
@@ -113,9 +156,7 @@ class PaypalProvider implements PaymentProvider
             throw new \RuntimeException('PayPal webhook missing transaction identifier');
         }
 
-        // Idempotency check
         $existing = Payment::where('provider_transaction_id', $providerTransactionId)->first();
-
         if ($existing) {
             Log::info('PayPal webhook: duplicate transaction_id received', [
                 'provider_transaction_id' => $providerTransactionId,
@@ -126,26 +167,20 @@ class PaypalProvider implements PaymentProvider
         }
 
         $projectId = $resource['project_id'] ?? $payload['project_id'] ?? null;
-
         if (empty($projectId)) {
             throw new \RuntimeException('PayPal webhook missing project_id');
         }
 
         $project = Project::findOrFail($projectId);
 
-        // Determine success/failure from event type
         $isSuccess = in_array($eventType, [
-            'PAYMENT.SALE.COMPLETED',
-            'PAYMENT.CAPTURE.COMPLETED',
-            'CHECKOUT.ORDER.APPROVED',
-            'PAYMENT.AUTHORIZATION.CREATED',
+            'PAYMENT.SALE.COMPLETED', 'PAYMENT.CAPTURE.COMPLETED',
+            'CHECKOUT.ORDER.APPROVED', 'PAYMENT.AUTHORIZATION.CREATED',
         ], true);
 
         $isRejected = in_array($eventType, [
-            'PAYMENT.SALE.DENIED',
-            'PAYMENT.CAPTURE.DENIED',
-            'PAYMENT.SALE.REFUNDED',
-            'CHECKOUT.ORDER.DECLINED',
+            'PAYMENT.SALE.DENIED', 'PAYMENT.CAPTURE.DENIED',
+            'PAYMENT.SALE.REFUNDED', 'CHECKOUT.ORDER.DECLINED',
         ], true);
 
         $status = 'pending';

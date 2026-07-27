@@ -6,6 +6,7 @@ import { logout } from '@/app/lib/api';
 import { useAuth } from '@/app/lib/useAuth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navigation() {
   const t = useTranslations('Navigation');
@@ -87,11 +88,12 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 transition-all"
+                className="px-4 py-2 text-sm font-medium bg-accent text-bg rounded-xl hover:brightness-110 transition-all"
               >
                 {t('signIn')}
               </Link>
             )}
+            <ThemeToggle />
             {/* Language switcher */}
             <LocaleSwitcher />
           </div>
@@ -149,11 +151,14 @@ export default function Navigation() {
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-medium bg-accent text-[#1E1B2E] rounded-lg hover:brightness-110 text-center"
+                    className="block px-4 py-2.5 text-sm font-medium bg-accent text-bg rounded-xl hover:brightness-110 text-center"
                   >
                     {t('signIn')}
                   </Link>
                 )}
+                <div className="mt-3 px-4">
+                  <ThemeToggle />
+                </div>
                 <div className="mt-3 px-4">
                   <LocaleSwitcher />
                 </div>
